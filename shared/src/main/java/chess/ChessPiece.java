@@ -57,15 +57,18 @@ public class ChessPiece {
         ChessPiece piece = board.getPiece(myPosition);
         HashSet<ChessMove> moves = new HashSet<ChessMove>();
 
+        int row = myPosition.getRow();
+        int col = myPosition.getColumn();
+
         if (piece.getPieceType() == PieceType.BISHOP) {
             
             // Calculate Top-Left to Bottom-Right moves
-            for (int i = 0; i < board.squares.length; i++) {
+            for (int i = 1; i <= board.squares.length; i++) {
 
             }
             
             // Calculate Bottom-Left to Top-Right moves
-            for (int i = 0; i < board.squares[0].length; i++) {
+            for (int i = 1; i <= board.squares[0].length; i++) {
                 
             }
 
