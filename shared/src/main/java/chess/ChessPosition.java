@@ -32,6 +32,11 @@ public class ChessPosition {
         return col;
     }
 
+    public ChessPosition offsetBy(int offsetRow, int offsetColumn)
+    {
+        return new ChessPosition(row + offsetRow, col + offsetColumn);
+    }
+
     @Override
     public String toString() {
         return String.format("[%d,%d]", row, col);
