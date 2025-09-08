@@ -62,13 +62,16 @@ public class ChessPiece {
 
         if (piece.getPieceType() == PieceType.BISHOP) {
             
-            // Calculate Bottom Left [1,*] to Top Right [8,*]
+            // Calculate Bottom Left [1,1] to Top Right [8,8]. Code will ONLY WORK with an 8*8 board
             for (int r = 1; r <= board.squares.length; r++) {
                 if (r != row)
                 {
-                    ChessPosition endPosition = new ChessPosition(1,1);
 
-                    moves.add(new ChessMove(myPosition, endPosition, null));
+                    ChessPosition endPosition = new ChessPosition(r,r);
+                    if (board.hasPosition(endPosition))
+                    {
+                        moves.add(new ChessMove(myPosition, endPosition, null));
+                    }
                 }
             }
             
@@ -77,7 +80,6 @@ public class ChessPiece {
                 
             }
 
-            return List.of(new ChessMove(new ChessPosition(5, 4), new ChessPosition(1, 8), null));
         }
         return moves;
     }
