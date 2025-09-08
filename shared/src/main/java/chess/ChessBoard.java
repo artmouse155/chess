@@ -40,4 +40,15 @@ public class ChessBoard {
     public void resetBoard() {
         throw new RuntimeException("Not implemented");
     }
+
+    /**
+     *
+     * @param position The position on the board being tested
+     * @return True if the piece is actually on the board, false if otherwise
+     */
+    public boolean hasPosition(ChessPosition position) {
+        int row = position.getRow();
+        int col = position.getColumn();
+        return (row >= 1 && row <= squares.length) && (col >= 1 && col <= squares[0].length);
+    }
 }
