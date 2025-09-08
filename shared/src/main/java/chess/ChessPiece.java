@@ -61,8 +61,22 @@ public class ChessPiece {
         int col = myPosition.getColumn();
 
         if (piece.getPieceType() == PieceType.BISHOP) {
-            
-        
+
+            boolean newMoveFound = true;
+            int i = 0;
+            while (newMoveFound)
+            {
+                i++;
+                newMoveFound = false;
+                ChessPosition[] possibleEndPositions = {myPosition.offsetBy(i,i),myPosition.offsetBy(-i,i),myPosition.offsetBy(i,-i),myPosition.offsetBy(-i,-i)};
+                for (ChessPosition endPosition : possibleEndPositions)
+                {
+                    if (board.hasPosition(endPosition)) {
+                        newMoveFound = true;
+                        moves.add(new ChessMove(myPosition, endPosition));
+                    }
+                }
+            };
 
         }
         return moves;
