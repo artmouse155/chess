@@ -62,13 +62,18 @@ public class ChessPiece {
 
         if (piece.getPieceType() == PieceType.BISHOP) {
             
-            // Calculate Top-Left to Bottom-Right moves
-            for (int i = 1; i <= board.squares.length; i++) {
+            // Calculate Bottom Left [1,*] to Top Right [8,*]
+            for (int r = 1; r <= board.squares.length; r++) {
+                if (r != row)
+                {
+                    ChessPosition endPosition = new ChessPosition(1,1);
 
+                    moves.add(new ChessMove(myPosition, endPosition, null));
+                }
             }
             
-            // Calculate Bottom-Left to Top-Right moves
-            for (int i = 1; i <= board.squares[0].length; i++) {
+            // Calculate Bottom Right [1,8] to Top Left [8,1]
+            for (int c = 1; c <= board.squares[0].length; c++) {
                 
             }
 
