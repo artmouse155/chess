@@ -123,8 +123,6 @@ public class ChessPiece {
                 possibleEndPositionVectors.add(new Vector(-2,-1));
                 break;
             case PieceType.PAWN:
-
-
                 if (myColor == ChessGame.TeamColor.BLACK)
                 {
                     // Standard movement
@@ -143,6 +141,22 @@ public class ChessPiece {
                     possibleEndPositionVectors.add( new Vector(1, -1, AttackMode.ONLY, 1, (row==7)));
                     possibleEndPositionVectors.add( new Vector(1, 1, AttackMode.ONLY, 1, (row==7)));
                 }
+                break;
+            case PieceType.QUEEN:
+                probeVectors.add(new Vector(1,1));
+                probeVectors.add(new Vector(-1,1));
+                probeVectors.add(new Vector(1,-1));
+                probeVectors.add(new Vector(-1,-1));
+                probeVectors.add(new Vector(0,1));
+                probeVectors.add(new Vector(0,-1));
+                probeVectors.add(new Vector(1,0));
+                probeVectors.add(new Vector(-1,0));
+                break;
+            case PieceType.ROOK:
+                probeVectors.add(new Vector(0,1));
+                probeVectors.add(new Vector(0,-1));
+                probeVectors.add(new Vector(1,0));
+                probeVectors.add(new Vector(-1,0));
                 break;
         }
 
@@ -167,7 +181,14 @@ public class ChessPiece {
                         break;
                 } else if (p.attackMode == AttackMode.ONLY)
                     break;
-                moves.add(new ChessMove(myPosition, endPosition));
+                if (p.promote) {
+                    moves.add(new ChessMove(myPosition, endPosition, PieceType.BISHOP));
+                    moves.add(new ChessMove(myPosition, endPosition, PieceType.KNIGHT));
+                    moves.add(new ChessMove(myPosition, endPosition, PieceType.QUEEN));
+                    moves.add(new ChessMove(myPosition, endPosition, PieceType.ROOK));
+                } else {
+                    moves.add(new ChessMove(myPosition, endPosition));
+                }
                 if (endColor != null)
                     break;
             }
