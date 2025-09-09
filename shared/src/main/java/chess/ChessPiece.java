@@ -92,7 +92,16 @@ public class ChessPiece {
         return true;
     }
 
-    private void probeTest(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves, int rowVector, int colVector, AttackMode attackMode, boolean promote, int maxIterations)
+    private void probeTest(
+            ChessBoard board,
+            ChessPosition myPosition,
+            HashSet<ChessMove> moves,
+            int rowVector,
+            int colVector,
+            AttackMode attackMode,
+            boolean promote,
+            int maxIterations
+    )
     {
 
         for (int i = 1; i <= maxIterations; i++) {
@@ -119,7 +128,14 @@ public class ChessPiece {
         probeTest(board, myPosition, moves, rowVector, colVector, AttackMode.ALLOWED, false, 8);
     }
 
-    private void pointTest(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves, int rowOffset, int colOffset, AttackMode attackMode, boolean promote)
+    private void pointTest(
+            ChessBoard board,
+            ChessPosition myPosition,
+            HashSet<ChessMove> moves,
+            int rowOffset,
+            int colOffset,
+            AttackMode attackMode,
+            boolean promote)
     {
         probeTest(board, myPosition, moves, rowOffset, colOffset, attackMode, promote, 1);
     }
@@ -231,6 +247,8 @@ public class ChessPiece {
                 case PieceType.QUEEN -> "q";
                 case PieceType.ROOK -> "r";
             };
-        } else return "?";
+        } else {
+            return "?"
+        };
     }
 }
