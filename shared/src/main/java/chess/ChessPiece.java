@@ -136,12 +136,12 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         ChessPiece piece = board.getPiece(myPosition);
-        HashSet<ChessMove> moves = new HashSet<>();
-
+        
         int row = myPosition.getRow();
-        int col = myPosition.getColumn();
         ChessGame.TeamColor myColor = piece.getTeamColor();
         PieceType myType = piece.getPieceType();
+
+        HashSet<ChessMove> moves = new HashSet<>();
 
         switch (myType) {
             case PieceType.BISHOP:
