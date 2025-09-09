@@ -111,6 +111,8 @@ public class ChessPiece {
                 if (myColor == ChessGame.TeamColor.BLACK)
                 {
                     possibleEndPositionVectors.add( new Vector(-1, 0));
+
+                    // Bonus first move
                     if (row == 7)
                     {
                         possibleEndPositionVectors.add( new Vector(-2, 0));
@@ -118,11 +120,17 @@ public class ChessPiece {
                 } else if (myColor == ChessGame.TeamColor.WHITE)
                 {
                     possibleEndPositionVectors.add( new Vector(1, 0));
+
+                    // Bonus first move
                     if (row == 2)
                     {
                         possibleEndPositionVectors.add( new Vector(2, 0));
                     }
                 }
+
+
+
+                break;
         }
 
         for (Vector p : probeVectors)
