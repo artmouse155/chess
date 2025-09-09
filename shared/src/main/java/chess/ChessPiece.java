@@ -184,8 +184,8 @@ public class ChessPiece {
                     probeTest(board, myPosition, 1, 0, moves, AttackMode.NEVER, (row == 7), (row == 2) ? 2 : 1);
 
                     // Attack vectors
-                    pointTest(board, myPosition, 1, -1, moves, AttackMode.ONLY, (row == 2));
-                    pointTest(board, myPosition, 1, 1, moves, AttackMode.ONLY, (row == 2));
+                    pointTest(board, myPosition, 1, -1, moves, AttackMode.ONLY, (row == 7));
+                    pointTest(board, myPosition, 1, 1, moves, AttackMode.ONLY, (row == 7));
                 }
                 break;
             case PieceType.QUEEN:
