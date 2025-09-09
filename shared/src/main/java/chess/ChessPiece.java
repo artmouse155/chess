@@ -78,6 +78,7 @@ public class ChessPiece {
         ArrayList<Vector> probeVectors = new ArrayList<>();
         ArrayList<Vector> possibleEndPositionVectors = new ArrayList<>();
         ArrayList<Vector> possibleAttackVectors = new ArrayList<>();
+        ArrayList<Vector> possibleNonAttackVectors = new ArrayList<>();
 
         switch (myType) {
             case PieceType.BISHOP:
@@ -112,12 +113,12 @@ public class ChessPiece {
                 if (myColor == ChessGame.TeamColor.BLACK)
                 {
                     // Standard movement
-                    possibleEndPositionVectors.add( new Vector(-1, 0));
+                    possibleNonAttackVectors.add( new Vector(-1, 0));
 
                     // Bonus first move
                     if (row == 7)
                     {
-                        possibleEndPositionVectors.add( new Vector(-2, 0));
+                        possibleNonAttackVectors.add( new Vector(-2, 0));
                     }
 
                     // Attack vectors
@@ -127,12 +128,12 @@ public class ChessPiece {
                 } else if (myColor == ChessGame.TeamColor.WHITE)
                 {
                     // Standard movement
-                    possibleEndPositionVectors.add( new Vector(1, 0));
+                    possibleNonAttackVectors.add( new Vector(1, 0));
 
                     // Bonus first move
                     if (row == 2)
                     {
-                        possibleEndPositionVectors.add( new Vector(2, 0));
+                        possibleNonAttackVectors.add( new Vector(2, 0));
                     }
 
                     // Attack vectors
