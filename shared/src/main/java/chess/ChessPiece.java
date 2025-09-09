@@ -160,14 +160,16 @@ public class ChessPiece {
                 if (!board.hasPosition(endPosition))
                     break;
                 ChessPiece endPiece = board.getPiece(endPosition);
-                if (endPiece != null)
-                {
-                    if ((myColor != endPiece.getTeamColor()) && (p.attackMode != AttackMode.NEVER))
-                        moves.add(new ChessMove(myPosition, endPosition));
-                    break;
+                ChessGame.TeamColor endColor = null;
+                if (endPiece != null) {
+                    endColor = endPiece.getTeamColor();
+                    if ((myColor == endColor) || (p.attackMode == AttackMode.NEVER))
+                        break;
                 } else if (p.attackMode == AttackMode.ONLY)
                     break;
                 moves.add(new ChessMove(myPosition, endPosition));
+                if (endColor != null)
+                    break;
             }
         }
 
