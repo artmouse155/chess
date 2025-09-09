@@ -219,4 +219,16 @@ public class ChessPiece {
 
         return moves;
     }
+
+    @Override
+    public String toString() {
+        return switch (type) {
+            case PieceType.BISHOP -> "B";
+            case PieceType.KING -> "K";
+            case PieceType.KNIGHT -> "N";
+            case PieceType.PAWN -> "P";
+            case PieceType.QUEEN -> "Q";
+            case PieceType.ROOK -> "R";
+        };
+    }
 }
