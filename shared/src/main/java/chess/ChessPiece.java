@@ -80,14 +80,14 @@ public class ChessPiece {
             NEVER
         }
 
-        record Vector(int row, int col, AttackMode attackMode, int maxProbeIterations) {
+        record Vector(int row, int col, AttackMode attackMode, int maxProbeIterations, boolean promote) {
 
             Vector(int row, int col, AttackMode attackMode) {
-                this(row,col,attackMode, 8);
+                this(row,col,attackMode, 8, false);
             }
 
             Vector(int row, int col) {
-                this(row,col,AttackMode.ALLOWED, 8);
+                this(row,col,AttackMode.ALLOWED, 8, false);
             }
 
         }
@@ -128,24 +128,21 @@ public class ChessPiece {
                 if (myColor == ChessGame.TeamColor.BLACK)
                 {
                     // Standard movement
-                    probeVectors.add( new Vector(-1, 0, AttackMode.NEVER, (row==7)?2:1));
+                    probeVectors.add( new Vector(-1, 0, AttackMode.NEVER, (row==7)?2:1, (row==2)));
 
                     // Attack vectors
-                    possibleEndPositionVectors.add( new Vector(-1, -1, AttackMode.ONLY));
-                    possibleEndPositionVectors.add( new Vector(-1, 1, AttackMode.ONLY));
+                    possibleEndPositionVectors.add( new Vector(-1, -1, AttackMode.ONLY, 1, (row==2)));
+                    possibleEndPositionVectors.add( new Vector(-1, 1, AttackMode.ONLY, 1, (row==2)));
 
                 } else if (myColor == ChessGame.TeamColor.WHITE)
                 {
                     // Standard movement
-                    probeVectors.add( new Vector(1, 0, AttackMode.NEVER, (row==2)?2:1));
+                    probeVectors.add( new Vector(1, 0, AttackMode.NEVER, (row==2)?2:1, (row==7)));
 
                     // Attack vectors
-                    possibleEndPositionVectors.add( new Vector(1, -1, AttackMode.ONLY));
-                    possibleEndPositionVectors.add( new Vector(1, 1, AttackMode.ONLY));
+                    possibleEndPositionVectors.add( new Vector(1, -1, AttackMode.ONLY, 1, (row==7)));
+                    possibleEndPositionVectors.add( new Vector(1, 1, AttackMode.ONLY, 1, (row==7)));
                 }
-
-
-
                 break;
         }
 
@@ -186,7 +183,14 @@ public class ChessPiece {
                     continue;
             } else if (p.attackMode == AttackMode.ONLY)
                 continue;
-            moves.add(new ChessMove(myPosition, endPosition));
+            if (p.promote) {
+                moves.add(new ChessMove(myPosition, endPosition, PieceType.BISHOP));
+                moves.add(new ChessMove(myPosition, endPosition, PieceType.KNIGHT));
+                moves.add(new ChessMove(myPosition, endPosition, PieceType.QUEEN));
+                moves.add(new ChessMove(myPosition, endPosition, PieceType.ROOK));
+            } else {
+                moves.add(new ChessMove(myPosition, endPosition));
+            }
 
         }
 
