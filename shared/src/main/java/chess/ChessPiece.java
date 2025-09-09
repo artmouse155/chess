@@ -92,12 +92,13 @@ public class ChessPiece {
         return true;
     }
 
-    private void probeTest(ChessBoard board, ChessPosition myPosition, int rowVector, int colVector, HashSet<ChessMove> moves, AttackMode attackMode, boolean promote,  int maxIterations)
+    private void probeTest(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves, int rowVector, int colVector, AttackMode attackMode, boolean promote, int maxIterations)
     {
 
         for (int i = 1; i <= maxIterations; i++) {
-            if (!boolPointTest(board, myPosition, rowVector * i, colVector * i, attackMode))
+            if (!boolPointTest(board, myPosition, rowVector * i, colVector * i, attackMode)) {
                 return;
+            }
             ChessPosition endPosition = new ChessPosition(myPosition.getRow() + rowVector * i,myPosition.getColumn() + colVector * i);
             if (promote) {
                 moves.add(new ChessMove(myPosition, endPosition, PieceType.BISHOP));
@@ -107,24 +108,25 @@ public class ChessPiece {
             } else {
                 moves.add(new ChessMove(myPosition, endPosition));
             }
-            if (board.getPiece(endPosition) != null)
+            if (board.getPiece(endPosition) != null) {
                 break;
+            }
         }
     }
 
-    private void probeTest(ChessBoard board, ChessPosition myPosition, int rowVector, int colVector, HashSet<ChessMove> moves)
+    private void probeTest(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves, int rowVector, int colVector)
     {
-        probeTest(board, myPosition, rowVector, colVector, moves, AttackMode.ALLOWED, false, 8);
+        probeTest(board, myPosition, moves, rowVector, colVector, AttackMode.ALLOWED, false, 8);
     }
 
-    private void pointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, HashSet<ChessMove> moves, AttackMode attackMode, boolean promote)
+    private void pointTest(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves, int rowOffset, int colOffset, AttackMode attackMode, boolean promote)
     {
-        probeTest(board, myPosition, rowOffset, colOffset, moves, attackMode, promote, 1);
+        probeTest(board, myPosition, moves, rowOffset, colOffset, attackMode, promote, 1);
     }
 
-    private void pointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, HashSet<ChessMove> moves)
+    private void pointTest(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves, int rowOffset, int colOffset)
     {
-        probeTest(board, myPosition, rowOffset, colOffset, moves, AttackMode.ALLOWED, false, 1);
+        probeTest(board, myPosition, moves, rowOffset, colOffset, AttackMode.ALLOWED, false, 1);
     }
 
     /**
@@ -145,64 +147,64 @@ public class ChessPiece {
 
         switch (myType) {
             case PieceType.BISHOP:
-                probeTest(board, myPosition, 1, 1, moves);
-                probeTest(board, myPosition, -1, 1, moves);
-                probeTest(board, myPosition, 1, -1, moves);
-                probeTest(board, myPosition, -1, -1, moves);
+                probeTest(board, myPosition, moves, 1, 1);
+                probeTest(board, myPosition, moves, -1, 1);
+                probeTest(board, myPosition, moves, 1, -1);
+                probeTest(board, myPosition, moves, -1, -1);
                 break;
             case PieceType.KING:
-                pointTest(board, myPosition, 1, 0, moves);
-                pointTest(board, myPosition, -1, 0, moves);
-                pointTest(board, myPosition, 0, 1, moves);
-                pointTest(board, myPosition, 0, -1, moves);
-                pointTest(board, myPosition, 1, 1, moves);
-                pointTest(board, myPosition, -1, 1, moves);
-                pointTest(board, myPosition, 1, -1, moves);
-                pointTest(board, myPosition, -1, -1, moves);
+                pointTest(board, myPosition, moves, 1, 0);
+                pointTest(board, myPosition, moves, -1, 0);
+                pointTest(board, myPosition, moves, 0, 1);
+                pointTest(board, myPosition, moves, 0, -1);
+                pointTest(board, myPosition, moves, 1, 1);
+                pointTest(board, myPosition, moves, -1, 1);
+                pointTest(board, myPosition, moves, 1, -1);
+                pointTest(board, myPosition, moves, -1, -1);
                 break;
             case PieceType.KNIGHT:
-                pointTest(board, myPosition, 1, 2, moves);
-                pointTest(board, myPosition, 1, -2, moves);
-                pointTest(board, myPosition, -1, 2, moves);
-                pointTest(board, myPosition, -1, -2, moves);
-                pointTest(board, myPosition, 2, 1, moves);
-                pointTest(board, myPosition, 2, -1, moves);
-                pointTest(board, myPosition, -2, 1, moves);
-                pointTest(board, myPosition, -2, -1, moves);
+                pointTest(board, myPosition, moves, 1, 2);
+                pointTest(board, myPosition, moves, 1, -2);
+                pointTest(board, myPosition, moves, -1, 2);
+                pointTest(board, myPosition, moves, -1, -2);
+                pointTest(board, myPosition, moves, 2, 1);
+                pointTest(board, myPosition, moves, 2, -1);
+                pointTest(board, myPosition, moves, -2, 1);
+                pointTest(board, myPosition, moves, -2, -1);
                 break;
             case PieceType.PAWN:
                 if (myColor == ChessGame.TeamColor.BLACK) {
                     // Standard movement
-                    probeTest(board, myPosition, -1, 0, moves, AttackMode.NEVER, (row == 2), (row == 7) ? 2 : 1);
+                    probeTest(board, myPosition, moves, -1, 0, AttackMode.NEVER, (row == 2), (row == 7) ? 2 : 1);
 
                     // Attack vectors
-                    pointTest(board, myPosition, -1, -1, moves, AttackMode.ONLY, (row == 2));
-                    pointTest(board, myPosition, -1, 1, moves, AttackMode.ONLY, (row == 2));
+                    pointTest(board, myPosition, moves, -1, -1, AttackMode.ONLY, (row == 2));
+                    pointTest(board, myPosition, moves, -1, 1, AttackMode.ONLY, (row == 2));
 
                 } else if (myColor == ChessGame.TeamColor.WHITE) {
                     // Standard movement
-                    probeTest(board, myPosition, 1, 0, moves, AttackMode.NEVER, (row == 7), (row == 2) ? 2 : 1);
+                    probeTest(board, myPosition, moves, 1, 0, AttackMode.NEVER, (row == 7), (row == 2) ? 2 : 1);
 
                     // Attack vectors
-                    pointTest(board, myPosition, 1, -1, moves, AttackMode.ONLY, (row == 7));
-                    pointTest(board, myPosition, 1, 1, moves, AttackMode.ONLY, (row == 7));
+                    pointTest(board, myPosition, moves, 1, -1, AttackMode.ONLY, (row == 7));
+                    pointTest(board, myPosition, moves, 1, 1, AttackMode.ONLY, (row == 7));
                 }
                 break;
             case PieceType.QUEEN:
-                probeTest(board, myPosition, 1, 1, moves);
-                probeTest(board, myPosition, -1, 1, moves);
-                probeTest(board, myPosition, 1, -1, moves);
-                probeTest(board, myPosition, -1, -1, moves);
-                probeTest(board, myPosition, 0, 1, moves);
-                probeTest(board, myPosition, 0, -1, moves);
-                probeTest(board, myPosition, 1, 0, moves);
-                probeTest(board, myPosition, -1, 0, moves);
+                probeTest(board, myPosition, moves, 1, 1);
+                probeTest(board, myPosition, moves, -1, 1);
+                probeTest(board, myPosition, moves, 1, -1);
+                probeTest(board, myPosition, moves, -1, -1);
+                probeTest(board, myPosition, moves, 0, 1);
+                probeTest(board, myPosition, moves, 0, -1);
+                probeTest(board, myPosition, moves, 1, 0);
+                probeTest(board, myPosition, moves, -1, 0);
                 break;
             case PieceType.ROOK:
-                probeTest(board, myPosition, 0, 1, moves);
-                probeTest(board, myPosition, 0, -1, moves);
-                probeTest(board, myPosition, 1, 0, moves);
-                probeTest(board, myPosition, -1, 0, moves);
+                probeTest(board, myPosition, moves, 0, 1);
+                probeTest(board, myPosition, moves, 0, -1);
+                probeTest(board, myPosition, moves, 1, 0);
+                probeTest(board, myPosition, moves, -1, 0);
                 break;
         }
 
