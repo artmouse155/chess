@@ -172,19 +172,19 @@ public class ChessPiece {
             case PieceType.PAWN:
                 if (myColor == ChessGame.TeamColor.BLACK) {
                     // Standard movement
-                    probeVectors.add(new Vector(-1, 0, AttackMode.NEVER, (row == 7) ? 2 : 1, (row == 2)));
+                    probeTest(board, myPosition, -1, 0, moves, AttackMode.NEVER, (row == 2), (row == 7) ? 2 : 1);
 
                     // Attack vectors
-                    possibleEndPositionVectors.add(new Vector(-1, -1, AttackMode.ONLY, 1, (row == 2)));
-                    possibleEndPositionVectors.add(new Vector(-1, 1, AttackMode.ONLY, 1, (row == 2)));
+                    pointTest(board, myPosition, -1, -1, moves, AttackMode.ONLY, (row == 2));
+                    pointTest(board, myPosition, -1, 1, moves, AttackMode.ONLY, (row == 2));
 
                 } else if (myColor == ChessGame.TeamColor.WHITE) {
                     // Standard movement
-                    probeVectors.add(new Vector(1, 0, AttackMode.NEVER, (row == 2) ? 2 : 1, (row == 7)));
+                    probeTest(board, myPosition, 1, 0, moves, AttackMode.NEVER, (row == 7), (row == 2) ? 2 : 1);
 
                     // Attack vectors
-                    possibleEndPositionVectors.add(new Vector(1, -1, AttackMode.ONLY, 1, (row == 7)));
-                    possibleEndPositionVectors.add(new Vector(1, 1, AttackMode.ONLY, 1, (row == 7)));
+                    pointTest(board, myPosition, 1, -1, moves, AttackMode.ONLY, (row == 2));
+                    pointTest(board, myPosition, 1, 1, moves, AttackMode.ONLY, (row == 2));
                 }
                 break;
             case PieceType.QUEEN:
