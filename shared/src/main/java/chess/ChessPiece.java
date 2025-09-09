@@ -78,14 +78,15 @@ public class ChessPiece {
         ArrayList<Vector> probeVectors = new ArrayList<>();
         ArrayList<Vector> possibleEndPositionVectors = new ArrayList<>();
 
-        if (myType == PieceType.BISHOP) {
-
-            probeVectors.add(new Vector(1,1));
-            probeVectors.add(new Vector(-1,1));
-            probeVectors.add(new Vector(1,-1));
-            probeVectors.add(new Vector(-1,-1));
-
+        switch (myType) {
+            case PieceType.BISHOP:
+                probeVectors.add(new Vector(1,1));
+                probeVectors.add(new Vector(-1,1));
+                probeVectors.add(new Vector(1,-1));
+                probeVectors.add(new Vector(-1,-1));
+                break;
         }
+
         for (Vector p : probeVectors)
         {
             int probeRow = row;
