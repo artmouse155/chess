@@ -110,4 +110,19 @@ public class ChessBoard {
     public int hashCode() {
         return Arrays.deepHashCode(squares);
     }
+
+    @Override
+    public String toString() {
+        String out = "";
+
+        for (int r = 0; r < squares.length; r++) {
+            String row = "|";
+        for (int c = 0; c < squares[0].length; c++) {
+            row += ((squares[r][c] != null)?squares[r][c].toString():" ") + "|";
+            }
+            out = row + "\n" + out;
+        }
+
+        return out;
+    }
 }
