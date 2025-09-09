@@ -77,6 +77,7 @@ public class ChessPiece {
         record Vector(int row, int col) {}
         ArrayList<Vector> probeVectors = new ArrayList<>();
         ArrayList<Vector> possibleEndPositionVectors = new ArrayList<>();
+        ArrayList<Vector> possibleAttackVectors = new ArrayList<>();
 
         switch (myType) {
             case PieceType.BISHOP:
@@ -107,9 +108,10 @@ public class ChessPiece {
                 break;
             case PieceType.PAWN:
 
-                // Standard movement
+
                 if (myColor == ChessGame.TeamColor.BLACK)
                 {
+                    // Standard movement
                     possibleEndPositionVectors.add( new Vector(-1, 0));
 
                     // Bonus first move
@@ -117,8 +119,10 @@ public class ChessPiece {
                     {
                         possibleEndPositionVectors.add( new Vector(-2, 0));
                     }
+
                 } else if (myColor == ChessGame.TeamColor.WHITE)
                 {
+                    // Standard movement
                     possibleEndPositionVectors.add( new Vector(1, 0));
 
                     // Bonus first move
@@ -165,6 +169,17 @@ public class ChessPiece {
                 if (endPiece != null && (endPiece.getTeamColor() == myColor))
                     continue;
                 moves.add(new ChessMove(myPosition, endPosition));
+            }
+        }
+
+        for (Vector p : possibleAttackVectors)
+        {
+            ChessPosition endPosition = new ChessPosition(row + p.row, col + p.col);
+            if (board.hasPosition(endPosition))
+            {
+                ChessPiece endPiece = board.getPiece(endPosition);
+                if (endPiece != null && (endPiece.getTeamColor() != myColor))
+                    moves.add(new ChessMove(myPosition, endPosition));
             }
         }
 
