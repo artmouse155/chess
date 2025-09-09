@@ -85,6 +85,28 @@ public class ChessPiece {
                 probeVectors.add(new Vector(1,-1));
                 probeVectors.add(new Vector(-1,-1));
                 break;
+            case PieceType.KING:
+                possibleEndPositionVectors.add(new Vector(1,0));
+                possibleEndPositionVectors.add(new Vector(1,1));
+                possibleEndPositionVectors.add(new Vector(0,1));
+                possibleEndPositionVectors.add(new Vector(-1,1));
+                possibleEndPositionVectors.add(new Vector(-1,0));
+                possibleEndPositionVectors.add(new Vector(-1,-1));
+                possibleEndPositionVectors.add(new Vector(0,-1));
+                possibleEndPositionVectors.add(new Vector(1,-1));
+                break;
+            case PieceType.KNIGHT:
+                possibleEndPositionVectors.add(new Vector(1,2));
+                possibleEndPositionVectors.add(new Vector(1,-2));
+                possibleEndPositionVectors.add(new Vector(-1,2));
+                possibleEndPositionVectors.add(new Vector(-1,-2));
+                possibleEndPositionVectors.add(new Vector(2,1));
+                possibleEndPositionVectors.add(new Vector(2,-1));
+                possibleEndPositionVectors.add(new Vector(-2,1));
+                possibleEndPositionVectors.add(new Vector(-2,-1));
+                break;
+            case PieceType.PAWN:
+                break;
         }
 
         for (Vector p : probeVectors)
