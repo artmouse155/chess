@@ -106,12 +106,22 @@ public class ChessPiece {
                 possibleEndPositionVectors.add(new Vector(-2,-1));
                 break;
             case PieceType.PAWN:
+
+                // Standard movement
                 if (myColor == ChessGame.TeamColor.BLACK)
                 {
-
+                    possibleEndPositionVectors.add( new Vector(-1, 0));
+                    if (row == 7)
+                    {
+                        possibleEndPositionVectors.add( new Vector(-2, 0));
+                    }
                 } else if (myColor == ChessGame.TeamColor.WHITE)
                 {
-
+                    possibleEndPositionVectors.add( new Vector(1, 0));
+                    if (row == 2)
+                    {
+                        possibleEndPositionVectors.add( new Vector(2, 0));
+                    }
                 }
         }
 
