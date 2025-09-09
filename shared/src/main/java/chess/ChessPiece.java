@@ -13,6 +13,12 @@ public class ChessPiece {
     private final ChessGame.TeamColor pieceColor;
     private final PieceType type;
 
+    private enum AttackMode {
+        ALLOWED,
+        ONLY,
+        NEVER
+    }
+
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
         this.type = type;
@@ -58,6 +64,20 @@ public class ChessPiece {
         return Objects.hash(pieceColor, type);
     }
 
+    private boolean pointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, AttackMode attackMode) {
+        
+    }
+
+    private void probeTest(ChessBoard board, ChessPosition myPosition, int rowVector, int colVector, AttackMode attackMode, boolean promote, HashSet<ChessMove> moves,  int maxIterations)
+    {
+
+        for (int i = 1; i <= maxIterations; i++) {
+            if (!pointTest(board, myPosition, rowVector * i, colVector * i, attackMode))
+                return;
+
+        }
+    }
+
     /**
      * Calculates all the positions a chess piece can move to
      * Does not take into account moves that are illegal due to leaving the king in
@@ -73,12 +93,6 @@ public class ChessPiece {
         int col = myPosition.getColumn();
         ChessGame.TeamColor myColor = piece.getTeamColor();
         PieceType myType = piece.getPieceType();
-
-        enum AttackMode {
-            ALLOWED,
-            ONLY,
-            NEVER
-        }
 
         record Vector(int row, int col, AttackMode attackMode, int maxProbeIterations, boolean promote) {
 
