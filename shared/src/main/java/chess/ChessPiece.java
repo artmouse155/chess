@@ -151,24 +151,23 @@ public class ChessPiece {
                 probeTest(board, myPosition, -1, -1, moves);
                 break;
             case PieceType.KING:
-                possibleEndPositionVectors.add(new Vector(1, 0));
-                possibleEndPositionVectors.add(new Vector(1, 1));
-                possibleEndPositionVectors.add(new Vector(0, 1));
-                possibleEndPositionVectors.add(new Vector(-1, 1));
-                possibleEndPositionVectors.add(new Vector(-1, 0));
-                possibleEndPositionVectors.add(new Vector(-1, -1));
-                possibleEndPositionVectors.add(new Vector(0, -1));
-                possibleEndPositionVectors.add(new Vector(1, -1));
+                pointTest(board, myPosition, 1, 0, moves);
+                pointTest(board, myPosition, -1, 0, moves);
+                pointTest(board, myPosition, 0, 1, moves);
+                pointTest(board, myPosition, 0, -1, moves);
+                pointTest(board, myPosition, 1, 1, moves);
+                pointTest(board, myPosition, -1, 1, moves);
+                pointTest(board, myPosition, 1, -1, moves);
+                pointTest(board, myPosition, -1, -1, moves);
                 break;
             case PieceType.KNIGHT:
-                possibleEndPositionVectors.add(new Vector(1, 2));
-                possibleEndPositionVectors.add(new Vector(1, -2));
-                possibleEndPositionVectors.add(new Vector(-1, 2));
-                possibleEndPositionVectors.add(new Vector(-1, -2));
-                possibleEndPositionVectors.add(new Vector(2, 1));
-                possibleEndPositionVectors.add(new Vector(2, -1));
-                possibleEndPositionVectors.add(new Vector(-2, 1));
-                possibleEndPositionVectors.add(new Vector(-2, -1));
+                pointTest(board, myPosition, 1, 2, moves);
+                pointTest(board, myPosition, 1, -2, moves);
+                pointTest(board, myPosition, -1, 2, moves);
+                pointTest(board, myPosition, 2, 1, moves);
+                pointTest(board, myPosition, 2, -1, moves);
+                pointTest(board, myPosition, -2, 1, moves);
+                pointTest(board, myPosition, -2, -1, moves);
                 break;
             case PieceType.PAWN:
                 if (myColor == ChessGame.TeamColor.BLACK) {
