@@ -83,11 +83,11 @@ public class ChessPiece {
         record Vector(int row, int col, AttackMode attackMode, int maxProbeIterations) {
 
             Vector(int row, int col, AttackMode attackMode) {
-                this(row,col,attackMode, -1);
+                this(row,col,attackMode, 8);
             }
 
             Vector(int row, int col) {
-                this(row,col,AttackMode.ALLOWED, -1);
+                this(row,col,AttackMode.ALLOWED, 8);
             }
 
         }
@@ -128,13 +128,7 @@ public class ChessPiece {
                 if (myColor == ChessGame.TeamColor.BLACK)
                 {
                     // Standard movement
-                    possibleEndPositionVectors.add( new Vector(-1, 0, AttackMode.NEVER));
-
-                    // Bonus first move
-                    if (row == 7)
-                    {
-                        possibleEndPositionVectors.add( new Vector(-2, 0, AttackMode.NEVER));
-                    }
+                    probeVectors.add( new Vector(-1, 0, AttackMode.NEVER, (row==7)?-2:-1));
 
                     // Attack vectors
                     possibleEndPositionVectors.add( new Vector(-1, -1, AttackMode.ONLY));
@@ -143,13 +137,7 @@ public class ChessPiece {
                 } else if (myColor == ChessGame.TeamColor.WHITE)
                 {
                     // Standard movement
-                    possibleEndPositionVectors.add( new Vector(1, 0, AttackMode.NEVER));
-
-                    // Bonus first move
-                    if (row == 2)
-                    {
-                        possibleEndPositionVectors.add( new Vector(2, 0, AttackMode.NEVER));
-                    }
+                    probeVectors.add( new Vector(-1, 0, AttackMode.NEVER, (row==2)?2:1));
 
                     // Attack vectors
                     possibleEndPositionVectors.add( new Vector(1, -1, AttackMode.ONLY));
@@ -163,41 +151,42 @@ public class ChessPiece {
 
         for (Vector p : probeVectors)
         {
+            int iterations = 0;
             int probeRow = row;
             int probeCol = col;
             ChessPosition endPosition = new ChessPosition(probeRow, probeCol);
-            while (board.hasPosition(endPosition)) {
+            while (iterations < p.maxProbeIterations) {
+                iterations++;
                 probeRow += p.row;
                 probeCol += p.col;
                 endPosition = new ChessPosition(probeRow, probeCol);
                 if (!board.hasPosition(endPosition))
                     break;
                 ChessPiece endPiece = board.getPiece(endPosition);
-                if (endPiece == null)
-                    moves.add(new ChessMove(myPosition, endPosition));
-                else {
-                    ChessGame.TeamColor endColor = endPiece.getTeamColor();
-                    if (endColor != myColor)
-                        moves.add(new ChessMove(myPosition, endPosition));
+                if (endPiece != null)
+                {
+                    if ((myColor == endPiece.getTeamColor()) || (p.attackMode == AttackMode.NEVER))
+                        break;
+                } else if (p.attackMode == AttackMode.ONLY)
                     break;
-                }
+                moves.add(new ChessMove(myPosition, endPosition));
             }
         }
 
         for (Vector p : possibleEndPositionVectors)
         {
             ChessPosition endPosition = new ChessPosition(row + p.row, col + p.col);
-            if (board.hasPosition(endPosition))
+            if (!board.hasPosition(endPosition))
+                continue;
+            ChessPiece endPiece = board.getPiece(endPosition);
+            if (endPiece != null)
             {
-                ChessPiece endPiece = board.getPiece(endPosition);
-                if (endPiece != null)
-                {
-                    if ((myColor == endPiece.getTeamColor()) || (p.attackMode == AttackMode.NEVER))
-                        continue;
-                } else if (p.attackMode == AttackMode.ONLY)
+                if ((myColor == endPiece.getTeamColor()) || (p.attackMode == AttackMode.NEVER))
                     continue;
-                moves.add(new ChessMove(myPosition, endPosition));
-            }
+            } else if (p.attackMode == AttackMode.ONLY)
+                continue;
+            moves.add(new ChessMove(myPosition, endPosition));
+
         }
 
         return moves;
