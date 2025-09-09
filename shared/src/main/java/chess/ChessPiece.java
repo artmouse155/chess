@@ -1,6 +1,5 @@
 package chess;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -68,24 +67,25 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         ChessPiece piece = board.getPiece(myPosition);
-        HashSet<ChessMove> moves = new HashSet<ChessMove>();
+        HashSet<ChessMove> moves = new HashSet<>();
 
         int row = myPosition.getRow();
         int col = myPosition.getColumn();
         ChessGame.TeamColor color = piece.getTeamColor();
 
-        record ProbeVector(int row, int col) {}
-        ArrayList<ProbeVector> probeVectors = new ArrayList<>();
+        record Vector(int row, int col) {}
+        ArrayList<Vector> probeVectors = new ArrayList<>();
+        ArrayList<Vector> possibleEndPositionVectors = new ArrayList<>();
 
         if (piece.getPieceType() == PieceType.BISHOP) {
 
-            probeVectors.add(new ProbeVector(1,1));
-            probeVectors.add(new ProbeVector(-1,1));
-            probeVectors.add(new ProbeVector(1,-1));
-            probeVectors.add(new ProbeVector(-1,-1));
+            probeVectors.add(new Vector(1,1));
+            probeVectors.add(new Vector(-1,1));
+            probeVectors.add(new Vector(1,-1));
+            probeVectors.add(new Vector(-1,-1));
 
         }
-        for (ProbeVector p : probeVectors)
+        for (Vector p : probeVectors)
         {
             int probeRow = row;
             int probeCol = col;
