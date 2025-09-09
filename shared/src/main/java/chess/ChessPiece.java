@@ -89,8 +89,6 @@ public class ChessPiece {
 
         ArrayList<Vector> probeVectors = new ArrayList<>();
         ArrayList<Vector> possibleEndPositionVectors = new ArrayList<>();
-        ArrayList<Vector> possibleAttackVectors = new ArrayList<>();
-        ArrayList<Vector> possibleNonAttackVectors = new ArrayList<>();
 
         switch (myType) {
             case PieceType.BISHOP:
@@ -125,32 +123,32 @@ public class ChessPiece {
                 if (myColor == ChessGame.TeamColor.BLACK)
                 {
                     // Standard movement
-                    possibleNonAttackVectors.add( new Vector(-1, 0));
+                    possibleEndPositionVectors.add( new Vector(-1, 0, AttackMode.NEVER));
 
                     // Bonus first move
                     if (row == 7)
                     {
-                        possibleNonAttackVectors.add( new Vector(-2, 0));
+                        possibleEndPositionVectors.add( new Vector(-2, 0, AttackMode.NEVER));
                     }
 
                     // Attack vectors
-                    possibleAttackVectors.add( new Vector(-1, -1));
-                    possibleAttackVectors.add( new Vector(-1, 1));
+                    possibleEndPositionVectors.add( new Vector(-1, -1, AttackMode.ONLY));
+                    possibleEndPositionVectors.add( new Vector(-1, 1, AttackMode.ONLY));
 
                 } else if (myColor == ChessGame.TeamColor.WHITE)
                 {
                     // Standard movement
-                    possibleNonAttackVectors.add( new Vector(1, 0));
+                    possibleEndPositionVectors.add( new Vector(1, 0, AttackMode.NEVER));
 
                     // Bonus first move
                     if (row == 2)
                     {
-                        possibleNonAttackVectors.add( new Vector(2, 0));
+                        possibleEndPositionVectors.add( new Vector(2, 0, AttackMode.NEVER));
                     }
 
                     // Attack vectors
-                    possibleAttackVectors.add( new Vector(1, -1));
-                    possibleAttackVectors.add( new Vector(1, 1));
+                    possibleEndPositionVectors.add( new Vector(1, -1, AttackMode.ONLY));
+                    possibleEndPositionVectors.add( new Vector(1, 1, AttackMode.ONLY));
                 }
 
 
@@ -187,20 +185,13 @@ public class ChessPiece {
             if (board.hasPosition(endPosition))
             {
                 ChessPiece endPiece = board.getPiece(endPosition);
-                if (endPiece != null && (endPiece.getTeamColor() == myColor))
+                if (endPiece != null)
+                {
+                    if ((myColor == endPiece.getTeamColor()) || (p.attackMode == AttackMode.NEVER))
+                        continue;
+                } else if (p.attackMode == AttackMode.ONLY)
                     continue;
                 moves.add(new ChessMove(myPosition, endPosition));
-            }
-        }
-
-        for (Vector p : possibleAttackVectors)
-        {
-            ChessPosition endPosition = new ChessPosition(row + p.row, col + p.col);
-            if (board.hasPosition(endPosition))
-            {
-                ChessPiece endPiece = board.getPiece(endPosition);
-                if (endPiece != null && (endPiece.getTeamColor() != myColor))
-                    moves.add(new ChessMove(myPosition, endPosition));
             }
         }
 
