@@ -131,6 +131,19 @@ public class ChessPiece {
                 }
             }
         }
+
+        for (Vector p : possibleEndPositionVectors)
+        {
+            ChessPosition endPosition = new ChessPosition(row + p.row, col + p.col);
+            if (board.hasPosition(endPosition))
+            {
+                ChessPiece endPiece = board.getPiece(endPosition);
+                if (endPiece != null && (endPiece.getTeamColor() == myColor))
+                    continue;
+                moves.add(new ChessMove(myPosition, endPosition));
+            }
+        }
+
         return moves;
     }
 }
