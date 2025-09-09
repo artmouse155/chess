@@ -1,9 +1,7 @@
 package chess;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * Represents a single chess piece
@@ -76,29 +74,35 @@ public class ChessPiece {
         int col = myPosition.getColumn();
         ChessGame.TeamColor color = piece.getTeamColor();
 
+        record ProbeVector(int row, int col) {}
+        ArrayList<ProbeVector> probeVectors = new ArrayList<>();
+
         if (piece.getPieceType() == PieceType.BISHOP) {
 
-            int probeRow = row;
-            int probeCol = col;
-            int probeVectorRow = 1;
-            int probeVectorCol = 1;
-            ChessPosition endPosition = new ChessPosition(probeRow, probeCol);
-            while (board.hasPosition(endPosition)) {
-                probeRow += probeVectorRow;
-                probeCol += probeVectorCol;
-                endPosition = new ChessPosition(probeRow, probeCol);
-                if (!board.hasPosition(endPosition))
-                    break;
-                ChessPiece endPiece = board.getPiece(endPosition);
-                if (endPiece == null)
-                    moves.add(new ChessMove(myPosition, endPosition));
-                else {
-                    ChessGame.TeamColor endColor = endPiece.getTeamColor();
-                    if (endColor != color)
-                        moves.add(new ChessMove(myPosition, endPosition));
-                    break;
-                }
-            }
+            probeVectors.add(new ProbeVector(1,1));
+            probeVectors.add(new ProbeVector(-1,1));
+            probeVectors.add(new ProbeVector(1,-1));
+            probeVectors.add(new ProbeVector(-1,-1));
+
+//            int probeRow = row;
+//            int probeCol = col;
+//            ChessPosition endPosition = new ChessPosition(probeRow, probeCol);
+//            while (board.hasPosition(endPosition)) {
+//                probeRow += probeVectorRow;
+//                probeCol += probeVectorCol;
+//                endPosition = new ChessPosition(probeRow, probeCol);
+//                if (!board.hasPosition(endPosition))
+//                    break;
+//                ChessPiece endPiece = board.getPiece(endPosition);
+//                if (endPiece == null)
+//                    moves.add(new ChessMove(myPosition, endPosition));
+//                else {
+//                    ChessGame.TeamColor endColor = endPiece.getTeamColor();
+//                    if (endColor != color)
+//                        moves.add(new ChessMove(myPosition, endPosition));
+//                    break;
+//                }
+//            }
 
 //            boolean newMoveFound = true;
 //            int i = 0;
@@ -116,6 +120,28 @@ public class ChessPiece {
 //                }
 //            };
 
+        }
+        for (ProbeVector p : probeVectors)
+        {
+            int probeRow = row;
+            int probeCol = col;
+            ChessPosition endPosition = new ChessPosition(probeRow, probeCol);
+            while (board.hasPosition(endPosition)) {
+                probeRow += p.row;
+                probeCol += p.col;
+                endPosition = new ChessPosition(probeRow, probeCol);
+                if (!board.hasPosition(endPosition))
+                    break;
+                ChessPiece endPiece = board.getPiece(endPosition);
+                if (endPiece == null)
+                    moves.add(new ChessMove(myPosition, endPosition));
+                else {
+                    ChessGame.TeamColor endColor = endPiece.getTeamColor();
+                    if (endColor != color)
+                        moves.add(new ChessMove(myPosition, endPosition));
+                    break;
+                }
+            }
         }
         return moves;
     }
