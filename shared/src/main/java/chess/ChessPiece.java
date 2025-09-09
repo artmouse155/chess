@@ -66,6 +66,10 @@ public class ChessPiece {
 
     private boolean pointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, AttackMode attackMode) {
 
+        int row = myPosition.getRow();
+        int col = myPosition.getColumn();
+        ChessPiece piece = board.getPiece(myPosition);
+        ChessGame.TeamColor myColor = piece.getTeamColor();
 
         ChessPosition endPosition = new ChessPosition(row + rowOffset, col + colOffset);
         if (!board.hasPosition(endPosition)) {
@@ -88,7 +92,7 @@ public class ChessPiece {
         return true;
     }
 
-    private void probeTest(ChessBoard board, ChessPosition myPosition, int rowVector, int colVector, AttackMode attackMode, boolean promote, HashSet<ChessMove> moves,  int maxIterations)
+    private void probeTest(ChessBoard board, ChessPosition myPosition, int rowVector, int colVector, AttackMode attackMode, HashSet<ChessMove> moves, boolean promote,  int maxIterations)
     {
 
         for (int i = 1; i <= maxIterations; i++) {
