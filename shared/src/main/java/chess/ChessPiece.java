@@ -222,13 +222,24 @@ public class ChessPiece {
 
     @Override
     public String toString() {
-        return switch (type) {
-            case PieceType.BISHOP -> "B";
-            case PieceType.KING -> "K";
-            case PieceType.KNIGHT -> "N";
-            case PieceType.PAWN -> "P";
-            case PieceType.QUEEN -> "Q";
-            case PieceType.ROOK -> "R";
-        };
+        if (pieceColor == ChessGame.TeamColor.WHITE) {
+            return switch (type) {
+                case PieceType.BISHOP -> "B";
+                case PieceType.KING -> "K";
+                case PieceType.KNIGHT -> "N";
+                case PieceType.PAWN -> "P";
+                case PieceType.QUEEN -> "Q";
+                case PieceType.ROOK -> "R";
+            };
+        } else if (pieceColor == ChessGame.TeamColor.BLACK) {
+            return switch (type) {
+                case PieceType.BISHOP -> "b";
+                case PieceType.KING -> "k";
+                case PieceType.KNIGHT -> "n";
+                case PieceType.PAWN -> "p";
+                case PieceType.QUEEN -> "q";
+                case PieceType.ROOK -> "r";
+            };
+        } else return "?";
     }
 }
