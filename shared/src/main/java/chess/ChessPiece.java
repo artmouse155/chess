@@ -80,11 +80,16 @@ public class ChessPiece {
             NEVER
         }
 
-        record Vector(int row, int col, AttackMode attackMode) {
+        record Vector(int row, int col, AttackMode attackMode, int maxProbeIterations) {
+
+            Vector(int row, int col, AttackMode attackMode) {
+                this(row,col,attackMode, -1);
+            }
 
             Vector(int row, int col) {
-                this(row,col,AttackMode.ALLOWED);
+                this(row,col,AttackMode.ALLOWED, -1);
             }
+
         }
 
         ArrayList<Vector> probeVectors = new ArrayList<>();
