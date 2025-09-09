@@ -92,7 +92,7 @@ public class ChessPiece {
         return true;
     }
 
-    private void probeTest(ChessBoard board, ChessPosition myPosition, int rowVector, int colVector, AttackMode attackMode, HashSet<ChessMove> moves, boolean promote,  int maxIterations)
+    private void probeTest(ChessBoard board, ChessPosition myPosition, int rowVector, int colVector, HashSet<ChessMove> moves, AttackMode attackMode, boolean promote,  int maxIterations)
     {
 
         for (int i = 1; i <= maxIterations; i++) {
@@ -110,6 +110,11 @@ public class ChessPiece {
             if (board.getPiece(endPosition) != null)
                 break;
         }
+    }
+
+    private void probeTest(ChessBoard board, ChessPosition myPosition, int rowVector, int colVector, HashSet<ChessMove> moves)
+    {
+        probeTest(board, myPosition, rowVector, colVector, moves, AttackMode.ALLOWED, false, 8);
     }
 
     /**
