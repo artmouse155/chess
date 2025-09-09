@@ -78,21 +78,30 @@ public class ChessPiece {
 
         if (piece.getPieceType() == PieceType.BISHOP) {
 
-            boolean newMoveFound = true;
-            int i = 0;
-            while (newMoveFound)
-            {
-                i++;
-                newMoveFound = false;
-                ChessPosition[] possibleEndPositions = {myPosition.offsetBy(i,i),myPosition.offsetBy(-i,i),myPosition.offsetBy(i,-i),myPosition.offsetBy(-i,-i)};
-                for (ChessPosition endPosition : possibleEndPositions)
-                {
-                    if (board.hasPosition(endPosition) && board.getPiece(endPosition).getTeamColor() != color) {
-                        newMoveFound = true;
-                        moves.add(new ChessMove(myPosition, endPosition));
-                    }
-                }
-            };
+            int probeRow = row;
+            int probeCol = col;
+            int probeVectorRow = 1;
+            int probeVectorCol = 1;
+            do {
+                probeRow += probeVectorRow;
+                probeCol += probeVectorCol;
+            } while (something);
+
+//            boolean newMoveFound = true;
+//            int i = 0;
+//            while (newMoveFound)
+//            {
+//                i++;
+//                newMoveFound = false;
+//                ChessPosition[] possibleEndPositions = {myPosition.offsetBy(i,i),myPosition.offsetBy(-i,i),myPosition.offsetBy(i,-i),myPosition.offsetBy(-i,-i)};
+//                for (ChessPosition endPosition : possibleEndPositions)
+//                {
+//                    if (board.hasPosition(endPosition) && board.getPiece(endPosition).getTeamColor() != color) {
+//                        newMoveFound = true;
+//                        moves.add(new ChessMove(myPosition, endPosition));
+//                    }
+//                }
+//            };
 
         }
         return moves;
