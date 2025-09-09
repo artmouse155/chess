@@ -248,7 +248,7 @@ public class ChessPiece {
                 case PieceType.ROOK -> "r";
             };
         } else {
-            return "?"
-        };
+            return "?";
+        }
     }
 }
