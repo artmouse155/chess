@@ -64,7 +64,7 @@ public class ChessPiece {
         return Objects.hash(pieceColor, type);
     }
 
-    private boolean pointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, AttackMode attackMode) {
+    private boolean boolPointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, AttackMode attackMode) {
 
         int row = myPosition.getRow();
         int col = myPosition.getColumn();
@@ -96,7 +96,7 @@ public class ChessPiece {
     {
 
         for (int i = 1; i <= maxIterations; i++) {
-            if (!pointTest(board, myPosition, rowVector * i, colVector * i, attackMode))
+            if (!boolPointTest(board, myPosition, rowVector * i, colVector * i, attackMode))
                 return;
             ChessPosition endPosition = new ChessPosition(myPosition.getRow() + rowVector * i,myPosition.getColumn() + colVector * i);
             if (promote) {
@@ -117,6 +117,16 @@ public class ChessPiece {
         probeTest(board, myPosition, rowVector, colVector, moves, AttackMode.ALLOWED, false, 8);
     }
 
+    private void pointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, HashSet<ChessMove> moves, AttackMode attackMode, boolean promote)
+    {
+        probeTest(board, myPosition, rowOffset, colOffset, moves, attackMode, promote, 1);
+    }
+
+    private void pointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, HashSet<ChessMove> moves)
+    {
+        probeTest(board, myPosition, rowOffset, colOffset, moves, AttackMode.ALLOWED, false, 1);
+    }
+
     /**
      * Calculates all the positions a chess piece can move to
      * Does not take into account moves that are illegal due to leaving the king in
@@ -133,27 +143,12 @@ public class ChessPiece {
         ChessGame.TeamColor myColor = piece.getTeamColor();
         PieceType myType = piece.getPieceType();
 
-        record Vector(int row, int col, AttackMode attackMode, int maxProbeIterations, boolean promote) {
-
-            Vector(int row, int col, AttackMode attackMode) {
-                this(row,col,attackMode, 8, false);
-            }
-
-            Vector(int row, int col) {
-                this(row,col,AttackMode.ALLOWED, 8, false);
-            }
-
-        }
-
-        ArrayList<Vector> probeVectors = new ArrayList<>();
-        ArrayList<Vector> possibleEndPositionVectors = new ArrayList<>();
-
         switch (myType) {
             case PieceType.BISHOP:
-                probeVectors.add(new Vector(1, 1));
-                probeVectors.add(new Vector(-1, 1));
-                probeVectors.add(new Vector(1, -1));
-                probeVectors.add(new Vector(-1, -1));
+                probeTest(board, myPosition, 1, 1, moves);
+                probeTest(board, myPosition, -1, 1, moves);
+                probeTest(board, myPosition, 1, -1, moves);
+                probeTest(board, myPosition, -1, -1, moves);
                 break;
             case PieceType.KING:
                 possibleEndPositionVectors.add(new Vector(1, 0));
