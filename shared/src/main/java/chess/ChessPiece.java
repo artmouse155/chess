@@ -74,7 +74,19 @@ public class ChessPiece {
         ChessGame.TeamColor myColor = piece.getTeamColor();
         PieceType myType = piece.getPieceType();
 
-        record Vector(int row, int col) {}
+        enum AttackMode {
+            ALLOWED,
+            ONLY,
+            NEVER
+        }
+
+        record Vector(int row, int col, AttackMode attackMode) {
+
+            Vector(int row, int col) {
+                this(row,col,AttackMode.ALLOWED);
+            }
+        }
+
         ArrayList<Vector> probeVectors = new ArrayList<>();
         ArrayList<Vector> possibleEndPositionVectors = new ArrayList<>();
         ArrayList<Vector> possibleAttackVectors = new ArrayList<>();
