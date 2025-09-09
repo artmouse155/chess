@@ -128,7 +128,7 @@ public class ChessPiece {
                 if (myColor == ChessGame.TeamColor.BLACK)
                 {
                     // Standard movement
-                    probeVectors.add( new Vector(-1, 0, AttackMode.NEVER, (row==7)?-2:-1));
+                    probeVectors.add( new Vector(-1, 0, AttackMode.NEVER, (row==7)?2:1));
 
                     // Attack vectors
                     possibleEndPositionVectors.add( new Vector(-1, -1, AttackMode.ONLY));
@@ -137,7 +137,7 @@ public class ChessPiece {
                 } else if (myColor == ChessGame.TeamColor.WHITE)
                 {
                     // Standard movement
-                    probeVectors.add( new Vector(-1, 0, AttackMode.NEVER, (row==2)?2:1));
+                    probeVectors.add( new Vector(1, 0, AttackMode.NEVER, (row==2)?2:1));
 
                     // Attack vectors
                     possibleEndPositionVectors.add( new Vector(1, -1, AttackMode.ONLY));
@@ -165,8 +165,9 @@ public class ChessPiece {
                 ChessPiece endPiece = board.getPiece(endPosition);
                 if (endPiece != null)
                 {
-                    if ((myColor == endPiece.getTeamColor()) || (p.attackMode == AttackMode.NEVER))
-                        break;
+                    if ((myColor != endPiece.getTeamColor()) && (p.attackMode != AttackMode.NEVER))
+                        moves.add(new ChessMove(myPosition, endPosition));
+                    break;
                 } else if (p.attackMode == AttackMode.ONLY)
                     break;
                 moves.add(new ChessMove(myPosition, endPosition));
