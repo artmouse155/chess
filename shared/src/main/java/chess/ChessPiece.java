@@ -188,20 +188,20 @@ public class ChessPiece {
                 }
                 break;
             case PieceType.QUEEN:
-                probeVectors.add(new Vector(1, 1));
-                probeVectors.add(new Vector(-1, 1));
-                probeVectors.add(new Vector(1, -1));
-                probeVectors.add(new Vector(-1, -1));
-                probeVectors.add(new Vector(0, 1));
-                probeVectors.add(new Vector(0, -1));
-                probeVectors.add(new Vector(1, 0));
-                probeVectors.add(new Vector(-1, 0));
+                probeTest(board, myPosition, 1, 1, moves);
+                probeTest(board, myPosition, -1, 1, moves);
+                probeTest(board, myPosition, 1, -1, moves);
+                probeTest(board, myPosition, -1, -1, moves);
+                probeTest(board, myPosition, 0, 1, moves);
+                probeTest(board, myPosition, 0, -1, moves);
+                probeTest(board, myPosition, 1, 0, moves);
+                probeTest(board, myPosition, -1, 0, moves);
                 break;
             case PieceType.ROOK:
-                probeVectors.add(new Vector(0, 1));
-                probeVectors.add(new Vector(0, -1));
-                probeVectors.add(new Vector(1, 0));
-                probeVectors.add(new Vector(-1, 0));
+                probeTest(board, myPosition, 0, 1, moves);
+                probeTest(board, myPosition, 0, -1, moves);
+                probeTest(board, myPosition, 1, 0, moves);
+                probeTest(board, myPosition, -1, 0, moves);
                 break;
         }
 
