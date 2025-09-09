@@ -74,6 +74,7 @@ public class ChessPiece {
 
         int row = myPosition.getRow();
         int col = myPosition.getColumn();
+        ChessGame.TeamColor color = piece.getTeamColor();
 
         if (piece.getPieceType() == PieceType.BISHOP) {
 
@@ -86,7 +87,7 @@ public class ChessPiece {
                 ChessPosition[] possibleEndPositions = {myPosition.offsetBy(i,i),myPosition.offsetBy(-i,i),myPosition.offsetBy(i,-i),myPosition.offsetBy(-i,-i)};
                 for (ChessPosition endPosition : possibleEndPositions)
                 {
-                    if (board.hasPosition(endPosition)) {
+                    if (board.hasPosition(endPosition) && board.getPiece(endPosition).getTeamColor() != color) {
                         newMoveFound = true;
                         moves.add(new ChessMove(myPosition, endPosition));
                     }
