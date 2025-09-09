@@ -71,13 +71,14 @@ public class ChessPiece {
 
         int row = myPosition.getRow();
         int col = myPosition.getColumn();
-        ChessGame.TeamColor color = piece.getTeamColor();
+        ChessGame.TeamColor myColor = piece.getTeamColor();
+        PieceType myType = piece.getPieceType();
 
         record Vector(int row, int col) {}
         ArrayList<Vector> probeVectors = new ArrayList<>();
         ArrayList<Vector> possibleEndPositionVectors = new ArrayList<>();
 
-        if (piece.getPieceType() == PieceType.BISHOP) {
+        if (myType == PieceType.BISHOP) {
 
             probeVectors.add(new Vector(1,1));
             probeVectors.add(new Vector(-1,1));
@@ -101,7 +102,7 @@ public class ChessPiece {
                     moves.add(new ChessMove(myPosition, endPosition));
                 else {
                     ChessGame.TeamColor endColor = endPiece.getTeamColor();
-                    if (endColor != color)
+                    if (endColor != myColor)
                         moves.add(new ChessMove(myPosition, endPosition));
                     break;
                 }
