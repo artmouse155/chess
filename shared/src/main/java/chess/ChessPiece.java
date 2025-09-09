@@ -120,6 +120,10 @@ public class ChessPiece {
                         possibleEndPositionVectors.add( new Vector(-2, 0));
                     }
 
+                    // Attack vectors
+                    possibleAttackVectors.add( new Vector(-1, -1));
+                    possibleAttackVectors.add( new Vector(-1, 1));
+
                 } else if (myColor == ChessGame.TeamColor.WHITE)
                 {
                     // Standard movement
@@ -130,6 +134,10 @@ public class ChessPiece {
                     {
                         possibleEndPositionVectors.add( new Vector(2, 0));
                     }
+
+                    // Attack vectors
+                    possibleAttackVectors.add( new Vector(1, -1));
+                    possibleAttackVectors.add( new Vector(1, 1));
                 }
 
 
