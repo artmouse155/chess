@@ -106,7 +106,13 @@ public class ChessPiece {
                 possibleEndPositionVectors.add(new Vector(-2,-1));
                 break;
             case PieceType.PAWN:
-                break;
+                if (myColor == ChessGame.TeamColor.BLACK)
+                {
+
+                } else if (myColor == ChessGame.TeamColor.WHITE)
+                {
+
+                }
         }
 
         for (Vector p : probeVectors)
