@@ -136,7 +136,7 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         ChessPiece piece = board.getPiece(myPosition);
-        
+
         int row = myPosition.getRow();
         ChessGame.TeamColor myColor = piece.getTeamColor();
         PieceType myType = piece.getPieceType();
@@ -164,6 +164,7 @@ public class ChessPiece {
                 pointTest(board, myPosition, 1, 2, moves);
                 pointTest(board, myPosition, 1, -2, moves);
                 pointTest(board, myPosition, -1, 2, moves);
+                pointTest(board, myPosition, -1, -2, moves);
                 pointTest(board, myPosition, 2, 1, moves);
                 pointTest(board, myPosition, 2, -1, moves);
                 pointTest(board, myPosition, -2, 1, moves);
