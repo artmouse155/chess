@@ -65,7 +65,27 @@ public class ChessPiece {
     }
 
     private boolean pointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, AttackMode attackMode) {
-        
+
+
+        ChessPosition endPosition = new ChessPosition(row + rowOffset, col + colOffset);
+        if (!board.hasPosition(endPosition)) {
+            return false;
+        }
+        ChessPiece endPiece = board.getPiece(endPosition);
+        ChessGame.TeamColor endColor = null;
+        if (endPiece != null) {
+            {
+                endColor = endPiece.getTeamColor();
+                if ((myColor == endColor) || (attackMode == AttackMode.NEVER))
+                {
+                    return false;
+                }
+            }
+
+        } else if (attackMode == AttackMode.ONLY) {
+            return false;
+        }
+        return true;
     }
 
     private void probeTest(ChessBoard board, ChessPosition myPosition, int rowVector, int colVector, AttackMode attackMode, boolean promote, HashSet<ChessMove> moves,  int maxIterations)
@@ -74,7 +94,17 @@ public class ChessPiece {
         for (int i = 1; i <= maxIterations; i++) {
             if (!pointTest(board, myPosition, rowVector * i, colVector * i, attackMode))
                 return;
-
+            ChessPosition endPosition = new ChessPosition(myPosition.getRow() + rowVector * i,myPosition.getColumn() + colVector * i);
+            if (promote) {
+                moves.add(new ChessMove(myPosition, endPosition, PieceType.BISHOP));
+                moves.add(new ChessMove(myPosition, endPosition, PieceType.KNIGHT));
+                moves.add(new ChessMove(myPosition, endPosition, PieceType.QUEEN));
+                moves.add(new ChessMove(myPosition, endPosition, PieceType.ROOK));
+            } else {
+                moves.add(new ChessMove(myPosition, endPosition));
+            }
+            if (board.getPiece(endPosition) != null)
+                break;
         }
     }
 
@@ -111,101 +141,65 @@ public class ChessPiece {
 
         switch (myType) {
             case PieceType.BISHOP:
-                probeVectors.add(new Vector(1,1));
-                probeVectors.add(new Vector(-1,1));
-                probeVectors.add(new Vector(1,-1));
-                probeVectors.add(new Vector(-1,-1));
+                probeVectors.add(new Vector(1, 1));
+                probeVectors.add(new Vector(-1, 1));
+                probeVectors.add(new Vector(1, -1));
+                probeVectors.add(new Vector(-1, -1));
                 break;
             case PieceType.KING:
-                possibleEndPositionVectors.add(new Vector(1,0));
-                possibleEndPositionVectors.add(new Vector(1,1));
-                possibleEndPositionVectors.add(new Vector(0,1));
-                possibleEndPositionVectors.add(new Vector(-1,1));
-                possibleEndPositionVectors.add(new Vector(-1,0));
-                possibleEndPositionVectors.add(new Vector(-1,-1));
-                possibleEndPositionVectors.add(new Vector(0,-1));
-                possibleEndPositionVectors.add(new Vector(1,-1));
+                possibleEndPositionVectors.add(new Vector(1, 0));
+                possibleEndPositionVectors.add(new Vector(1, 1));
+                possibleEndPositionVectors.add(new Vector(0, 1));
+                possibleEndPositionVectors.add(new Vector(-1, 1));
+                possibleEndPositionVectors.add(new Vector(-1, 0));
+                possibleEndPositionVectors.add(new Vector(-1, -1));
+                possibleEndPositionVectors.add(new Vector(0, -1));
+                possibleEndPositionVectors.add(new Vector(1, -1));
                 break;
             case PieceType.KNIGHT:
-                possibleEndPositionVectors.add(new Vector(1,2));
-                possibleEndPositionVectors.add(new Vector(1,-2));
-                possibleEndPositionVectors.add(new Vector(-1,2));
-                possibleEndPositionVectors.add(new Vector(-1,-2));
-                possibleEndPositionVectors.add(new Vector(2,1));
-                possibleEndPositionVectors.add(new Vector(2,-1));
-                possibleEndPositionVectors.add(new Vector(-2,1));
-                possibleEndPositionVectors.add(new Vector(-2,-1));
+                possibleEndPositionVectors.add(new Vector(1, 2));
+                possibleEndPositionVectors.add(new Vector(1, -2));
+                possibleEndPositionVectors.add(new Vector(-1, 2));
+                possibleEndPositionVectors.add(new Vector(-1, -2));
+                possibleEndPositionVectors.add(new Vector(2, 1));
+                possibleEndPositionVectors.add(new Vector(2, -1));
+                possibleEndPositionVectors.add(new Vector(-2, 1));
+                possibleEndPositionVectors.add(new Vector(-2, -1));
                 break;
             case PieceType.PAWN:
-                if (myColor == ChessGame.TeamColor.BLACK)
-                {
+                if (myColor == ChessGame.TeamColor.BLACK) {
                     // Standard movement
-                    probeVectors.add( new Vector(-1, 0, AttackMode.NEVER, (row==7)?2:1, (row==2)));
+                    probeVectors.add(new Vector(-1, 0, AttackMode.NEVER, (row == 7) ? 2 : 1, (row == 2)));
 
                     // Attack vectors
-                    possibleEndPositionVectors.add( new Vector(-1, -1, AttackMode.ONLY, 1, (row==2)));
-                    possibleEndPositionVectors.add( new Vector(-1, 1, AttackMode.ONLY, 1, (row==2)));
+                    possibleEndPositionVectors.add(new Vector(-1, -1, AttackMode.ONLY, 1, (row == 2)));
+                    possibleEndPositionVectors.add(new Vector(-1, 1, AttackMode.ONLY, 1, (row == 2)));
 
-                } else if (myColor == ChessGame.TeamColor.WHITE)
-                {
+                } else if (myColor == ChessGame.TeamColor.WHITE) {
                     // Standard movement
-                    probeVectors.add( new Vector(1, 0, AttackMode.NEVER, (row==2)?2:1, (row==7)));
+                    probeVectors.add(new Vector(1, 0, AttackMode.NEVER, (row == 2) ? 2 : 1, (row == 7)));
 
                     // Attack vectors
-                    possibleEndPositionVectors.add( new Vector(1, -1, AttackMode.ONLY, 1, (row==7)));
-                    possibleEndPositionVectors.add( new Vector(1, 1, AttackMode.ONLY, 1, (row==7)));
+                    possibleEndPositionVectors.add(new Vector(1, -1, AttackMode.ONLY, 1, (row == 7)));
+                    possibleEndPositionVectors.add(new Vector(1, 1, AttackMode.ONLY, 1, (row == 7)));
                 }
                 break;
             case PieceType.QUEEN:
-                probeVectors.add(new Vector(1,1));
-                probeVectors.add(new Vector(-1,1));
-                probeVectors.add(new Vector(1,-1));
-                probeVectors.add(new Vector(-1,-1));
-                probeVectors.add(new Vector(0,1));
-                probeVectors.add(new Vector(0,-1));
-                probeVectors.add(new Vector(1,0));
-                probeVectors.add(new Vector(-1,0));
+                probeVectors.add(new Vector(1, 1));
+                probeVectors.add(new Vector(-1, 1));
+                probeVectors.add(new Vector(1, -1));
+                probeVectors.add(new Vector(-1, -1));
+                probeVectors.add(new Vector(0, 1));
+                probeVectors.add(new Vector(0, -1));
+                probeVectors.add(new Vector(1, 0));
+                probeVectors.add(new Vector(-1, 0));
                 break;
             case PieceType.ROOK:
-                probeVectors.add(new Vector(0,1));
-                probeVectors.add(new Vector(0,-1));
-                probeVectors.add(new Vector(1,0));
-                probeVectors.add(new Vector(-1,0));
+                probeVectors.add(new Vector(0, 1));
+                probeVectors.add(new Vector(0, -1));
+                probeVectors.add(new Vector(1, 0));
+                probeVectors.add(new Vector(-1, 0));
                 break;
-        }
-
-        for (Vector p : probeVectors)
-        {
-            int iterations = 0;
-            int probeRow = row;
-            int probeCol = col;
-            ChessPosition endPosition = new ChessPosition(probeRow, probeCol);
-            while (iterations < p.maxProbeIterations) {
-                iterations++;
-                probeRow += p.row;
-                probeCol += p.col;
-                endPosition = new ChessPosition(probeRow, probeCol);
-                if (!board.hasPosition(endPosition))
-                    break;
-                ChessPiece endPiece = board.getPiece(endPosition);
-                ChessGame.TeamColor endColor = null;
-                if (endPiece != null) {
-                    endColor = endPiece.getTeamColor();
-                    if ((myColor == endColor) || (p.attackMode == AttackMode.NEVER))
-                        break;
-                } else if (p.attackMode == AttackMode.ONLY)
-                    break;
-                if (p.promote) {
-                    moves.add(new ChessMove(myPosition, endPosition, PieceType.BISHOP));
-                    moves.add(new ChessMove(myPosition, endPosition, PieceType.KNIGHT));
-                    moves.add(new ChessMove(myPosition, endPosition, PieceType.QUEEN));
-                    moves.add(new ChessMove(myPosition, endPosition, PieceType.ROOK));
-                } else {
-                    moves.add(new ChessMove(myPosition, endPosition));
-                }
-                if (endColor != null)
-                    break;
-            }
         }
 
         for (Vector p : possibleEndPositionVectors)
