@@ -84,42 +84,6 @@ public class ChessPiece {
             probeVectors.add(new ProbeVector(1,-1));
             probeVectors.add(new ProbeVector(-1,-1));
 
-//            int probeRow = row;
-//            int probeCol = col;
-//            ChessPosition endPosition = new ChessPosition(probeRow, probeCol);
-//            while (board.hasPosition(endPosition)) {
-//                probeRow += probeVectorRow;
-//                probeCol += probeVectorCol;
-//                endPosition = new ChessPosition(probeRow, probeCol);
-//                if (!board.hasPosition(endPosition))
-//                    break;
-//                ChessPiece endPiece = board.getPiece(endPosition);
-//                if (endPiece == null)
-//                    moves.add(new ChessMove(myPosition, endPosition));
-//                else {
-//                    ChessGame.TeamColor endColor = endPiece.getTeamColor();
-//                    if (endColor != color)
-//                        moves.add(new ChessMove(myPosition, endPosition));
-//                    break;
-//                }
-//            }
-
-//            boolean newMoveFound = true;
-//            int i = 0;
-//            while (newMoveFound)
-//            {
-//                i++;
-//                newMoveFound = false;
-//                ChessPosition[] possibleEndPositions = {myPosition.offsetBy(i,i),myPosition.offsetBy(-i,i),myPosition.offsetBy(i,-i),myPosition.offsetBy(-i,-i)};
-//                for (ChessPosition endPosition : possibleEndPositions)
-//                {
-//                    if (board.hasPosition(endPosition) && board.getPiece(endPosition).getTeamColor() != color) {
-//                        newMoveFound = true;
-//                        moves.add(new ChessMove(myPosition, endPosition));
-//                    }
-//                }
-//            };
-
         }
         for (ProbeVector p : probeVectors)
         {
