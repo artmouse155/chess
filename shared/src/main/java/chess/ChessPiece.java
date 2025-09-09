@@ -82,10 +82,23 @@ public class ChessPiece {
             int probeCol = col;
             int probeVectorRow = 1;
             int probeVectorCol = 1;
-            do {
+            ChessPosition endPosition = new ChessPosition(probeRow, probeCol);
+            while (board.hasPosition(endPosition)) {
                 probeRow += probeVectorRow;
                 probeCol += probeVectorCol;
-            } while (something);
+                endPosition = new ChessPosition(probeRow, probeCol);
+                if (!board.hasPosition(endPosition))
+                    break;
+                ChessPiece endPiece = board.getPiece(endPosition);
+                if (endPiece == null)
+                    moves.add(new ChessMove(myPosition, endPosition));
+                else {
+                    ChessGame.TeamColor endColor = endPiece.getTeamColor();
+                    if (endColor != color)
+                        moves.add(new ChessMove(myPosition, endPosition));
+                    break;
+                }
+            }
 
 //            boolean newMoveFound = true;
 //            int i = 0;
