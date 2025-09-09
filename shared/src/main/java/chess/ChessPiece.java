@@ -202,29 +202,6 @@ public class ChessPiece {
                 break;
         }
 
-        for (Vector p : possibleEndPositionVectors)
-        {
-            ChessPosition endPosition = new ChessPosition(row + p.row, col + p.col);
-            if (!board.hasPosition(endPosition))
-                continue;
-            ChessPiece endPiece = board.getPiece(endPosition);
-            if (endPiece != null)
-            {
-                if ((myColor == endPiece.getTeamColor()) || (p.attackMode == AttackMode.NEVER))
-                    continue;
-            } else if (p.attackMode == AttackMode.ONLY)
-                continue;
-            if (p.promote) {
-                moves.add(new ChessMove(myPosition, endPosition, PieceType.BISHOP));
-                moves.add(new ChessMove(myPosition, endPosition, PieceType.KNIGHT));
-                moves.add(new ChessMove(myPosition, endPosition, PieceType.QUEEN));
-                moves.add(new ChessMove(myPosition, endPosition, PieceType.ROOK));
-            } else {
-                moves.add(new ChessMove(myPosition, endPosition));
-            }
-
-        }
-
         return moves;
     }
 
