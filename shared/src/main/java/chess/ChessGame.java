@@ -100,14 +100,11 @@ public class ChessGame {
 
         ChessGame.TeamColor opposingColor = getOpposingTeam(color);
 
+        // Create the copy board for testing
+        ChessBoard copyBoard = board.copyAndForceMove(move);
 
         // Get the positions of all opposing pieces
-        HashSet<ChessPosition> offenders = (HashSet<ChessPosition>) board.getAllPositions(opposingColor);
-
-        // 3. Simulate a board where the move was completed - IMPORTANT: if this simulation defeats
-        // one of the pieces that could potentially reach the king, don't calculate it
-
-        ChessBoard copyBoard = board.copyAndForceMove(move);
+        HashSet<ChessPosition> offenders = (HashSet<ChessPosition>) copyBoard.getAllPositions(opposingColor);
 
         for (ChessPosition offenderPosition : offenders)
         {
