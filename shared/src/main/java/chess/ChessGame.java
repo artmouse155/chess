@@ -66,7 +66,7 @@ public class ChessGame {
             HashSet<ChessMove> moves = new HashSet<>();
             for (ChessMove m : piece.pieceMoves(board, startPosition))
             {
-                if (!WouldMovePutKingInCheck(m, currentColor)) {
+                if (!WouldMovePutKingInCheck(m, color)) {
                     moves.add(m);
                 }
             }
@@ -161,10 +161,10 @@ public class ChessGame {
     }
 
     private TeamColor getOpposingTeam(TeamColor color) {
-        if (currentColor == TeamColor.WHITE)
+        if (color == TeamColor.WHITE)
         {
             return TeamColor.BLACK;
-        } else if (currentColor == TeamColor.BLACK)
+        } else if (color == TeamColor.BLACK)
         {
             return TeamColor.WHITE;
         }
