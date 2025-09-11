@@ -156,13 +156,12 @@ public class ChessGame {
 
             if (specialMove == ChessMove.SpecialMove.EN_PASSANT)
             {
-                board.addPiece(endPosition, null);
+                board.removePiece(endPosition);
                 board.addPiece(new ChessPosition((currentColor==TeamColor.WHITE)?6:3, endPosition.getColumn()), new ChessPiece(currentColor, ChessPiece.PieceType.PAWN));
-                board.addPiece(startPosition, null);
+                board.removePiece(startPosition);
 
             } else if (specialMove == ChessMove.SpecialMove.CASTLE)
             {
-                board.addPiece();
             } else {
                 boolean canBeEnPassanted = false;
                 if (type == ChessPiece.PieceType.PAWN)
