@@ -16,12 +16,7 @@ public class ChessGame {
     public ChessGame() {
         currentColor = TeamColor.WHITE;
         board = new ChessBoard();
-    }
-
-    public ChessGame(TeamColor currentColor, ChessBoard board)
-    {
-        this.currentColor = currentColor;
-        this.board = board;
+        board.resetBoard();
     }
 
     /**
