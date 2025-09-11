@@ -14,9 +14,9 @@ public class ChessPiece {
     private final PieceType type;
 
     private enum MoveMode {
-        ALLOWED,
-        ONLY,
-        NEVER,
+        ATTACK_ALLOWED,
+        ATTACK_ONLY,
+        ATTACK_NEVER,
     }
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
@@ -80,13 +80,13 @@ public class ChessPiece {
         if (endPiece != null) {
             {
                 endColor = endPiece.getTeamColor();
-                if ((myColor == endColor) || (moveMode == MoveMode.NEVER))
+                if ((myColor == endColor) || (moveMode == MoveMode.ATTACK_NEVER))
                 {
                     return false;
                 }
             }
 
-        } else if (moveMode == MoveMode.ONLY) {
+        } else if (moveMode == MoveMode.ATTACK_ONLY) {
             return false;
         }
         return true;
@@ -125,7 +125,7 @@ public class ChessPiece {
 
     private void probeTest(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves, int rowVector, int colVector)
     {
-        probeTest(board, myPosition, moves, rowVector, colVector, MoveMode.ALLOWED, false, 8);
+        probeTest(board, myPosition, moves, rowVector, colVector, MoveMode.ATTACK_ALLOWED, false, 8);
     }
 
     private void pointTest(
@@ -142,7 +142,7 @@ public class ChessPiece {
 
     private void pointTest(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves, int rowOffset, int colOffset)
     {
-        probeTest(board, myPosition, moves, rowOffset, colOffset, MoveMode.ALLOWED, false, 1);
+        probeTest(board, myPosition, moves, rowOffset, colOffset, MoveMode.ATTACK_ALLOWED, false, 1);
     }
 
     /**
@@ -191,19 +191,19 @@ public class ChessPiece {
             case PieceType.PAWN:
                 if (myColor == ChessGame.TeamColor.BLACK) {
                     // Standard movement
-                    probeTest(board, myPosition, moves, -1, 0, MoveMode.NEVER, (row == 2), (row == 7) ? 2 : 1);
+                    probeTest(board, myPosition, moves, -1, 0, MoveMode.ATTACK_NEVER, (row == 2), (row == 7) ? 2 : 1);
 
                     // Attack vectors
-                    pointTest(board, myPosition, moves, -1, -1, MoveMode.ONLY, (row == 2));
-                    pointTest(board, myPosition, moves, -1, 1, MoveMode.ONLY, (row == 2));
+                    pointTest(board, myPosition, moves, -1, -1, MoveMode.ATTACK_ONLY, (row == 2));
+                    pointTest(board, myPosition, moves, -1, 1, MoveMode.ATTACK_ONLY, (row == 2));
 
                 } else if (myColor == ChessGame.TeamColor.WHITE) {
                     // Standard movement
-                    probeTest(board, myPosition, moves, 1, 0, MoveMode.NEVER, (row == 7), (row == 2) ? 2 : 1);
+                    probeTest(board, myPosition, moves, 1, 0, MoveMode.ATTACK_NEVER, (row == 7), (row == 2) ? 2 : 1);
 
                     // Attack vectors
-                    pointTest(board, myPosition, moves, 1, -1, MoveMode.ONLY, (row == 7));
-                    pointTest(board, myPosition, moves, 1, 1, MoveMode.ONLY, (row == 7));
+                    pointTest(board, myPosition, moves, 1, -1, MoveMode.ATTACK_ONLY, (row == 7));
+                    pointTest(board, myPosition, moves, 1, 1, MoveMode.ATTACK_ONLY, (row == 7));
                 }
                 break;
             case PieceType.QUEEN:
