@@ -98,6 +98,22 @@ public class ChessGame {
 
     private boolean WouldMovePutKingInCheck(ChessMove move) {
 
+        // 1. Get a list of:
+        // (1) all moves from other pieces that can land on this piece
+        // (That means that they are blocked by this piece - (potentially) from reaching the king.)
+        // and (2) all moves from other pieces that can currently land on this piece's king
+
+        // 2. Get the positions of all of those pieces
+
+        // 3. Simulate a board where the move was completed - IMPORTANT: if this simulation defeats
+        // one of the pieces that could potentially reach the king, don't calculate it
+
+        // 4. See if any of these pieces can reach the king - IMPORTANT: Don't calculate with validMoves
+        // here, as this would cause infinite recursion. And it doesn't matter if that move would put
+        // their own king in check, because the game would be over by then.
+
+        // 5. Return the result of step 4.
+
 //        ChessGame copyGame = new ChessGame(color, board.copyAndForceMove(m));
 //        if (!copyGame.isInCheck(color))
 //        {
