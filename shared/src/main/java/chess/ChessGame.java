@@ -153,13 +153,6 @@ public class ChessGame {
             ChessPiece.PieceType promotionType = move.getPromotionPiece();
             ChessMove.SpecialMove specialMove = move.getSpecialMove();
 
-            boolean canBeEnPassanted = false;
-            if (type == ChessPiece.PieceType.PAWN)
-            {
-                // We En Passant IFF (1) we are a pawn and (2) we will attempt to move 2+ spaces
-                canBeEnPassanted = abs(startPosition.getRow() - endPosition.getRow()) > 1;
-            }
-
 
             if (specialMove == ChessMove.SpecialMove.EN_PASSANT)
             {
@@ -171,6 +164,14 @@ public class ChessGame {
             {
 
             } else {
+                boolean canBeEnPassanted = false;
+                if (type == ChessPiece.PieceType.PAWN)
+                {
+                    // We En Passant IFF (1) we are a pawn and (2) we will attempt to move 2+ spaces
+                    canBeEnPassanted = abs(startPosition.getRow() - endPosition.getRow()) > 1;
+                }
+
+
                 board.addPiece(endPosition, new ChessPiece(currentColor,(promotionType==null)?type:promotionType, canBeEnPassanted));
                 board.addPiece(startPosition, null);
             }
