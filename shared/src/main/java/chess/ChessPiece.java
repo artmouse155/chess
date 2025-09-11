@@ -13,10 +13,10 @@ public class ChessPiece {
     private final ChessGame.TeamColor pieceColor;
     private final PieceType type;
 
-    private enum AttackMode {
+    private enum MoveMode {
         ALLOWED,
         ONLY,
-        NEVER
+        NEVER,
     }
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
@@ -64,7 +64,7 @@ public class ChessPiece {
         return Objects.hash(pieceColor, type);
     }
 
-    private boolean boolPointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, AttackMode attackMode) {
+    private boolean boolPointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, MoveMode moveMode) {
 
         int row = myPosition.getRow();
         int col = myPosition.getColumn();
@@ -80,13 +80,13 @@ public class ChessPiece {
         if (endPiece != null) {
             {
                 endColor = endPiece.getTeamColor();
-                if ((myColor == endColor) || (attackMode == AttackMode.NEVER))
+                if ((myColor == endColor) || (moveMode == MoveMode.NEVER))
                 {
                     return false;
                 }
             }
 
-        } else if (attackMode == AttackMode.ONLY) {
+        } else if (moveMode == MoveMode.ONLY) {
             return false;
         }
         return true;
@@ -98,7 +98,7 @@ public class ChessPiece {
             HashSet<ChessMove> moves,
             int rowVector,
             int colVector,
-            AttackMode attackMode,
+            MoveMode attackMode,
             boolean promote,
             int maxIterations
     )
@@ -125,7 +125,7 @@ public class ChessPiece {
 
     private void probeTest(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves, int rowVector, int colVector)
     {
-        probeTest(board, myPosition, moves, rowVector, colVector, AttackMode.ALLOWED, false, 8);
+        probeTest(board, myPosition, moves, rowVector, colVector, MoveMode.ALLOWED, false, 8);
     }
 
     private void pointTest(
@@ -134,7 +134,7 @@ public class ChessPiece {
             HashSet<ChessMove> moves,
             int rowOffset,
             int colOffset,
-            AttackMode attackMode,
+            MoveMode attackMode,
             boolean promote)
     {
         probeTest(board, myPosition, moves, rowOffset, colOffset, attackMode, promote, 1);
@@ -142,7 +142,7 @@ public class ChessPiece {
 
     private void pointTest(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves, int rowOffset, int colOffset)
     {
-        probeTest(board, myPosition, moves, rowOffset, colOffset, AttackMode.ALLOWED, false, 1);
+        probeTest(board, myPosition, moves, rowOffset, colOffset, MoveMode.ALLOWED, false, 1);
     }
 
     /**
@@ -191,19 +191,19 @@ public class ChessPiece {
             case PieceType.PAWN:
                 if (myColor == ChessGame.TeamColor.BLACK) {
                     // Standard movement
-                    probeTest(board, myPosition, moves, -1, 0, AttackMode.NEVER, (row == 2), (row == 7) ? 2 : 1);
+                    probeTest(board, myPosition, moves, -1, 0, MoveMode.NEVER, (row == 2), (row == 7) ? 2 : 1);
 
                     // Attack vectors
-                    pointTest(board, myPosition, moves, -1, -1, AttackMode.ONLY, (row == 2));
-                    pointTest(board, myPosition, moves, -1, 1, AttackMode.ONLY, (row == 2));
+                    pointTest(board, myPosition, moves, -1, -1, MoveMode.ONLY, (row == 2));
+                    pointTest(board, myPosition, moves, -1, 1, MoveMode.ONLY, (row == 2));
 
                 } else if (myColor == ChessGame.TeamColor.WHITE) {
                     // Standard movement
-                    probeTest(board, myPosition, moves, 1, 0, AttackMode.NEVER, (row == 7), (row == 2) ? 2 : 1);
+                    probeTest(board, myPosition, moves, 1, 0, MoveMode.NEVER, (row == 7), (row == 2) ? 2 : 1);
 
                     // Attack vectors
-                    pointTest(board, myPosition, moves, 1, -1, AttackMode.ONLY, (row == 7));
-                    pointTest(board, myPosition, moves, 1, 1, AttackMode.ONLY, (row == 7));
+                    pointTest(board, myPosition, moves, 1, -1, MoveMode.ONLY, (row == 7));
+                    pointTest(board, myPosition, moves, 1, 1, MoveMode.ONLY, (row == 7));
                 }
                 break;
             case PieceType.QUEEN:
