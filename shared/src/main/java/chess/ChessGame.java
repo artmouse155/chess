@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 
+import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
 /**
@@ -150,6 +151,7 @@ public class ChessGame {
 
             ChessPiece.PieceType type = piece.getPieceType();
             ChessPiece.PieceType promotionType = move.getPromotionPiece();
+            ChessMove.SpecialMove specialMove = move.getSpecialMove();
 
             boolean canBeEnPassanted = false;
             if (type == ChessPiece.PieceType.PAWN)
@@ -158,8 +160,20 @@ public class ChessGame {
                 canBeEnPassanted = abs(startPosition.getRow() - endPosition.getRow()) > 1;
             }
 
-            board.addPiece(endPosition, new ChessPiece(currentColor,(promotionType==null)?type:promotionType, canBeEnPassanted));
-            board.addPiece(startPosition, null);
+
+            if (specialMove == ChessMove.SpecialMove.EN_PASSANT)
+            {
+                board.addPiece(endPosition, null);
+                board.addPiece(new ChessPosition((currentColor==TeamColor.WHITE)?6:3, endPosition.getColumn()), new ChessPiece(currentColor, ChessPiece.PieceType.PAWN));
+                board.addPiece(startPosition, null);
+
+            } else if (specialMove == ChessMove.SpecialMove.CASTLE)
+            {
+
+            } else {
+                board.addPiece(endPosition, new ChessPiece(currentColor,(promotionType==null)?type:promotionType, canBeEnPassanted));
+                board.addPiece(startPosition, null);
+            }
 
             setTeamTurn(getOpposingTeam(currentColor));
         } else {
