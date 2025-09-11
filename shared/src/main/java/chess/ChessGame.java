@@ -63,6 +63,19 @@ public class ChessGame {
         return null;
     }
 
+    private Collection<ChessMove> allValidMoves(TeamColor color) {
+        HashSet<ChessMove> moves = new HashSet<>();
+        HashSet<ChessPosition> teamPositions = board.getAllPositions(currentColor);
+        for (ChessPosition p : teamPositions)
+        {
+            for (ChessMove m : validMoves(p))
+            {
+                moves.add(m);
+            }
+        }
+        return moves;
+    }
+
     /**
      * Makes a move in a chess game
      *
@@ -145,4 +158,5 @@ public class ChessGame {
     public ChessBoard getBoard() {
         return board;
     }
+    
 }
