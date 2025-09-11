@@ -30,5 +30,12 @@ Constructors can be empty, parameterized, or a copy constructor. A **copy constr
 
 Creates static values
 - `Enum.valueOf` will try to match a string to an enumeration
+- A great way to avoid string typo errors
+
+### Design Principle: Encapsulation
+
+- Create a **boundary** between internal code and external code
+- Prevents external code from being concerned with the internal workings of an object
+- Put it in a **capsule**.
 
 Developed by Chase Odom
