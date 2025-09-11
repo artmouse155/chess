@@ -43,4 +43,9 @@ Creates static values
 - Allows you to change the implementation in the backend easily
 - Allows you to filter input to the class
 
+### The Equal Operator
+
+- The equal operator does NOT call equals.
+- The equal operator checks memory.
+
 Developed by Chase Odom

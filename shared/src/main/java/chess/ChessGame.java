@@ -58,7 +58,7 @@ public class ChessGame {
             HashSet<ChessMove> moves = (HashSet<ChessMove>) piece.pieceMoves(board, startPosition);
         }
 
-        throw new RuntimeException("Not implemented");
+        return null;
     }
 
     /**
