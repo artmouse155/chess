@@ -71,8 +71,6 @@ public class ChessGame {
                 }
             }
 
-            // TODO: Remove moves that result in the king being vulnerable
-
             return moves;
         }
 
@@ -120,10 +118,10 @@ public class ChessGame {
         ChessPosition startPosition = move.getStartPosition();
         ChessPosition endPosition = move.getEndPosition();
         HashSet<ChessMove> moves = (HashSet<ChessMove>) validMoves(startPosition);
+        ChessPiece piece = board.getPiece(startPosition);
 
-        if (moves != null && moves.contains(move))
+        if (piece.getTeamColor() == currentColor && moves != null && moves.contains(move))
         {
-            ChessPiece piece = board.getPiece(startPosition);
             board.addPiece(endPosition, piece);
             board.addPiece(startPosition, null);
 
