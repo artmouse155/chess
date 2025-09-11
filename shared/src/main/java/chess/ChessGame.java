@@ -66,9 +66,7 @@ public class ChessGame {
             HashSet<ChessMove> moves = new HashSet<>();
             for (ChessMove m : piece.pieceMoves(board, startPosition))
             {
-                ChessGame copyGame = new ChessGame(color, board.copyAndForceMove(m));
-                if (!copyGame.isInCheck(color))
-                {
+                if (!WouldMovePutKingInCheck(m)) {
                     moves.add(m);
                 }
             }
@@ -92,6 +90,17 @@ public class ChessGame {
             }
         }
         return moves;
+    }
+
+    private boolean WouldMovePutKingInCheck(ChessMove move) {
+
+//        ChessGame copyGame = new ChessGame(color, board.copyAndForceMove(m));
+//        if (!copyGame.isInCheck(color))
+//        {
+//            moves.add(m);
+//        }
+
+        return false;
     }
 
     /**
