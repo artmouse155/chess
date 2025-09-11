@@ -122,7 +122,9 @@ public class ChessGame {
 
         if (piece.getTeamColor() == currentColor && moves != null && moves.contains(move))
         {
-            board.addPiece(endPosition, piece);
+            ChessPiece.PieceType type = piece.getPieceType();
+            ChessPiece.PieceType promotionType = move.getPromotionPiece();
+            board.addPiece(endPosition, new ChessPiece(currentColor,(move.getPromotionPiece()==null)?type:promotionType));
             board.addPiece(startPosition, null);
 
             setTeamTurn(getOpposingTeam(currentColor));
