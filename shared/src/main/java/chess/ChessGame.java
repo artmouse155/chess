@@ -66,7 +66,7 @@ public class ChessGame {
             HashSet<ChessMove> moves = new HashSet<>();
             for (ChessMove m : piece.pieceMoves(board, startPosition))
             {
-                if (!WouldMovePutKingInCheck(m)) {
+                if (!WouldMovePutKingInCheck(m, currentColor)) {
                     moves.add(m);
                 }
             }
@@ -96,49 +96,27 @@ public class ChessGame {
         return allValidMoves(color, null, false);
     }
 
-    private boolean WouldMovePutKingInCheck(ChessMove move) {
+    private boolean WouldMovePutKingInCheck(ChessMove move, TeamColor color) {
 
-        ChessGame.TeamColor opposingColor = getOpposingTeam(currentColor);
-        ChessPosition kingPosition = board.getKingPosition(currentColor);
+        ChessGame.TeamColor opposingColor = getOpposingTeam(color);
 
 
-        // 1. Get a list of:
-        // (1) all moves from other pieces that can land on this piece
-        // (That means that they are blocked by this piece - (potentially) from reaching the king.)
-        HashSet<ChessMove> possibleCheckerMoves = (HashSet<ChessMove>) allValidMoves(
-                opposingColor,
-                move.getStartPosition(), true
-        );
-        // and (2) all moves from other pieces that can currently land on this piece's king
-        HashSet<ChessMove> currentCheckerMoves = (HashSet<ChessMove>) allValidMoves(
-                opposingColor,
-                kingPosition, true
-        );
-
-        // 2. Get the positions of all of those pieces
-        HashSet<ChessPosition> offenders = new HashSet<>();
-        for (ChessMove possibleCheckerMove : possibleCheckerMoves)
-        {
-            offenders.add(possibleCheckerMove.getStartPosition());
-        }
-        for (ChessMove currentCheckerMove : currentCheckerMoves)
-        {
-            offenders.add(currentCheckerMove.getStartPosition());
-        }
+        // Get the positions of all opposing pieces
+        HashSet<ChessPosition> offenders = (HashSet<ChessPosition>) board.getAllPositions(opposingColor);
 
         // 3. Simulate a board where the move was completed - IMPORTANT: if this simulation defeats
         // one of the pieces that could potentially reach the king, don't calculate it
 
         ChessBoard copyBoard = board.copyAndForceMove(move);
-        ChessGame copyGame = new ChessGame(currentColor, copyBoard);
 
         for (ChessPosition offenderPosition : offenders)
         {
             ChessPiece offenderPiece = board.getPiece(offenderPosition);
+            // Just in case we accidentally reference a piece that got destroyed, check if color matches
             if (offenderPiece.getTeamColor() == opposingColor) {
                 HashSet<ChessMove> offenderMoves = (HashSet<ChessMove>) offenderPiece.pieceMoves(copyBoard, offenderPosition);
                 for (ChessMove offenderMove : offenderMoves) {
-                    if (offenderMove.getEndPosition().equals(kingPosition)) {
+                    if (offenderMove.getEndPosition().equals(copyBoard.getKingPosition(color))) {
                         return true;
                     }
                 }
