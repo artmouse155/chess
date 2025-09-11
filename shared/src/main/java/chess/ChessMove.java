@@ -10,21 +10,37 @@ import java.util.Objects;
  */
 public class ChessMove {
 
+    public enum SpecialMove {
+        EN_PASSANT,
+        CASTLE
+    }
+
     private final ChessPosition startPosition;
     private final ChessPosition endPosition;
     private final ChessPiece.PieceType promotionPiece;
+    private final SpecialMove specialMove;
+
+    public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece, SpecialMove specialMove)
+    {
+        this.startPosition = startPosition;
+        this.endPosition = endPosition;
+        this.promotionPiece = promotionPiece;
+        this.specialMove = specialMove;
+    }
 
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition,
                      ChessPiece.PieceType promotionPiece) {
         this.startPosition = startPosition;
         this.endPosition = endPosition;
         this.promotionPiece = promotionPiece;
+        this.specialMove = null;
     }
 
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition) {
         this.startPosition = startPosition;
         this.endPosition = endPosition;
         this.promotionPiece = null;
+        this.specialMove = null;
     }
 
     @Override
