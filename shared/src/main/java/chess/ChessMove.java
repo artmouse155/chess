@@ -11,7 +11,6 @@ import java.util.Objects;
 public class ChessMove {
 
     public enum SpecialMove {
-        GIVE_EN_PASSANT_FLAG,
         EN_PASSANT,
         CASTLE
     }
