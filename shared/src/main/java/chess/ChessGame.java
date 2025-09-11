@@ -94,20 +94,21 @@ public class ChessGame {
             board.addPiece(endPosition, piece);
             board.addPiece(startPosition, null);
 
-            toggleTeamTurn();
+            setTeamTurn(getOpposingTeam(currentColor));
         } else {
             throw new InvalidMoveException("Invalid Move");
         }
     }
 
-    private void toggleTeamTurn() {
+    private TeamColor getOpposingTeam(TeamColor color) {
         if (currentColor == TeamColor.WHITE)
         {
-            setTeamTurn(TeamColor.BLACK);
+            return TeamColor.BLACK;
         } else if (currentColor == TeamColor.BLACK)
         {
-            setTeamTurn(TeamColor.WHITE);
+            return TeamColor.WHITE;
         }
+        return null;
     }
 
     /**
