@@ -38,4 +38,9 @@ Creates static values
 - Prevents external code from being concerned with the internal workings of an object
 - Put it in a **capsule**.
 
+#### Benefits of Encapsulation
+
+- Allows you to change the implementation in the backend easily
+- Allows you to filter input to the class
+
 Developed by Chase Odom
