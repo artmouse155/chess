@@ -11,6 +11,7 @@ import java.util.Objects;
 public class ChessMove {
 
     public enum SpecialMove {
+        GIVE_EN_PASSANT_FLAG,
         EN_PASSANT,
         CASTLE
     }
@@ -77,6 +78,8 @@ public class ChessMove {
     public ChessPosition getEndPosition() {
         return endPosition;
     }
+
+    public SpecialMove getSpecialMove() { return specialMove; }
 
     /**
      * Gets the type of piece to promote a pawn to if pawn promotion is part of this
