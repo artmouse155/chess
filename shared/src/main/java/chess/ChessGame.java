@@ -162,7 +162,7 @@ public class ChessGame {
 
             } else if (specialMove == ChessMove.SpecialMove.CASTLE)
             {
-
+                board.addPiece();
             } else {
                 boolean canBeEnPassanted = false;
                 if (type == ChessPiece.PieceType.PAWN)
