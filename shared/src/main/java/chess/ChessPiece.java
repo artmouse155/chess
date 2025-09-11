@@ -266,4 +266,9 @@ public class ChessPiece {
     {
         return canBeEnPassanted;
     }
+
+    public void setCanBeEnPassanted(boolean e)
+    {
+        canBeEnPassanted = e;
+    }
 }
