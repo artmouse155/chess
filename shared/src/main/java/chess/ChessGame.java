@@ -118,7 +118,7 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        return allValidMoves(getOpposingTeam(teamColor)).stream().map(ChessMove::getEndPosition).toList().contains(board.getKingPosition(teamColor));
     }
 
     /**
@@ -159,5 +159,4 @@ public class ChessGame {
     public ChessBoard getBoard() {
         return board;
     }
-
 }
