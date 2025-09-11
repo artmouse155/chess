@@ -98,15 +98,49 @@ public class ChessGame {
 
     private boolean WouldMovePutKingInCheck(ChessMove move) {
 
+        ChessGame.TeamColor opposingColor = getOpposingTeam(currentColor);
+        ChessPosition kingPosition = board.getKingPosition(currentColor);
+
+
         // 1. Get a list of:
         // (1) all moves from other pieces that can land on this piece
         // (That means that they are blocked by this piece - (potentially) from reaching the king.)
+        HashSet<ChessMove> possibleCheckerMoves = (HashSet<ChessMove>) allValidMoves(
+                opposingColor,
+                move.getStartPosition()
+        );
         // and (2) all moves from other pieces that can currently land on this piece's king
+        HashSet<ChessMove> currentCheckerMoves = (HashSet<ChessMove>) allValidMoves(
+                opposingColor,
+                kingPosition
+        );
 
         // 2. Get the positions of all of those pieces
+        HashSet<ChessPosition> offenders = new HashSet<>();
+        for (ChessMove possibleCheckerMove : possibleCheckerMoves)
+        {
+            offenders.add(possibleCheckerMove.getStartPosition());
+        }
+        for (ChessMove currentCheckerMove : currentCheckerMoves)
+        {
+            offenders.add(currentCheckerMove.getStartPosition());
+        }
 
         // 3. Simulate a board where the move was completed - IMPORTANT: if this simulation defeats
         // one of the pieces that could potentially reach the king, don't calculate it
+
+        ChessBoard copyBoard = board.copyAndForceMove(move);
+        ChessGame copyGame = new ChessGame(currentColor, copyBoard);
+
+        for (ChessPosition offenderPosition : offenders)
+        {
+            ChessPiece offenderPiece = board.getPiece(offenderPosition);
+            if (offenderPiece.getTeamColor() == opposingColor && offenderPiece.pieceMoves(copyBoard, offenderPosition).contains(kingPosition))
+            {
+                return true;
+            }
+        }
+        return false;
 
         // 4. See if any of these pieces can reach the king - IMPORTANT: Don't calculate with validMoves
         // here, as this would cause infinite recursion. And it doesn't matter if that move would put
@@ -119,8 +153,6 @@ public class ChessGame {
 //        {
 //            moves.add(m);
 //        }
-
-        return false;
     }
 
     /**
