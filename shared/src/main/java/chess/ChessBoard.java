@@ -143,4 +143,23 @@ public class ChessBoard {
         }
         return positions;
     }
+
+    public ChessPosition getKingPosition(ChessGame.TeamColor color) {
+        for (int row = 1; row <= squares.length; row++) {
+            for (int col = 1; col <= squares[0].length; col++) {
+                ChessPosition position = new ChessPosition(row, col);
+                ChessPiece piece = getPiece(position);
+                if (
+                        piece != null
+                                && piece.getTeamColor() == color
+                                && piece.getPieceType() == ChessPiece.PieceType.KING
+                )
+
+                {
+                    return position;
+                }
+            }
+        }
+        return null;
+    }
 }
