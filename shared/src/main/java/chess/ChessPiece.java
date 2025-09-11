@@ -214,8 +214,8 @@ public class ChessPiece {
                     pointTest(board, myPosition, moves, -1, 1, MoveMode.ATTACK_ONLY, (row == 2));
 
                     // En Passant Perhaps
-                    pointTest(board, myPosition, moves, -1, -1, MoveMode.ATTACK_EN_PASSANT, (row == 2));
-                    pointTest(board, myPosition, moves, -1, 1, MoveMode.ATTACK_EN_PASSANT, (row == 2));
+                    pointTest(board, myPosition, moves, 0, -1, MoveMode.ATTACK_EN_PASSANT, (row == 2));
+                    pointTest(board, myPosition, moves, 0, 1, MoveMode.ATTACK_EN_PASSANT, (row == 2));
                 } else if (myColor == ChessGame.TeamColor.WHITE) {
                     // Standard movement
                     probeTest(board, myPosition, moves, 1, 0, MoveMode.ATTACK_NEVER, (row == 7), (row == 2) ? 2 : 1);
@@ -225,8 +225,8 @@ public class ChessPiece {
                     pointTest(board, myPosition, moves, 1, 1, MoveMode.ATTACK_ONLY, (row == 7));
 
                     // En Passant Perhaps
-                    pointTest(board, myPosition, moves, 1, -1, MoveMode.ATTACK_EN_PASSANT, (row == 7));
-                    pointTest(board, myPosition, moves, 1, 1, MoveMode.ATTACK_EN_PASSANT, (row == 7));
+                    pointTest(board, myPosition, moves, 0, -1, MoveMode.ATTACK_EN_PASSANT, (row == 7));
+                    pointTest(board, myPosition, moves, 0, 1, MoveMode.ATTACK_EN_PASSANT, (row == 7));
                 }
                 break;
             case PieceType.QUEEN:
