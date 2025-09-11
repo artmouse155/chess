@@ -17,6 +17,8 @@ public class ChessPiece {
         ATTACK_ALLOWED,
         ATTACK_ONLY,
         ATTACK_NEVER,
+        ATTACK_EN_PASSANT,
+        CASTLE
     }
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
@@ -98,14 +100,14 @@ public class ChessPiece {
             HashSet<ChessMove> moves,
             int rowVector,
             int colVector,
-            MoveMode attackMode,
+            MoveMode moveMode,
             boolean promote,
             int maxIterations
     )
     {
 
         for (int i = 1; i <= maxIterations; i++) {
-            if (!boolPointTest(board, myPosition, rowVector * i, colVector * i, attackMode)) {
+            if (!boolPointTest(board, myPosition, rowVector * i, colVector * i, moveMode)) {
                 return;
             }
             ChessPosition endPosition = new ChessPosition(myPosition.getRow() + rowVector * i,myPosition.getColumn() + colVector * i);
@@ -134,10 +136,10 @@ public class ChessPiece {
             HashSet<ChessMove> moves,
             int rowOffset,
             int colOffset,
-            MoveMode attackMode,
+            MoveMode moveMode,
             boolean promote)
     {
-        probeTest(board, myPosition, moves, rowOffset, colOffset, attackMode, promote, 1);
+        probeTest(board, myPosition, moves, rowOffset, colOffset, moveMode, promote, 1);
     }
 
     private void pointTest(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves, int rowOffset, int colOffset)
