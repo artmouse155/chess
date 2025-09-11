@@ -138,7 +138,7 @@ public class ChessGame {
             if (offenderPiece.getTeamColor() == opposingColor) {
                 HashSet<ChessMove> offenderMoves = (HashSet<ChessMove>) offenderPiece.pieceMoves(copyBoard, offenderPosition);
                 for (ChessMove offenderMove : offenderMoves) {
-                    if (offenderMove.getEndPosition() == kingPosition) {
+                    if (offenderMove.getEndPosition().equals(kingPosition)) {
                         return true;
                     }
                 }
