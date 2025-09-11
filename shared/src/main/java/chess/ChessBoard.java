@@ -18,6 +18,10 @@ public class ChessBoard {
         
     }
 
+    public ChessBoard(ChessPiece[][] squares) {
+        this.squares = squares;
+    }
+
     /**
      * Adds a chess piece to the chessboard
      *
@@ -162,5 +166,29 @@ public class ChessBoard {
             }
         }
         return null;
+    }
+
+    public ChessBoard copyAndForceMove(ChessMove move)
+    {
+
+        ChessPiece[][] copySquares = new ChessPiece[squares.length][squares[0].length];
+
+        // Copy data to new board
+        for (int row = 0; row < squares.length; row++) {
+            for (int col = 0; col < squares[0].length; col++) {
+                copySquares[row][col] = squares[row][col];
+            }
+        }
+
+        ChessBoard copyBoard = new ChessBoard(copySquares);
+
+        ChessPosition startPosition = move.getStartPosition();
+        ChessPosition endPosition = move.getEndPosition();
+
+        ChessPiece piece = copyBoard.getPiece(startPosition);
+        copyBoard.addPiece(endPosition, piece);
+        copyBoard.addPiece(startPosition, null);
+
+        return copyBoard;
     }
 }
