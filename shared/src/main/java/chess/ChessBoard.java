@@ -1,6 +1,8 @@
 package chess;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
 /**
@@ -124,5 +126,21 @@ public class ChessBoard {
         }
 
         return out;
+    }
+
+    public Collection<ChessPosition> getAllPositions(ChessGame.TeamColor color)
+    {
+        HashSet<ChessPosition> positions = new HashSet<>();
+        for (int row = 1; row <= squares.length; row++) {
+            for (int col = 1; col <= squares[0].length; col++) {
+                ChessPosition position = new ChessPosition(row, col);
+                ChessPiece piece = getPiece(position);
+                if (piece != null && piece.getTeamColor() == color)
+                {
+                    positions.add(position);
+                }
+            }
+        }
+        return positions;
     }
 }

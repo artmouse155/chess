@@ -65,7 +65,7 @@ public class ChessGame {
 
     private Collection<ChessMove> allValidMoves(TeamColor color) {
         HashSet<ChessMove> moves = new HashSet<>();
-        HashSet<ChessPosition> teamPositions = board.getAllPositions(currentColor);
+        HashSet<ChessPosition> teamPositions = (HashSet<ChessPosition>) board.getAllPositions(currentColor);
         for (ChessPosition p : teamPositions)
         {
             for (ChessMove m : validMoves(p))
@@ -158,5 +158,5 @@ public class ChessGame {
     public ChessBoard getBoard() {
         return board;
     }
-    
+
 }
