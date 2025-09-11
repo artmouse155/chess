@@ -80,8 +80,20 @@ public class ChessGame {
             ChessPiece piece = board.getPiece(startPosition);
             board.addPiece(endPosition, piece);
             board.addPiece(startPosition, null);
+
+            toggleTeamTurn();
         } else {
             throw new InvalidMoveException("Invalid Move");
+        }
+    }
+
+    private void toggleTeamTurn() {
+        if (currentColor == TeamColor.WHITE)
+        {
+            setTeamTurn(TeamColor.BLACK);
+        } else if (currentColor == TeamColor.BLACK)
+        {
+            setTeamTurn(TeamColor.WHITE);
         }
     }
 
