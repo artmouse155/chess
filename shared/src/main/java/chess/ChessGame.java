@@ -18,6 +18,12 @@ public class ChessGame {
         board = new ChessBoard();
     }
 
+    public ChessGame(TeamColor currentColor, ChessBoard board)
+    {
+        this.currentColor = currentColor;
+        this.board = board;
+    }
+
     /**
      * @return Which team's turn it is
      */
@@ -55,8 +61,20 @@ public class ChessGame {
 
         if (piece != null)
         {
-            HashSet<ChessMove> moves = (HashSet<ChessMove>) piece.pieceMoves(board, startPosition);
+            TeamColor color = piece.getTeamColor();
+
+            HashSet<ChessMove> moves = new HashSet<>();
+            for (ChessMove m : piece.pieceMoves(board, startPosition))
+            {
+                ChessGame copyGame = new ChessGame(color, board.copyAndForceMove(m));
+                if (!copyGame.isInCheck(color))
+                {
+                    moves.add(m);
+                }
+            }
+
             // TODO: Remove moves that result in the king being vulnerable
+
             return moves;
         }
 
