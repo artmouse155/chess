@@ -48,4 +48,10 @@ Creates static values
 - The equal operator does NOT call equals.
 - The equal operator checks memory.
 
+### Records
+
+- Records help us create **immutable classes**.
+  - Usually, to make classes immutable, we use `private final` to describe immutable fields
+  - But the shortcut for this is `Records`!!
+
 Developed by Chase Odom
