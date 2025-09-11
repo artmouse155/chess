@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 
+import static java.lang.Math.abs;
+
 /**
  * For a class that can manage a chess game, making moves on a board
  * <p>
@@ -145,9 +147,18 @@ public class ChessGame {
 
         if (piece != null && piece.getTeamColor() == currentColor && moves != null && moves.contains(move))
         {
+
             ChessPiece.PieceType type = piece.getPieceType();
             ChessPiece.PieceType promotionType = move.getPromotionPiece();
-            board.addPiece(endPosition, new ChessPiece(currentColor,(promotionType==null)?type:promotionType));
+
+            boolean canBeEnPassanted = false;
+            if (type == ChessPiece.PieceType.PAWN)
+            {
+                // We En Passant IFF (1) we are a pawn and (2) we will attempt to move 2+ spaces
+                canBeEnPassanted = abs(startPosition.getRow() - endPosition.getRow()) > 1;
+            }
+
+            board.addPiece(endPosition, new ChessPiece(currentColor,(promotionType==null)?type:promotionType, canBeEnPassanted));
             board.addPiece(startPosition, null);
 
             setTeamTurn(getOpposingTeam(currentColor));
