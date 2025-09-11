@@ -53,5 +53,6 @@ Creates static values
 - Records help us create **immutable classes**.
   - Usually, to make classes immutable, we use `private final` to describe immutable fields
   - But the shortcut for this is `Records`!!
+  - Use Records for `UserData` and other classes we write later
 
 Developed by Chase Odom
