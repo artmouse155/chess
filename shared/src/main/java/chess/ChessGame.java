@@ -120,11 +120,11 @@ public class ChessGame {
         HashSet<ChessMove> moves = (HashSet<ChessMove>) validMoves(startPosition);
         ChessPiece piece = board.getPiece(startPosition);
 
-        if (piece.getTeamColor() == currentColor && moves != null && moves.contains(move))
+        if (piece != null && piece.getTeamColor() == currentColor && moves != null && moves.contains(move))
         {
             ChessPiece.PieceType type = piece.getPieceType();
             ChessPiece.PieceType promotionType = move.getPromotionPiece();
-            board.addPiece(endPosition, new ChessPiece(currentColor,(move.getPromotionPiece()==null)?type:promotionType));
+            board.addPiece(endPosition, new ChessPiece(currentColor,(promotionType==null)?type:promotionType));
             board.addPiece(startPosition, null);
 
             setTeamTurn(getOpposingTeam(currentColor));
