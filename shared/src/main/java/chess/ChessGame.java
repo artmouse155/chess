@@ -77,12 +77,12 @@ public class ChessGame {
         return null;
     }
 
-    private Collection<ChessMove> allValidMoves(TeamColor color, ChessPosition endPosition) {
+    private Collection<ChessMove> allValidMoves(TeamColor color, ChessPosition endPosition, boolean skipInvaldCheck) {
         HashSet<ChessMove> moves = new HashSet<>();
-        HashSet<ChessPosition> teamPositions = (HashSet<ChessPosition>) board.getAllPositions(currentColor);
+        HashSet<ChessPosition> teamPositions = (HashSet<ChessPosition>) board.getAllPositions(color);
         for (ChessPosition p : teamPositions)
         {
-            for (ChessMove m : validMoves(p))
+            for (ChessMove m : (skipInvaldCheck)?board.getPiece(p).pieceMoves(board,p):validMoves(p))
             {
                 if (endPosition == null || m.getEndPosition().equals(endPosition)) {
                     moves.add(m);
@@ -93,7 +93,7 @@ public class ChessGame {
     }
 
     private Collection<ChessMove> allValidMoves(TeamColor color) {
-        return allValidMoves(color, null);
+        return allValidMoves(color, null, false);
     }
 
     private boolean WouldMovePutKingInCheck(ChessMove move) {
@@ -107,12 +107,12 @@ public class ChessGame {
         // (That means that they are blocked by this piece - (potentially) from reaching the king.)
         HashSet<ChessMove> possibleCheckerMoves = (HashSet<ChessMove>) allValidMoves(
                 opposingColor,
-                move.getStartPosition()
+                move.getStartPosition(), true
         );
         // and (2) all moves from other pieces that can currently land on this piece's king
         HashSet<ChessMove> currentCheckerMoves = (HashSet<ChessMove>) allValidMoves(
                 opposingColor,
-                kingPosition
+                kingPosition, true
         );
 
         // 2. Get the positions of all of those pieces
@@ -135,9 +135,13 @@ public class ChessGame {
         for (ChessPosition offenderPosition : offenders)
         {
             ChessPiece offenderPiece = board.getPiece(offenderPosition);
-            if (offenderPiece.getTeamColor() == opposingColor && offenderPiece.pieceMoves(copyBoard, offenderPosition).contains(kingPosition))
-            {
-                return true;
+            if (offenderPiece.getTeamColor() == opposingColor) {
+                HashSet<ChessMove> offenderMoves = (HashSet<ChessMove>) offenderPiece.pieceMoves(copyBoard, offenderPosition);
+                for (ChessMove offenderMove : offenderMoves) {
+                    if (offenderMove.getEndPosition() == kingPosition) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
@@ -199,7 +203,7 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        return !allValidMoves(getOpposingTeam(teamColor), board.getKingPosition(teamColor)).isEmpty();
+        return !allValidMoves(getOpposingTeam(teamColor), board.getKingPosition(teamColor), false).isEmpty();
     }
 
     /**
