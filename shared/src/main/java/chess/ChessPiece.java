@@ -12,18 +12,21 @@ public class ChessPiece {
 
     private final ChessGame.TeamColor pieceColor;
     private final PieceType type;
+    private boolean canBeEnPassanted;
 
     private enum MoveMode {
         ATTACK_ALLOWED,
         ATTACK_ONLY,
         ATTACK_NEVER,
         ATTACK_EN_PASSANT,
+        PAWN_HEADSTART,
         CASTLE
     }
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
         this.type = type;
+        canBeEnPassanted = false;
     }
 
     /**
@@ -83,6 +86,11 @@ public class ChessPiece {
             {
                 endColor = endPiece.getTeamColor();
                 if ((myColor == endColor) || (moveMode == MoveMode.ATTACK_NEVER))
+                {
+                    return false;
+                }
+
+                if (moveMode == MoveMode.ATTACK_EN_PASSANT && !endPiece.getCanBeEnPassanted())
                 {
                     return false;
                 }
@@ -252,5 +260,10 @@ public class ChessPiece {
         } else {
             return "?";
         }
+    }
+
+    public boolean getCanBeEnPassanted()
+    {
+        return canBeEnPassanted;
     }
 }
