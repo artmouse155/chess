@@ -56,6 +56,8 @@ public class ChessGame {
         if (piece != null)
         {
             HashSet<ChessMove> moves = (HashSet<ChessMove>) piece.pieceMoves(board, startPosition);
+            // TODO: Remove moves that result in the king being vulnerable
+            return moves;
         }
 
         return null;
