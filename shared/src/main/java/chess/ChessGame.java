@@ -111,7 +111,7 @@ public class ChessGame {
 
         for (ChessPosition offenderPosition : offenders)
         {
-            ChessPiece offenderPiece = board.getPiece(offenderPosition);
+            ChessPiece offenderPiece = copyBoard.getPiece(offenderPosition);
             // Just in case we accidentally reference a piece that got destroyed, check if color matches
             if (offenderPiece.getTeamColor() == opposingColor) {
                 HashSet<ChessMove> offenderMoves = (HashSet<ChessMove>) offenderPiece.pieceMoves(copyBoard, offenderPosition);
