@@ -204,16 +204,29 @@ public class ChessPiece {
                 pointTest(board, myPosition, moves, -1, -1);
 
                 // Castling plan pseudocode
-                /*
-                if I have not moved:
-                (represented by a final field haveMoved which is by default false so that tests work)
-                    For each rook:
-                    If the rook has not moved yet:
-                        if spaces between rook and king is empty:
-                            add castling as possible move
 
-                    We will check if the king is currently in check in ChessGame > validMoves.
-                 */
+//                if I have not moved:
+                if (!piece.getHaveMoved()) {
+//                (represented by a final field haveMoved which is by default false so that tests work)
+                    //For each rook:
+                    // LHS rook
+                    ChessPiece rookLeft = board.getPiece(new ChessPosition(row, 1));
+                    if ((rookLeft != null) && !rookLeft.getHaveMoved()) {
+                        // If the rook has not moved yet:
+                        // if spaces between rook and king is empty
+                        // add castling as possible move}
+                    }
+                    // RHS rook
+                    ChessPiece rookRight = board.getPiece(new ChessPosition(row, 8));
+                    if ((rookRight != null) && !rookRight.getHaveMoved()) {
+                        // If the rook has not moved yet:
+                        // if spaces between rook and king is empty
+                        // add castling as possible move}
+                    }
+
+//
+//                    We will check if the king is currently in check in ChessGame > validMoves.
+                }
 
                 break;
             case PieceType.KNIGHT:
