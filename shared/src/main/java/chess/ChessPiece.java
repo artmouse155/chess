@@ -89,7 +89,7 @@ public class ChessPiece {
         ChessPiece endPiece = board.getPiece(endPosition);
         if (moveMode == MoveMode.ATTACK_EN_PASSANT)
         {
-            endPiece = board.getPiece(new ChessPosition((myColor== ChessGame.TeamColor.WHITE)?5:4,col));
+            endPiece = board.getPiece(new ChessPosition((myColor== ChessGame.TeamColor.WHITE)?5:4,endPosition.getColumn()));
         }
         ChessGame.TeamColor endColor = null;
         if (endPiece != null) {
