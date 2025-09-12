@@ -76,12 +76,14 @@ public class ChessPiece {
 
     private boolean boolPointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, MoveMode moveMode) {
 
+        // My Piece & Position
         int row = myPosition.getRow();
         int col = myPosition.getColumn();
         ChessPiece piece = board.getPiece(myPosition);
         ChessGame.TeamColor myColor = piece.getTeamColor();
-
         ChessPosition endPosition = new ChessPosition(row + rowOffset, col + colOffset);
+
+        // End Piece and Position
         ChessPosition endPiecePosition;
         if (moveMode == MoveMode.ATTACK_EN_PASSANT) {
             endPiecePosition = new ChessPosition((myColor == ChessGame.TeamColor.WHITE) ? 5 : 4, endPosition.getColumn());
@@ -92,14 +94,14 @@ public class ChessPiece {
             return false;
         }
         ChessPiece endPiece = board.getPiece(endPiecePosition);
+        ChessGame.TeamColor endColor = (endPiece == null) ? null : endPiece.getTeamColor();
 
-        ChessGame.TeamColor endColor = null;
-        if (endPiece != null) {
-                endColor = endPiece.getTeamColor();
-                if ((myColor == endColor)) {
-                    return false;
-                }
-            }
+        // Test 1: Cannot land on own piece
+        if ((myColor == endColor)) {
+            return false;
+        }
+
+        // Test 2: Check each case
         switch (moveMode) {
             case ATTACK_ONLY -> { return (endColor != null);
             }
@@ -114,20 +116,6 @@ public class ChessPiece {
             }
             case null, default -> { return true; }
         }
-//
-//                if (moveMode == MoveMode.ATTACK_EN_PASSANT)
-//                {
-//                    if ((board.getLastPawnMoveTwicePosition() != null) && board.getLastPawnMoveTwicePosition().equals(endPiecePosition)) {
-//                        return true;
-//                    }
-//                    return false;
-//                }
-//            }
-//
-//        } else if (moveMode == MoveMode.ATTACK_ONLY || moveMode == MoveMode.ATTACK_EN_PASSANT) {
-//            return false;
-//        }
-//        return true;
     }
 
     private void probeTest(
