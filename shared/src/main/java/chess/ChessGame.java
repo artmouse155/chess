@@ -68,46 +68,59 @@ public class ChessGame {
             if (wouldMovePutKingInCheck(m, color)) {
                 continue;
             }
-            if (m.getSpecialMove() == ChessMove.SpecialMove.CASTLE)
+
+            if (m.getSpecialMove() == ChessMove.SpecialMove.CASTLE && !checkCastleMove(m))
             {
-                // check that king is not currently in check
-                if (isInCheck(color))
-                {
-                    continue;
-                }
-                // check that none of the intermediate spots would put the king in check
-                // If we moved right
-                int row = m.getStartPosition().getRow();
-                if (m.getEndPosition().getColumn() == 7)
-                {
-                    if (wouldMovePutKingInCheck(
-                            new ChessMove(startPosition,
-                            new ChessPosition(row, 6)),
-                            color)
-                    )
-                    {
-                        continue;
-                    }
+                continue;
+            }
+
+            {
 
 
-                } else if (m.getEndPosition().getColumn() == 3) // If we moved left
-                {
-                    if (wouldMovePutKingInCheck(
-                            new ChessMove(startPosition,
-                                    new ChessPosition(row, 4)),
-                            color)
-                    )
-                    {
-                        continue;
-                    }
-                }
-                // we already checked the final position for being in check up above
             }
                 moves.add(m);
         }
 
         return moves;
 
+    }
+
+    private boolean checkCastleMove(ChessMove m) {
+
+        ChessPosition startPosition = m.getStartPosition();
+        ChessPiece piece = board.getPiece(startPosition);
+        TeamColor color = piece.getTeamColor();
+
+        // check that king is not currently in check
+        if (isInCheck(color)) {return false;}
+        // check that none of the intermediate spots would put the king in check
+        // If we moved right
+        int row = m.getStartPosition().getRow();
+        if (m.getEndPosition().getColumn() == 7)
+        {
+            if (wouldMovePutKingInCheck(
+                    new ChessMove(startPosition,
+                            new ChessPosition(row, 6)),
+                    color)
+            )
+            {
+                return false;
+            }
+
+
+        } else if (m.getEndPosition().getColumn() == 3) // If we moved left
+        {
+            if (wouldMovePutKingInCheck(
+                    new ChessMove(startPosition,
+                            new ChessPosition(row, 4)),
+                    color)
+            )
+            {
+                return false;
+            }
+        }
+        // we already checked the final position for being in check up above
+        return true;
     }
 
     private Collection<ChessMove> allValidMoves(TeamColor color, ChessPosition endPosition) {
