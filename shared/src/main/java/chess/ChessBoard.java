@@ -132,10 +132,10 @@ public class ChessBoard {
     public String toString() {
         String out = "";
 
-        for (int r = 0; r < squares.length; r++) {
+        for (ChessPiece[] square : squares) {
             String row = "|";
-        for (int c = 0; c < squares[0].length; c++) {
-            row += ((squares[r][c] != null)?squares[r][c].toString():" ") + "|";
+            for (int c = 0; c < squares[0].length; c++) {
+                row += ((square[c] != null) ? square[c].toString() : " ") + "|";
             }
             out = row + "\n" + out;
         }

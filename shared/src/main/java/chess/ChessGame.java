@@ -113,12 +113,12 @@ public class ChessGame {
         return null;
     }
 
-    private Collection<ChessMove> allValidMoves(TeamColor color, ChessPosition endPosition, boolean skipInvaldCheck) {
+    private Collection<ChessMove> allValidMoves(TeamColor color, ChessPosition endPosition) {
         HashSet<ChessMove> moves = new HashSet<>();
         HashSet<ChessPosition> teamPositions = (HashSet<ChessPosition>) board.getAllPositions(color);
         for (ChessPosition p : teamPositions)
         {
-            for (ChessMove m : (skipInvaldCheck)?board.getPiece(p).pieceMoves(board,p):validMoves(p))
+            for (ChessMove m : validMoves(p))
             {
                 if (endPosition == null || m.getEndPosition().equals(endPosition)) {
                     moves.add(m);
@@ -129,7 +129,7 @@ public class ChessGame {
     }
 
     private Collection<ChessMove> allValidMoves(TeamColor color) {
-        return allValidMoves(color, null, false);
+        return allValidMoves(color, null);
     }
 
     private boolean wouldMovePutKingInCheck(ChessMove move, TeamColor color) {
@@ -260,7 +260,7 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        return !allValidMoves(getOpposingTeam(teamColor), board.getKingPosition(teamColor), false).isEmpty();
+        return !allValidMoves(getOpposingTeam(teamColor), board.getKingPosition(teamColor)).isEmpty();
     }
 
     /**
