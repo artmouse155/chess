@@ -157,7 +157,7 @@ public class ChessGame {
             if (specialMove == ChessMove.SpecialMove.EN_PASSANT)
             {
                 board.removePiece(startPosition);
-                board.removePiece(new ChessPosition((currentColor==TeamColor.WHITE)?5:4, endPosition.getColumn()));
+                board.removePiece(new ChessPosition(startPosition.getRow(), endPosition.getColumn()));
                 board.addPiece(endPosition, new ChessPiece(currentColor, ChessPiece.PieceType.PAWN));
 
 
