@@ -135,7 +135,12 @@ public class ChessPiece {
                 moves.add(new ChessMove(myPosition, endPosition, PieceType.QUEEN));
                 moves.add(new ChessMove(myPosition, endPosition, PieceType.ROOK));
             } else {
-                moves.add(new ChessMove(myPosition, endPosition));
+                if (moveMode == MoveMode.ATTACK_EN_PASSANT)
+                {
+                    moves.add(new ChessMove(myPosition, endPosition, null, ChessMove.SpecialMove.EN_PASSANT));
+                } else {
+                    moves.add(new ChessMove(myPosition, endPosition));
+                }
             }
             if (board.getPiece(endPosition) != null) {
                 break;
