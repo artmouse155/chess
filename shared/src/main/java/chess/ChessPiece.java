@@ -12,7 +12,6 @@ public class ChessPiece {
 
     private final ChessGame.TeamColor pieceColor;
     private final PieceType type;
-    private final boolean canBeEnPassanted;
 
     private enum MoveMode {
         ATTACK_ALLOWED,
@@ -22,17 +21,9 @@ public class ChessPiece {
         CASTLE
     }
 
-    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type, boolean canBeEnPassanted)
-    {
-        this.pieceColor = pieceColor;
-        this.type = type;
-        this.canBeEnPassanted = canBeEnPassanted;
-    }
-
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
         this.type = type;
-        this.canBeEnPassanted = false;
     }
 
     /**
@@ -261,7 +252,6 @@ public class ChessPiece {
 
     @Override
     public String toString() {
-        if (canBeEnPassanted) return "⭐";
         if (pieceColor == ChessGame.TeamColor.WHITE) {
             return switch (type) {
                 case PieceType.BISHOP -> "B";
@@ -283,10 +273,5 @@ public class ChessPiece {
         } else {
             return "?";
         }
-    }
-
-    public boolean getCanBeEnPassanted()
-    {
-        return canBeEnPassanted;
     }
 }

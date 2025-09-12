@@ -14,8 +14,12 @@ import java.util.Objects;
 public class ChessBoard {
 
     ChessPiece[][] squares = new ChessPiece[8][8];
+
+    private ChessPosition lastPawnMoveTwicePosition;
+
+
+
     public ChessBoard() {
-        
     }
 
     public ChessBoard(ChessPiece[][] squares) {
@@ -196,5 +200,13 @@ public class ChessBoard {
         copyBoard.addPiece(startPosition, null);
 
         return copyBoard;
+    }
+
+    public ChessPosition getLastPawnMoveTwicePosition() {
+        return lastPawnMoveTwicePosition;
+    }
+
+    public void setLastPawnMoveTwicePosition(ChessPosition lastPawnMoveTwicePosition) {
+        this.lastPawnMoveTwicePosition = lastPawnMoveTwicePosition;
     }
 }

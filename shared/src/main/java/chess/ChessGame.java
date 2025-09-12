@@ -17,6 +17,7 @@ public class ChessGame {
 
     TeamColor currentColor;
     ChessBoard board;
+
     public ChessGame() {
         currentColor = TeamColor.WHITE;
         board = new ChessBoard();
@@ -184,16 +185,16 @@ public class ChessGame {
             } else if (specialMove == ChessMove.SpecialMove.CASTLE)
             {
             } else {
-                boolean canBeEnPassanted = false;
-                if (type == ChessPiece.PieceType.PAWN)
+                // We set en passant flag IFF (1) we are a pawn and (2) we will attempt to move 2+ spaces
+                if (type == ChessPiece.PieceType.PAWN && (abs(startPosition.getRow() - endPosition.getRow()) > 1))
                 {
-                    // We En Passant IFF (1) we are a pawn and (2) we will attempt to move 2+ spaces
-                    int difference = abs(startPosition.getRow() - endPosition.getRow());
-                    canBeEnPassanted = difference > 1;
+                    board.setLastPawnMoveTwicePosition(endPosition);
+                } else {
+                    board.setLastPawnMoveTwicePosition(null);
                 }
 
                 board.removePiece(startPosition);
-                board.addPiece(endPosition, new ChessPiece(currentColor,(promotionType==null)?type:promotionType, canBeEnPassanted));
+                board.addPiece(endPosition, new ChessPiece(currentColor,(promotionType==null)?type:promotionType));
             }
 
             setTeamTurn(getOpposingTeam(currentColor));
