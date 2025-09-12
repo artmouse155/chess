@@ -146,8 +146,28 @@ public class ChessGame {
         HashSet<ChessMove> moves = (HashSet<ChessMove>) validMoves(startPosition);
         ChessPiece piece = board.getPiece(startPosition);
 
-        if (piece != null && piece.getTeamColor() == currentColor && moves != null && moves.contains(move))
+
+
+        if (piece != null && piece.getTeamColor() == currentColor && moves != null)
         {
+
+            boolean moveFound = false;
+            for (ChessMove testMove : moves)
+            {
+                if (testMove.equals(move))
+                {
+                    // Allows passing along special moves
+                    move = testMove;
+                    moveFound = true;
+                    break;
+                }
+
+            }
+
+            if (!moveFound)
+            {
+                throw new InvalidMoveException("Invalid Move");
+            }
 
             ChessPiece.PieceType type = piece.getPieceType();
             ChessPiece.PieceType promotionType = move.getPromotionPiece();
