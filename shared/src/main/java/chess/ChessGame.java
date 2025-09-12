@@ -68,17 +68,12 @@ public class ChessGame {
             if (wouldMovePutKingInCheck(m, color)) {
                 continue;
             }
-
             if (m.getSpecialMove() == ChessMove.SpecialMove.CASTLE && !checkCastleMove(m))
             {
                 continue;
             }
 
-            {
-
-
-            }
-                moves.add(m);
+            moves.add(m);
         }
 
         return moves;
