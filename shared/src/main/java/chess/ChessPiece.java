@@ -213,15 +213,25 @@ public class ChessPiece {
                     ChessPiece rookLeft = board.getPiece(new ChessPosition(row, 1));
                     if ((rookLeft != null) && !rookLeft.getHaveMoved()) {
                         // If the rook has not moved yet:
+                        ChessPosition intermediatePoints[] = {new ChessPosition(row, 2), new ChessPosition(row, 3), new ChessPosition(row, 4)};
                         // if spaces between rook and king is empty
                         // add castling as possible move}
+                        if (board.positionsEmpty(intermediatePoints))
+                        {
+                            pointTest(board, myPosition, moves, 0, -2, MoveMode.CASTLE, false);
+                        }
                     }
                     // RHS rook
                     ChessPiece rookRight = board.getPiece(new ChessPosition(row, 8));
                     if ((rookRight != null) && !rookRight.getHaveMoved()) {
                         // If the rook has not moved yet:
+                        ChessPosition intermediatePoints[] = {new ChessPosition(row, 6), new ChessPosition(row, 7)};
                         // if spaces between rook and king is empty
                         // add castling as possible move}
+                        if (board.positionsEmpty(intermediatePoints))
+                        {
+                            pointTest(board, myPosition, moves, 0, 2, MoveMode.CASTLE, false);
+                        }
                     }
 
 //
