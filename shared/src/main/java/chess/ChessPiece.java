@@ -99,9 +99,7 @@ public class ChessPiece {
         return Objects.hash(pieceColor, type);
     }
 
-    public boolean getHaveNeverMoved() {
-        return !haveMoved;
-    }
+    public boolean getHaveNeverMoved() {return !haveMoved;}
 
     private boolean boolPointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, MoveMode moveMode) {
 
