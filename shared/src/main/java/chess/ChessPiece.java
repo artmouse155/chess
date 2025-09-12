@@ -186,118 +186,16 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        ChessPiece piece = board.getPiece(myPosition);
-
-        int row = myPosition.getRow();
-        ChessGame.TeamColor myColor = piece.getTeamColor();
-        PieceType myType = piece.getPieceType();
 
         HashSet<ChessMove> moves = new HashSet<>();
 
-        switch (myType) {
-            case PieceType.BISHOP:
-                probeTest(board, myPosition, moves, 1, 1);
-                probeTest(board, myPosition, moves, -1, 1);
-                probeTest(board, myPosition, moves, 1, -1);
-                probeTest(board, myPosition, moves, -1, -1);
-                break;
-            case PieceType.KING:
-                pointTest(board, myPosition, moves, 1, 0);
-                pointTest(board, myPosition, moves, -1, 0);
-                pointTest(board, myPosition, moves, 0, 1);
-                pointTest(board, myPosition, moves, 0, -1);
-                pointTest(board, myPosition, moves, 1, 1);
-                pointTest(board, myPosition, moves, -1, 1);
-                pointTest(board, myPosition, moves, 1, -1);
-                pointTest(board, myPosition, moves, -1, -1);
-
-                // Castling plan pseudocode
-
-//                if I have not moved:
-                if (piece.getHaveNeverMoved()) {
-//                (represented by a final field haveMoved which is by default false so that tests work)
-                    //For each rook:
-                    // LHS rook
-                    ChessPiece rookLeft = board.getPiece(new ChessPosition(row, 1));
-                    if ((rookLeft != null) && rookLeft.getHaveNeverMoved()) {
-                        // If the rook has not moved yet:
-                        ChessPosition[] intermediatePoints = {new ChessPosition(row, 2), new ChessPosition(row, 3), new ChessPosition(row, 4)};
-                        // if spaces between rook and king is empty
-                        // add castling as possible move}
-                        if (board.positionsEmpty(intermediatePoints))
-                        {
-                            pointTest(board, myPosition, moves, 0, -2, MoveMode.CASTLE, false);
-                        }
-                    }
-                    // RHS rook
-                    ChessPiece rookRight = board.getPiece(new ChessPosition(row, 8));
-                    if ((rookRight != null) && rookRight.getHaveNeverMoved()) {
-                        // If the rook has not moved yet:
-                        ChessPosition intermediatePoints[] = {new ChessPosition(row, 6), new ChessPosition(row, 7)};
-                        // if spaces between rook and king is empty
-                        // add castling as possible move}
-                        if (board.positionsEmpty(intermediatePoints))
-                        {
-                            pointTest(board, myPosition, moves, 0, 2, MoveMode.CASTLE, false);
-                        }
-                    }
-
-//
-//                    We will check if the king is currently in check in ChessGame > validMoves.
-                }
-
-                break;
-            case PieceType.KNIGHT:
-                pointTest(board, myPosition, moves, 1, 2);
-                pointTest(board, myPosition, moves, 1, -2);
-                pointTest(board, myPosition, moves, -1, 2);
-                pointTest(board, myPosition, moves, -1, -2);
-                pointTest(board, myPosition, moves, 2, 1);
-                pointTest(board, myPosition, moves, 2, -1);
-                pointTest(board, myPosition, moves, -2, 1);
-                pointTest(board, myPosition, moves, -2, -1);
-                break;
-            case PieceType.PAWN:
-                if (myColor == ChessGame.TeamColor.BLACK) {
-                    // Standard movement
-                    probeTest(board, myPosition, moves, -1, 0, MoveMode.ATTACK_NEVER, (row == 2), (row == 7) ? 2 : 1);
-
-                    // Attack vectors
-                    pointTest(board, myPosition, moves, -1, -1, MoveMode.ATTACK_ONLY, (row == 2));
-                    pointTest(board, myPosition, moves, -1, 1, MoveMode.ATTACK_ONLY, (row == 2));
-
-                    // En Passant Perhaps
-                    pointTest(board, myPosition, moves, -1, -1, MoveMode.ATTACK_EN_PASSANT, false);
-                    pointTest(board, myPosition, moves, -1, 1, MoveMode.ATTACK_EN_PASSANT, false);
-                } else if (myColor == ChessGame.TeamColor.WHITE) {
-                    // Standard movement
-                    probeTest(board, myPosition, moves, 1, 0, MoveMode.ATTACK_NEVER, (row == 7), (row == 2) ? 2 : 1);
-
-                    // Attack vectors
-                    pointTest(board, myPosition, moves, 1, -1, MoveMode.ATTACK_ONLY, (row == 7));
-                    pointTest(board, myPosition, moves, 1, 1, MoveMode.ATTACK_ONLY, (row == 7));
-
-                    // En Passant Perhaps
-                    pointTest(board, myPosition, moves, 1, -1, MoveMode.ATTACK_EN_PASSANT, false);
-                    pointTest(board, myPosition, moves, 1, 1, MoveMode.ATTACK_EN_PASSANT, false);
-                }
-                break;
-            case PieceType.QUEEN:
-                probeTest(board, myPosition, moves, 1, 1);
-                probeTest(board, myPosition, moves, -1, 1);
-                probeTest(board, myPosition, moves, 1, -1);
-                probeTest(board, myPosition, moves, -1, -1);
-                probeTest(board, myPosition, moves, 0, 1);
-                probeTest(board, myPosition, moves, 0, -1);
-                probeTest(board, myPosition, moves, 1, 0);
-                probeTest(board, myPosition, moves, -1, 0);
-                break;
-            case PieceType.ROOK:
-                probeTest(board, myPosition, moves, 0, 1);
-                probeTest(board, myPosition, moves, 0, -1);
-                probeTest(board, myPosition, moves, 1, 0);
-                probeTest(board, myPosition, moves, -1, 0);
-                break;
+        switch (board.getPiece(myPosition).getPieceType()) {
+            case PieceType.BISHOP -> {getBishopMoves(board, myPosition, moves);}
+            case PieceType.KING -> {getKingMoves(board, myPosition, moves);}
+            case PieceType.KNIGHT -> {getKnightMoves(board, myPosition, moves);}
+            case PieceType.PAWN -> {getPawnMoves(board, myPosition, moves);}
+            case PieceType.QUEEN -> {getQueenMoves(board, myPosition, moves);}
+            case PieceType.ROOK -> {getRookMoves(board, myPosition, moves);}
         }
 
         return moves;
@@ -330,5 +228,112 @@ public class ChessPiece {
 
     public boolean getHaveNeverMoved() {
         return !haveMoved;
+    }
+
+    public void getBishopMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
+        probeTest(board, myPosition, moves, 1, 1);
+        probeTest(board, myPosition, moves, -1, 1);
+        probeTest(board, myPosition, moves, 1, -1);
+        probeTest(board, myPosition, moves, -1, -1);
+    }
+
+    public void getKingMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
+        ChessPiece piece = board.getPiece(myPosition);
+        int row = myPosition.getRow();
+
+        pointTest(board, myPosition, moves, 1, 0);
+        pointTest(board, myPosition, moves, -1, 0);
+        pointTest(board, myPosition, moves, 0, 1);
+        pointTest(board, myPosition, moves, 0, -1);
+        pointTest(board, myPosition, moves, 1, 1);
+        pointTest(board, myPosition, moves, -1, 1);
+        pointTest(board, myPosition, moves, 1, -1);
+        pointTest(board, myPosition, moves, -1, -1);
+
+        // Castling
+        if (piece.getHaveNeverMoved()) {
+            // Left Rook
+            ChessPiece rookLeft = board.getPiece(new ChessPosition(row, 1));
+            if ((rookLeft != null) && rookLeft.getHaveNeverMoved()) {
+                ChessPosition[] intermediatePoints = {
+                        new ChessPosition(row, 2),
+                        new ChessPosition(row, 3),
+                        new ChessPosition(row, 4)
+                };
+                if (board.positionsEmpty(intermediatePoints)) {
+                    pointTest(board, myPosition, moves, 0, -2, MoveMode.CASTLE, false);
+                }
+            }
+            // Right Rook
+            ChessPiece rookRight = board.getPiece(new ChessPosition(row, 8));
+            if ((rookRight != null) && rookRight.getHaveNeverMoved()) {
+                ChessPosition[] intermediatePoints = {
+                        new ChessPosition(row, 6),
+                        new ChessPosition(row, 7)
+                };
+                if (board.positionsEmpty(intermediatePoints)) {
+                    pointTest(board, myPosition, moves, 0, 2, MoveMode.CASTLE, false);
+                }
+            }
+        }
+    }
+
+    public void getKnightMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
+        pointTest(board, myPosition, moves, 1, 2);
+        pointTest(board, myPosition, moves, 1, -2);
+        pointTest(board, myPosition, moves, -1, 2);
+        pointTest(board, myPosition, moves, -1, -2);
+        pointTest(board, myPosition, moves, 2, 1);
+        pointTest(board, myPosition, moves, 2, -1);
+        pointTest(board, myPosition, moves, -2, 1);
+        pointTest(board, myPosition, moves, -2, -1);
+    }
+
+    public void getPawnMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
+        ChessPiece piece = board.getPiece(myPosition);
+        ChessGame.TeamColor myColor = piece.getTeamColor();
+        int row = myPosition.getRow();
+
+        if (myColor == ChessGame.TeamColor.BLACK) {
+                // Standard movement
+                probeTest(board, myPosition, moves, -1, 0, MoveMode.ATTACK_NEVER, (row == 2), (row == 7) ? 2 : 1);
+
+                // Attack
+                pointTest(board, myPosition, moves, -1, -1, MoveMode.ATTACK_ONLY, (row == 2));
+                pointTest(board, myPosition, moves, -1, 1, MoveMode.ATTACK_ONLY, (row == 2));
+
+                // En Passant
+                pointTest(board, myPosition, moves, -1, -1, MoveMode.ATTACK_EN_PASSANT, false);
+                pointTest(board, myPosition, moves, -1, 1, MoveMode.ATTACK_EN_PASSANT, false);
+            } else if (myColor == ChessGame.TeamColor.WHITE) {
+                // Standard movement
+                probeTest(board, myPosition, moves, 1, 0, MoveMode.ATTACK_NEVER, (row == 7), (row == 2) ? 2 : 1);
+
+                // Attack
+                pointTest(board, myPosition, moves, 1, -1, MoveMode.ATTACK_ONLY, (row == 7));
+                pointTest(board, myPosition, moves, 1, 1, MoveMode.ATTACK_ONLY, (row == 7));
+
+                // En Passant
+                pointTest(board, myPosition, moves, 1, -1, MoveMode.ATTACK_EN_PASSANT, false);
+                pointTest(board, myPosition, moves, 1, 1, MoveMode.ATTACK_EN_PASSANT, false);
+            }
+    }
+
+    public void getQueenMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
+        probeTest(board, myPosition, moves, 1, 1);
+        probeTest(board, myPosition, moves, -1, 1);
+        probeTest(board, myPosition, moves, 1, -1);
+        probeTest(board, myPosition, moves, -1, -1);
+        probeTest(board, myPosition, moves, 0, 1);
+        probeTest(board, myPosition, moves, 0, -1);
+        probeTest(board, myPosition, moves, 1, 0);
+        probeTest(board, myPosition, moves, -1, 0);
+    }
+
+    public void getRookMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
+        probeTest(board, myPosition, moves, 0, 1);
+        probeTest(board, myPosition, moves, 0, -1);
+        probeTest(board, myPosition, moves, 1, 0);
+        probeTest(board, myPosition, moves, -1, 0);
     }
 }
