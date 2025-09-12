@@ -74,14 +74,12 @@ public class ChessPiece {
         ChessGame.TeamColor myColor = piece.getTeamColor();
 
         ChessPosition endPosition = new ChessPosition(row + rowOffset, col + colOffset);
+        ChessPosition endPiecePosition = (moveMode == MoveMode.ATTACK_EN_PASSANT)?(new ChessPosition((myColor== ChessGame.TeamColor.WHITE)?5:4,endPosition.getColumn())):endPosition;
         if (!board.hasPosition(endPosition)) {
             return false;
         }
-        ChessPiece endPiece = board.getPiece(endPosition);
-        if (moveMode == MoveMode.ATTACK_EN_PASSANT)
-        {
-            endPiece = board.getPiece(new ChessPosition((myColor== ChessGame.TeamColor.WHITE)?5:4,endPosition.getColumn()));
-        }
+        ChessPiece endPiece = board.getPiece(endPiecePosition);
+
         ChessGame.TeamColor endColor = null;
         if (endPiece != null) {
             {
@@ -91,7 +89,7 @@ public class ChessPiece {
                     return false;
                 }
 
-                if (moveMode == MoveMode.ATTACK_EN_PASSANT && !endPiece.getCanBeEnPassanted())
+                if (moveMode == MoveMode.ATTACK_EN_PASSANT && board.getLastPawnMoveTwicePosition() == endPiecePosition)
                 {
                     return false;
                 }
