@@ -89,7 +89,7 @@ public class ChessPiece {
                     return false;
                 }
 
-                if (moveMode == MoveMode.ATTACK_EN_PASSANT && board.getLastPawnMoveTwicePosition() == endPiecePosition)
+                if (moveMode == MoveMode.ATTACK_EN_PASSANT && board.getLastPawnMoveTwicePosition() != endPiecePosition)
                 {
                     return false;
                 }
