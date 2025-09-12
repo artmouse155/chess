@@ -58,59 +58,56 @@ public class ChessGame {
 
         ChessPiece piece = board.getPiece(startPosition);
 
-        if (piece != null)
-        {
-            TeamColor color = piece.getTeamColor();
+        if (piece == null) {return null;}
 
-            HashSet<ChessMove> moves = new HashSet<>();
-            for (ChessMove m : piece.pieceMoves(board, startPosition))
+        TeamColor color = piece.getTeamColor();
+
+        HashSet<ChessMove> moves = new HashSet<>();
+        for (ChessMove m : piece.pieceMoves(board, startPosition))
+        {
+            if (wouldMovePutKingInCheck(m, color)) {
+                continue;
+            }
+            if (m.getSpecialMove() == ChessMove.SpecialMove.CASTLE)
             {
-                if (wouldMovePutKingInCheck(m, color)) {
+                // check that king is not currently in check
+                if (isInCheck(color))
+                {
                     continue;
                 }
-                if (m.getSpecialMove() == ChessMove.SpecialMove.CASTLE)
+                // check that none of the intermediate spots would put the king in check
+                // If we moved right
+                int row = m.getStartPosition().getRow();
+                if (m.getEndPosition().getColumn() == 7)
                 {
-                    // check that king is not currently in check
-                    if (isInCheck(color))
+                    if (wouldMovePutKingInCheck(
+                            new ChessMove(startPosition,
+                            new ChessPosition(row, 6)),
+                            color)
+                    )
                     {
                         continue;
                     }
-                    // check that none of the intermediate spots would put the king in check
-                    // If we moved right
-                    int row = m.getStartPosition().getRow();
-                    if (m.getEndPosition().getColumn() == 7)
-                    {
-                        if (wouldMovePutKingInCheck(
-                                new ChessMove(startPosition,
-                                new ChessPosition(row, 6)),
-                                color)
-                        )
-                        {
-                            continue;
-                        }
 
 
-                    } else if (m.getEndPosition().getColumn() == 3) // If we moved left
+                } else if (m.getEndPosition().getColumn() == 3) // If we moved left
+                {
+                    if (wouldMovePutKingInCheck(
+                            new ChessMove(startPosition,
+                                    new ChessPosition(row, 4)),
+                            color)
+                    )
                     {
-                        if (wouldMovePutKingInCheck(
-                                new ChessMove(startPosition,
-                                        new ChessPosition(row, 4)),
-                                color)
-                        )
-                        {
-                            continue;
-                        }
+                        continue;
                     }
-                    // we already checked the final position for being in check up above
                 }
-                    moves.add(m);
-
+                // we already checked the final position for being in check up above
             }
-
-            return moves;
+                moves.add(m);
         }
 
-        return null;
+        return moves;
+
     }
 
     private Collection<ChessMove> allValidMoves(TeamColor color, ChessPosition endPosition) {
@@ -200,27 +197,8 @@ public class ChessGame {
 
 
             switch (specialMove) {
-                case EN_PASSANT -> {
-                    board.removePiece(startPosition);
-                    board.removePiece(new ChessPosition(startPosition.getRow(), endPosition.getColumn()));
-                    board.addPiece(endPosition, new ChessPiece(currentColor, ChessPiece.PieceType.PAWN, true));
-                }
-                case CASTLE -> {
-                    // Move the king to the final position
-                    board.removePiece(startPosition);
-                    board.addPiece(endPosition, new ChessPiece(currentColor, ChessPiece.PieceType.KING, true));
-
-                    // move the rook on the side the king is castling on the side of the board closer to the center
-                    // If we moved right
-                    if (endPosition.getColumn() == 7) {
-                        board.removePiece(new ChessPosition(startPosition.getRow(), 8));
-                        board.addPiece(new ChessPosition(startPosition.getRow(), 6), new ChessPiece(currentColor, ChessPiece.PieceType.ROOK, true));
-                    } else if (endPosition.getColumn() == 3) // If we moved left
-                    {
-                        board.removePiece(new ChessPosition(startPosition.getRow(), 1));
-                        board.addPiece(new ChessPosition(startPosition.getRow(), 4), new ChessPiece(currentColor, ChessPiece.PieceType.ROOK, true));
-                    }
-                }
+                case EN_PASSANT -> makeEnPassantMove(move);
+                case CASTLE -> makeCastleMove(move);
                 case null, default -> {
                     // We set en passant flag IFF (1) we are a pawn and (2) we will attempt to move 2+ spaces
                     if (type == ChessPiece.PieceType.PAWN && (abs(startPosition.getRow() - endPosition.getRow()) > 1)) {
@@ -237,6 +215,35 @@ public class ChessGame {
             setTeamTurn(getOpposingTeam(currentColor));
         } else {
             throw new InvalidMoveException("Invalid Move");
+        }
+    }
+
+    private void makeEnPassantMove(ChessMove move) {
+        ChessPosition startPosition = move.getStartPosition();
+        ChessPosition endPosition = move.getEndPosition();
+
+        board.removePiece(startPosition);
+        board.removePiece(new ChessPosition(startPosition.getRow(), endPosition.getColumn()));
+        board.addPiece(endPosition, new ChessPiece(currentColor, ChessPiece.PieceType.PAWN, true));
+    }
+
+    private void makeCastleMove(ChessMove move) {
+        ChessPosition startPosition = move.getStartPosition();
+        ChessPosition endPosition = move.getEndPosition();
+
+        // Move the king to the final position
+        board.removePiece(startPosition);
+        board.addPiece(endPosition, new ChessPiece(currentColor, ChessPiece.PieceType.KING, true));
+
+        // move the rook on the side the king is castling on the side of the board closer to the center
+        // If we moved right
+        if (endPosition.getColumn() == 7) {
+            board.removePiece(new ChessPosition(startPosition.getRow(), 8));
+            board.addPiece(new ChessPosition(startPosition.getRow(), 6), new ChessPiece(currentColor, ChessPiece.PieceType.ROOK, true));
+        } else if (endPosition.getColumn() == 3) // If we moved left
+        {
+            board.removePiece(new ChessPosition(startPosition.getRow(), 1));
+            board.addPiece(new ChessPosition(startPosition.getRow(), 4), new ChessPiece(currentColor, ChessPiece.PieceType.ROOK, true));
         }
     }
 
