@@ -14,8 +14,8 @@ import static java.lang.Math.abs;
  */
 public class ChessGame {
 
-    TeamColor currentColor;
-    ChessBoard board;
+    private TeamColor currentColor;
+    private ChessBoard board;
 
     public ChessGame() {
         currentColor = TeamColor.WHITE;
@@ -156,18 +156,6 @@ public class ChessGame {
             }
         }
         return false;
-
-        // 4. See if any of these pieces can reach the king - IMPORTANT: Don't calculate with validMoves
-        // here, as this would cause infinite recursion. And it doesn't matter if that move would put
-        // their own king in check, because the game would be over by then.
-
-        // 5. Return the result of step 4.
-
-//        ChessGame copyGame = new ChessGame(color, board.copyAndForceMove(m));
-//        if (!copyGame.isInCheck(color))
-//        {
-//            moves.add(m);
-//        }
     }
 
     /**
