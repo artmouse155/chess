@@ -197,7 +197,20 @@ public class ChessGame {
             } else if (specialMove == ChessMove.SpecialMove.CASTLE)
             {
                 // Move the king to the final position
+                board.removePiece(startPosition);
+                board.addPiece(endPosition, new ChessPiece(currentColor, ChessPiece.PieceType.KING, true));
+
                 // move the rook on the side the king is castling on the side of the board closer to the center
+                // If we moved right
+                if (endPosition.getColumn() == 7)
+                {
+                    board.removePiece(new ChessPosition(startPosition.getRow(), 8));
+                    board.addPiece(new ChessPosition(startPosition.getRow(), 6), new ChessPiece(currentColor, ChessPiece.PieceType.ROOK, true));
+                } else if (endPosition.getColumn() == 3) // If we moved left
+                {
+                    board.removePiece(new ChessPosition(startPosition.getRow(), 1));
+                    board.addPiece(new ChessPosition(startPosition.getRow(), 4), new ChessPiece(currentColor, ChessPiece.PieceType.ROOK, true));
+                }
             } else {
                 // We set en passant flag IFF (1) we are a pawn and (2) we will attempt to move 2+ spaces
                 if (type == ChessPiece.PieceType.PAWN && (abs(startPosition.getRow() - endPosition.getRow()) > 1))
