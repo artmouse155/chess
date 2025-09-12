@@ -92,10 +92,15 @@ public class ChessMove {
 
     @Override
     public String toString() {
-        if (promotionPiece == null) {
-            return String.format("%s%s", startPosition, endPosition);
+        if (specialMove == null) {
+            if (promotionPiece == null) {
+                return String.format("%s%s", startPosition, endPosition);
+            } else {
+                return String.format("%s%s(%s)", startPosition, endPosition, promotionPiece);
+            }
         } else {
-            return String.format("%s%s(%s)", startPosition, endPosition, promotionPiece);
+            return String.format("%s%s(%s)", startPosition, endPosition, specialMove);
         }
+
     }
 }
