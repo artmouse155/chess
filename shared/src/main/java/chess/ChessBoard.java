@@ -209,4 +209,16 @@ public class ChessBoard {
     public void setLastPawnMoveTwicePosition(ChessPosition lastPawnMoveTwicePosition) {
         this.lastPawnMoveTwicePosition = lastPawnMoveTwicePosition;
     }
+
+    public boolean positionsEmpty(ChessPosition[] positions)
+    {
+        for (ChessPosition position : positions)
+        {
+            if (getPiece(position ) != null)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
