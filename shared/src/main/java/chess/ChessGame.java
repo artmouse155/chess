@@ -167,7 +167,8 @@ public class ChessGame {
                 if (type == ChessPiece.PieceType.PAWN)
                 {
                     // We En Passant IFF (1) we are a pawn and (2) we will attempt to move 2+ spaces
-                    canBeEnPassanted = abs(startPosition.getRow() - endPosition.getRow()) > 1;
+                    int difference = abs(startPosition.getRow() - endPosition.getRow());
+                    canBeEnPassanted = difference > 1;
                 }
 
 
