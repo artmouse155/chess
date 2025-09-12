@@ -106,7 +106,7 @@ public class ChessPiece {
                 }
             }
 
-        } else if (moveMode == MoveMode.ATTACK_ONLY) {
+        } else if (moveMode == MoveMode.ATTACK_ONLY || moveMode == MoveMode.ATTACK_EN_PASSANT) {
             return false;
         }
         return true;
