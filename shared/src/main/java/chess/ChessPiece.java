@@ -217,12 +217,12 @@ public class ChessPiece {
         HashSet<ChessMove> moves = new HashSet<>();
 
         switch (board.getPiece(myPosition).getPieceType()) {
-            case PieceType.BISHOP -> {getBishopMoves(board, myPosition, moves);}
-            case PieceType.KING -> {getKingMoves(board, myPosition, moves);}
-            case PieceType.KNIGHT -> {getKnightMoves(board, myPosition, moves);}
-            case PieceType.PAWN -> {getPawnMoves(board, myPosition, moves);}
-            case PieceType.QUEEN -> {getQueenMoves(board, myPosition, moves);}
-            case PieceType.ROOK -> {getRookMoves(board, myPosition, moves);}
+            case PieceType.BISHOP -> getBishopMoves(board, myPosition, moves);
+            case PieceType.KING -> getKingMoves(board, myPosition, moves);
+            case PieceType.KNIGHT -> getKnightMoves(board, myPosition, moves);
+            case PieceType.PAWN -> getPawnMoves(board, myPosition, moves);
+            case PieceType.QUEEN -> getQueenMoves(board, myPosition, moves);
+            case PieceType.ROOK -> getRookMoves(board, myPosition, moves);
         }
 
         return moves;
