@@ -156,9 +156,10 @@ public class ChessGame {
 
             if (specialMove == ChessMove.SpecialMove.EN_PASSANT)
             {
-                board.removePiece(endPosition);
-                board.addPiece(new ChessPosition((currentColor==TeamColor.WHITE)?6:3, endPosition.getColumn()), new ChessPiece(currentColor, ChessPiece.PieceType.PAWN));
                 board.removePiece(startPosition);
+                board.removePiece(new ChessPosition((currentColor==TeamColor.WHITE)?5:4, endPosition.getColumn()));
+                board.addPiece(endPosition, new ChessPiece(currentColor, ChessPiece.PieceType.PAWN));
+
 
             } else if (specialMove == ChessMove.SpecialMove.CASTLE)
             {
@@ -171,9 +172,8 @@ public class ChessGame {
                     canBeEnPassanted = difference > 1;
                 }
 
-
+                board.removePiece(startPosition);
                 board.addPiece(endPosition, new ChessPiece(currentColor,(promotionType==null)?type:promotionType, canBeEnPassanted));
-                board.addPiece(startPosition, null);
             }
 
             setTeamTurn(getOpposingTeam(currentColor));
