@@ -214,12 +214,12 @@ public class ChessPiece {
                 // Castling plan pseudocode
 
 //                if I have not moved:
-                if (!piece.getHaveMoved()) {
+                if (piece.getHaveNeverMoved()) {
 //                (represented by a final field haveMoved which is by default false so that tests work)
                     //For each rook:
                     // LHS rook
                     ChessPiece rookLeft = board.getPiece(new ChessPosition(row, 1));
-                    if ((rookLeft != null) && !rookLeft.getHaveMoved()) {
+                    if ((rookLeft != null) && rookLeft.getHaveNeverMoved()) {
                         // If the rook has not moved yet:
                         ChessPosition[] intermediatePoints = {new ChessPosition(row, 2), new ChessPosition(row, 3), new ChessPosition(row, 4)};
                         // if spaces between rook and king is empty
@@ -231,7 +231,7 @@ public class ChessPiece {
                     }
                     // RHS rook
                     ChessPiece rookRight = board.getPiece(new ChessPosition(row, 8));
-                    if ((rookRight != null) && !rookRight.getHaveMoved()) {
+                    if ((rookRight != null) && rookRight.getHaveNeverMoved()) {
                         // If the rook has not moved yet:
                         ChessPosition intermediatePoints[] = {new ChessPosition(row, 6), new ChessPosition(row, 7)};
                         // if spaces between rook and king is empty
@@ -328,7 +328,7 @@ public class ChessPiece {
         }
     }
 
-    public boolean getHaveMoved() {
-        return haveMoved;
+    public boolean getHaveNeverMoved() {
+        return !haveMoved;
     }
 }
