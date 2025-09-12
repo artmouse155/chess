@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 
-import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
 /**
@@ -66,7 +65,7 @@ public class ChessGame {
             HashSet<ChessMove> moves = new HashSet<>();
             for (ChessMove m : piece.pieceMoves(board, startPosition))
             {
-                if (WouldMovePutKingInCheck(m, color)) {
+                if (wouldMovePutKingInCheck(m, color)) {
                     continue;
                 }
                 if (m.getSpecialMove() == ChessMove.SpecialMove.CASTLE)
@@ -81,7 +80,7 @@ public class ChessGame {
                     int row = m.getStartPosition().getRow();
                     if (m.getEndPosition().getColumn() == 7)
                     {
-                        if (WouldMovePutKingInCheck(
+                        if (wouldMovePutKingInCheck(
                                 new ChessMove(startPosition,
                                 new ChessPosition(row, 6)),
                                 color)
@@ -93,7 +92,7 @@ public class ChessGame {
 
                     } else if (m.getEndPosition().getColumn() == 3) // If we moved left
                     {
-                        if (WouldMovePutKingInCheck(
+                        if (wouldMovePutKingInCheck(
                                 new ChessMove(startPosition,
                                         new ChessPosition(row, 4)),
                                 color)
@@ -133,7 +132,7 @@ public class ChessGame {
         return allValidMoves(color, null, false);
     }
 
-    private boolean WouldMovePutKingInCheck(ChessMove move, TeamColor color) {
+    private boolean wouldMovePutKingInCheck(ChessMove move, TeamColor color) {
 
         ChessGame.TeamColor opposingColor = getOpposingTeam(color);
 
