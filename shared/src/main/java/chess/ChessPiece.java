@@ -82,7 +82,12 @@ public class ChessPiece {
         ChessGame.TeamColor myColor = piece.getTeamColor();
 
         ChessPosition endPosition = new ChessPosition(row + rowOffset, col + colOffset);
-        ChessPosition endPiecePosition = (moveMode == MoveMode.ATTACK_EN_PASSANT)?(new ChessPosition((myColor== ChessGame.TeamColor.WHITE)?5:4,endPosition.getColumn())):endPosition;
+        ChessPosition endPiecePosition;
+        if (moveMode == MoveMode.ATTACK_EN_PASSANT) {
+            endPiecePosition = new ChessPosition((myColor == ChessGame.TeamColor.WHITE) ? 5 : 4, endPosition.getColumn());
+        } else {
+            endPiecePosition = endPosition;
+        }
         if (!board.hasPosition(endPosition)) {
             return false;
         }
@@ -90,26 +95,39 @@ public class ChessPiece {
 
         ChessGame.TeamColor endColor = null;
         if (endPiece != null) {
-            {
                 endColor = endPiece.getTeamColor();
-                if ((myColor == endColor) || (moveMode == MoveMode.ATTACK_NEVER))
-                {
-                    return false;
-                }
-
-                if (moveMode == MoveMode.ATTACK_EN_PASSANT)
-                {
-                    if ((board.getLastPawnMoveTwicePosition() != null) && board.getLastPawnMoveTwicePosition().equals(endPiecePosition)) {
-                        return true;
-                    }
+                if ((myColor == endColor)) {
                     return false;
                 }
             }
-
-        } else if (moveMode == MoveMode.ATTACK_ONLY || moveMode == MoveMode.ATTACK_EN_PASSANT) {
-            return false;
+        switch (moveMode) {
+            case ATTACK_ONLY -> { return (endColor != null);
+            }
+            case ATTACK_NEVER, CASTLE -> {  return (endColor == null);
+            }
+            case ATTACK_EN_PASSANT -> {
+                ChessPosition lastPawnMoveTwicePosition = board.getLastPawnMoveTwicePosition();
+                if (lastPawnMoveTwicePosition != null) {
+                    return endPiecePosition.equals(lastPawnMoveTwicePosition);
+                }
+                return false;
+            }
+            case null, default -> { return true; }
         }
-        return true;
+//
+//                if (moveMode == MoveMode.ATTACK_EN_PASSANT)
+//                {
+//                    if ((board.getLastPawnMoveTwicePosition() != null) && board.getLastPawnMoveTwicePosition().equals(endPiecePosition)) {
+//                        return true;
+//                    }
+//                    return false;
+//                }
+//            }
+//
+//        } else if (moveMode == MoveMode.ATTACK_ONLY || moveMode == MoveMode.ATTACK_EN_PASSANT) {
+//            return false;
+//        }
+//        return true;
     }
 
     private void probeTest(
@@ -138,6 +156,8 @@ public class ChessPiece {
                 if (moveMode == MoveMode.ATTACK_EN_PASSANT)
                 {
                     moves.add(new ChessMove(myPosition, endPosition, null, ChessMove.SpecialMove.EN_PASSANT));
+                } else if (moveMode == MoveMode.CASTLE) {
+                    moves.add(new ChessMove(myPosition, endPosition, null, ChessMove.SpecialMove.CASTLE));
                 } else {
                     moves.add(new ChessMove(myPosition, endPosition));
                 }
@@ -213,7 +233,7 @@ public class ChessPiece {
                     ChessPiece rookLeft = board.getPiece(new ChessPosition(row, 1));
                     if ((rookLeft != null) && !rookLeft.getHaveMoved()) {
                         // If the rook has not moved yet:
-                        ChessPosition intermediatePoints[] = {new ChessPosition(row, 2), new ChessPosition(row, 3), new ChessPosition(row, 4)};
+                        ChessPosition[] intermediatePoints = {new ChessPosition(row, 2), new ChessPosition(row, 3), new ChessPosition(row, 4)};
                         // if spaces between rook and king is empty
                         // add castling as possible move}
                         if (board.positionsEmpty(intermediatePoints))
