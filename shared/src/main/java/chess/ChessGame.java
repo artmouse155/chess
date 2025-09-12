@@ -191,7 +191,7 @@ public class ChessGame {
             {
                 board.removePiece(startPosition);
                 board.removePiece(new ChessPosition(startPosition.getRow(), endPosition.getColumn()));
-                board.addPiece(endPosition, new ChessPiece(currentColor, ChessPiece.PieceType.PAWN));
+                board.addPiece(endPosition, new ChessPiece(currentColor, ChessPiece.PieceType.PAWN, true));
 
 
             } else if (specialMove == ChessMove.SpecialMove.CASTLE)
@@ -208,7 +208,7 @@ public class ChessGame {
                 }
 
                 board.removePiece(startPosition);
-                board.addPiece(endPosition, new ChessPiece(currentColor,(promotionType==null)?type:promotionType));
+                board.addPiece(endPosition, new ChessPiece(currentColor,(promotionType==null)?type:promotionType, true));
             }
 
             setTeamTurn(getOpposingTeam(currentColor));

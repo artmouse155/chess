@@ -12,6 +12,7 @@ public class ChessPiece {
 
     private final ChessGame.TeamColor pieceColor;
     private final PieceType type;
+    private final boolean haveMoved;
 
     private enum MoveMode {
         ATTACK_ALLOWED,
@@ -21,9 +22,16 @@ public class ChessPiece {
         CASTLE
     }
 
+    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type, boolean haveMoved) {
+        this.pieceColor = pieceColor;
+        this.type = type;
+        this.haveMoved = haveMoved;
+    }
+
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
         this.type = type;
+        this.haveMoved = false;
     }
 
     /**
@@ -287,5 +295,9 @@ public class ChessPiece {
         } else {
             return "?";
         }
+    }
+
+    public boolean getHaveMoved() {
+        return haveMoved;
     }
 }
