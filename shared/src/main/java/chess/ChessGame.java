@@ -77,6 +77,31 @@ public class ChessGame {
                         continue;
                     }
                     // check that none of the intermediate spots would put the king in check
+                    // If we moved right
+                    int row = m.getStartPosition().getRow();
+                    if (m.getEndPosition().getColumn() == 7)
+                    {
+                        if (WouldMovePutKingInCheck(
+                                new ChessMove(startPosition,
+                                new ChessPosition(row, 6)),
+                                color)
+                        )
+                        {
+                            continue;
+                        }
+
+
+                    } else if (m.getEndPosition().getColumn() == 3) // If we moved left
+                    {
+                        if (WouldMovePutKingInCheck(
+                                new ChessMove(startPosition,
+                                        new ChessPosition(row, 4)),
+                                color)
+                        )
+                        {
+                            continue;
+                        }
+                    }
                     // we already checked the final position for being in check up above
                 }
                     moves.add(m);
