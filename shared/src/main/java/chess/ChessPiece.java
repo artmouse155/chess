@@ -61,6 +61,31 @@ public class ChessPiece {
     }
 
     @Override
+    public String toString() {
+        if (pieceColor == ChessGame.TeamColor.WHITE) {
+            return switch (type) {
+                case PieceType.BISHOP -> "B";
+                case PieceType.KING -> "K";
+                case PieceType.KNIGHT -> "N";
+                case PieceType.PAWN -> "P";
+                case PieceType.QUEEN -> "Q";
+                case PieceType.ROOK -> "R";
+            };
+        } else if (pieceColor == ChessGame.TeamColor.BLACK) {
+            return switch (type) {
+                case PieceType.BISHOP -> "b";
+                case PieceType.KING -> "k";
+                case PieceType.KNIGHT -> "n";
+                case PieceType.PAWN -> "p";
+                case PieceType.QUEEN -> "q";
+                case PieceType.ROOK -> "r";
+            };
+        } else {
+            return "?";
+        }
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) {
             return false;
@@ -72,6 +97,10 @@ public class ChessPiece {
     @Override
     public int hashCode() {
         return Objects.hash(pieceColor, type);
+    }
+
+    public boolean getHaveNeverMoved() {
+        return !haveMoved;
     }
 
     private boolean boolPointTest(ChessBoard board, ChessPosition myPosition, int rowOffset, int colOffset, MoveMode moveMode) {
@@ -199,35 +228,6 @@ public class ChessPiece {
         }
 
         return moves;
-    }
-
-    @Override
-    public String toString() {
-        if (pieceColor == ChessGame.TeamColor.WHITE) {
-            return switch (type) {
-                case PieceType.BISHOP -> "B";
-                case PieceType.KING -> "K";
-                case PieceType.KNIGHT -> "N";
-                case PieceType.PAWN -> "P";
-                case PieceType.QUEEN -> "Q";
-                case PieceType.ROOK -> "R";
-            };
-        } else if (pieceColor == ChessGame.TeamColor.BLACK) {
-            return switch (type) {
-                case PieceType.BISHOP -> "b";
-                case PieceType.KING -> "k";
-                case PieceType.KNIGHT -> "n";
-                case PieceType.PAWN -> "p";
-                case PieceType.QUEEN -> "q";
-                case PieceType.ROOK -> "r";
-            };
-        } else {
-            return "?";
-        }
-    }
-
-    public boolean getHaveNeverMoved() {
-        return !haveMoved;
     }
 
     private void getBishopMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
