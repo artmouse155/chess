@@ -230,14 +230,14 @@ public class ChessPiece {
         return !haveMoved;
     }
 
-    public void getBishopMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
+    private void getBishopMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
         probeTest(board, myPosition, moves, 1, 1);
         probeTest(board, myPosition, moves, -1, 1);
         probeTest(board, myPosition, moves, 1, -1);
         probeTest(board, myPosition, moves, -1, -1);
     }
 
-    public void getKingMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
+    private void getKingMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
         ChessPiece piece = board.getPiece(myPosition);
         int row = myPosition.getRow();
 
@@ -278,7 +278,7 @@ public class ChessPiece {
         }
     }
 
-    public void getKnightMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
+    private void getKnightMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
         pointTest(board, myPosition, moves, 1, 2);
         pointTest(board, myPosition, moves, 1, -2);
         pointTest(board, myPosition, moves, -1, 2);
@@ -289,7 +289,7 @@ public class ChessPiece {
         pointTest(board, myPosition, moves, -2, -1);
     }
 
-    public void getPawnMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
+    private void getPawnMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
         ChessPiece piece = board.getPiece(myPosition);
         ChessGame.TeamColor myColor = piece.getTeamColor();
         int row = myPosition.getRow();
@@ -319,7 +319,7 @@ public class ChessPiece {
             }
     }
 
-    public void getQueenMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
+    private void getQueenMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
         probeTest(board, myPosition, moves, 1, 1);
         probeTest(board, myPosition, moves, -1, 1);
         probeTest(board, myPosition, moves, 1, -1);
@@ -330,7 +330,7 @@ public class ChessPiece {
         probeTest(board, myPosition, moves, -1, 0);
     }
 
-    public void getRookMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
+    private void getRookMoves(ChessBoard board, ChessPosition myPosition, HashSet<ChessMove> moves) {
         probeTest(board, myPosition, moves, 0, 1);
         probeTest(board, myPosition, moves, 0, -1);
         probeTest(board, myPosition, moves, 1, 0);
