@@ -87,6 +87,10 @@ public class ChessPiece {
             return false;
         }
         ChessPiece endPiece = board.getPiece(endPosition);
+        if (moveMode == MoveMode.ATTACK_EN_PASSANT)
+        {
+            endPiece = board.getPiece(new ChessPosition((myColor== ChessGame.TeamColor.WHITE)?5:4,col));
+        }
         ChessGame.TeamColor endColor = null;
         if (endPiece != null) {
             {
@@ -214,8 +218,8 @@ public class ChessPiece {
                     pointTest(board, myPosition, moves, -1, 1, MoveMode.ATTACK_ONLY, (row == 2));
 
                     // En Passant Perhaps
-                    pointTest(board, myPosition, moves, 0, -1, MoveMode.ATTACK_EN_PASSANT, false);
-                    pointTest(board, myPosition, moves, 0, 1, MoveMode.ATTACK_EN_PASSANT, false);
+                    pointTest(board, myPosition, moves, -1, -1, MoveMode.ATTACK_EN_PASSANT, false);
+                    pointTest(board, myPosition, moves, -1, 1, MoveMode.ATTACK_EN_PASSANT, false);
                 } else if (myColor == ChessGame.TeamColor.WHITE) {
                     // Standard movement
                     probeTest(board, myPosition, moves, 1, 0, MoveMode.ATTACK_NEVER, (row == 7), (row == 2) ? 2 : 1);
@@ -225,8 +229,8 @@ public class ChessPiece {
                     pointTest(board, myPosition, moves, 1, 1, MoveMode.ATTACK_ONLY, (row == 7));
 
                     // En Passant Perhaps
-                    pointTest(board, myPosition, moves, 0, -1, MoveMode.ATTACK_EN_PASSANT, false);
-                    pointTest(board, myPosition, moves, 0, 1, MoveMode.ATTACK_EN_PASSANT, false);
+                    pointTest(board, myPosition, moves, 1, -1, MoveMode.ATTACK_EN_PASSANT, false);
+                    pointTest(board, myPosition, moves, 1, 1, MoveMode.ATTACK_EN_PASSANT, false);
                 }
                 break;
             case PieceType.QUEEN:
