@@ -66,9 +66,21 @@ public class ChessGame {
             HashSet<ChessMove> moves = new HashSet<>();
             for (ChessMove m : piece.pieceMoves(board, startPosition))
             {
-                if (!WouldMovePutKingInCheck(m, color)) {
-                    moves.add(m);
+                if (WouldMovePutKingInCheck(m, color)) {
+                    continue;
                 }
+                if (m.getSpecialMove() == ChessMove.SpecialMove.CASTLE)
+                {
+                    // check that king is not currently in check
+                    if (isInCheck(color))
+                    {
+                        continue;
+                    }
+                    // check that none of the intermediate spots would put the king in check
+                    // we already checked the final position for being in check up above
+                }
+                    moves.add(m);
+
             }
 
             return moves;
@@ -184,6 +196,8 @@ public class ChessGame {
 
             } else if (specialMove == ChessMove.SpecialMove.CASTLE)
             {
+                // Move the king to the final position
+                // move the rook on the side the king is castling on the side of the board closer to the center
             } else {
                 // We set en passant flag IFF (1) we are a pawn and (2) we will attempt to move 2+ spaces
                 if (type == ChessPiece.PieceType.PAWN && (abs(startPosition.getRow() - endPosition.getRow()) > 1))

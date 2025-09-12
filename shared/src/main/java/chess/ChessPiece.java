@@ -194,6 +194,19 @@ public class ChessPiece {
                 pointTest(board, myPosition, moves, -1, 1);
                 pointTest(board, myPosition, moves, 1, -1);
                 pointTest(board, myPosition, moves, -1, -1);
+
+                // Castling plan pseudocode
+                /*
+                if I have not moved:
+                (represented by a final field haveMoved which is by default false so that tests work)
+                    For each rook:
+                    If the rook has not moved yet:
+                        if spaces between rook and king is empty:
+                            add castling as possible move
+
+                    We will check if the king is currently in check in ChessGame > validMoves.
+                 */
+
                 break;
             case PieceType.KNIGHT:
                 pointTest(board, myPosition, moves, 1, 2);
