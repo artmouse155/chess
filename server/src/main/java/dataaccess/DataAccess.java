@@ -1,17 +1,30 @@
 package dataaccess;
 
 import model.AuthData;
+import model.GameData;
 import model.UserData;
 
-public class DataAccess {
+import java.util.List;
 
-    public UserData getUser(String username) throws DataAccessException {
-        return null;
-    }
+public interface DataAccess {
 
-    public void createAuth(AuthData authData) throws DataAccessException{
-    }
+    public void deleteDB() throws DataAccessException;
 
-    public void createUser(UserData userData) throws DataAccessException {
-    }
+    public UserData getUser(String username) throws DataAccessException;
+
+    public void createUser(UserData userData) throws DataAccessException;
+
+    public void createAuth(AuthData authData) throws DataAccessException;
+
+    public void removeAuth(AuthData authData) throws DataAccessException;
+
+    public List<GameData> getGameData() throws DataAccessException;
+
+    public GameData getGame(String gameName) throws DataAccessException;
+
+    public void addGame(GameData gameData) throws DataAccessException;
+
+    public void getGame(int gameID) throws DataAccessException;
+
+    public void updateGame(int gameID, GameData gameData) throws DataAccessException;
 }
