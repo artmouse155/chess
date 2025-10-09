@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import handler.Handler;
 import io.javalin.*;
 import io.javalin.http.Context;
+import model.UserData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -44,9 +45,8 @@ public class Server {
 
     private void register(Context ctx) {
         var serializer = new Gson();
-        var req = serializer.fromJson(ctx.body(), Map.class);
-//        var res = Map.of("username", req.get("username"), "authToken", "xyz");
-        var res = handler.handleRegister((String) req.get("username"), (String) req.get("password"), (String) req.get("email"));
+        var req = serializer.fromJson(ctx.body(), UserData.class);
+        var res = handler.handleRegister(req);
         ctx.result(res.toString());
     }
 

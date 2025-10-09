@@ -19,8 +19,7 @@ public class Handler {
         return service.deleteDB();
     }
 
-    public AuthData handleRegister(String username, String password, String email) {
-        var userData = new UserData(username, password, email);
+    public AuthData handleRegister(UserData userData) {
         return service.register(userData);
     }
 
