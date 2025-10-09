@@ -27,20 +27,23 @@ public class Server {
 ;
     private void clear(Context ctx) {
         // Do Something...
+        handler.deleteDB();
         ctx.result("{}");
     }
 
     private void register(Context ctx) {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), Map.class);
-        var res = Map.of("username", req.get("username"), "authToken", "xyz");
+//        var res = Map.of("username", req.get("username"), "authToken", "xyz");
+        var res = handler.handleRegister((String) req.get("username"), (String) req.get("password"), (String) req.get("email"));
         ctx.result(serializer.toJson(res));
     }
 
     private void login(Context ctx) {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), Map.class);
-        var res = Map.of("username", req.get("username"), "authToken", "xyz");
+//        var res = Map.of("username", req.get("username"), "authToken", "xyz");
+        var res = handler.handleLogin((String) req.get("username"), (String) req.get("password"));
         ctx.result(serializer.toJson(res));
     }
 
@@ -48,7 +51,8 @@ public class Server {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), Map.class);
         // Do something...
-        ctx.result("{}");
+        var res = handler.handleLogout((String) req.get("authToken"));
+        ctx.result();
     }
 
     private void listGames(Context ctx) {
