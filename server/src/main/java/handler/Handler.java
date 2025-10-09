@@ -7,6 +7,7 @@ public class Handler {
     public Handler() {}
 
     public Map<String, String> handleDeleteDB() {
+        return Map.of();
     }
 
     public Map<String, String> handleRegister(String username, String password, String email) {
