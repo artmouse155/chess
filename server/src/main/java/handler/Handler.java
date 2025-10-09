@@ -1,5 +1,7 @@
 package handler;
 
+import model.AuthData;
+import model.UserData;
 import service.Service;
 
 import java.util.List;
@@ -17,8 +19,9 @@ public class Handler {
         return service.deleteDB();
     }
 
-    public Map<String, String> handleRegister(String username, String password, String email) {
-        return service.register(username, password, email);
+    public AuthData handleRegister(String username, String password, String email) {
+        var userData = new UserData(username, password, email);
+        return service.register(userData);
     }
 
     public Map<String, String> handleLogin(String username, String password) {

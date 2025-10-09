@@ -2,6 +2,8 @@ package service;
 
 import dataaccess.DataAccess;
 import handler.AlreadyTakenException;
+import model.AuthData;
+import model.UserData;
 
 import java.util.List;
 import java.util.Map;
@@ -18,16 +20,18 @@ public class Service {
         return Map.of();
     }
 
-    public Map<String, String> register(String username, String password, String email) throws AlreadyTakenException {
+    public AuthData register(UserData userData) throws AlreadyTakenException {
 
-        var userData = dataAccess.getUser(username);
-        if (userData != null)
+        var username = userData.username();
+        if (dataAccess.getUser(username) != null)
         {
             throw new AlreadyTakenException("Failed to register username \"" + username + "\". Already taken.");
         }
+        dataAccess.createUser(userData);
         var authToken = generateAuthToken();
-        dataAccess.createAuth(username, authToken);
-        return Map.of("username", username, "authToken", authToken);
+        var authData = new AuthData(username, authToken);
+        dataAccess.createAuth(authData);
+        return authData;
     }
 
     public Map<String, String> login(String username, String password) {
