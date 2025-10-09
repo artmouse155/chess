@@ -56,7 +56,6 @@ public class Server {
     private void login(Context ctx) {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), Map.class);
-//        var res = Map.of("username", req.get("username"), "authToken", "xyz");
         var res = handler.handleLogin((String) req.get("username"), (String) req.get("password"));
         ctx.result(res.toString());
     }

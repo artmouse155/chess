@@ -27,7 +27,11 @@ public class Handler {
         return service.register(userData);
     }
 
-    public Map<String, String> handleLogin(String username, String password) {
+    public AuthData handleLogin(String username, String password) {
+        if (username == null || password == null)
+        {
+            throw new BadRequestException("One or more fields is invalid.");
+        }
         return service.login(username, password);
     }
 

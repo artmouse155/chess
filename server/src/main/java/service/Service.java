@@ -6,6 +6,7 @@ import dataaccess.MemoryDataAccess;
 import handler.AlreadyTakenException;
 import handler.InternalServerErrorException;
 import handler.ResponseException;
+import handler.UnauthorizedException;
 import model.AuthData;
 import model.UserData;
 import org.eclipse.jetty.server.Authentication;
@@ -40,8 +41,18 @@ public class Service {
         return authData;
     }
 
-    public Map<String, String> login(String username, String password) {
-        return Map.of();
+    public AuthData login(String username, String password) {
+
+        var userData = dataAccess.getUser(username);
+
+        if (userData == null || !password.equals(userData.password()))
+        {
+            throw new UnauthorizedException("Credentials don't match.");
+        }
+        var authToken = generateAuthToken();
+        var authData = new AuthData(authToken, username);
+        dataAccess.createAuth(authData);
+        return authData;
     }
 
     public Map<String, String> logout(String authToken) {
