@@ -1,6 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
+import handler.Handler;
 import io.javalin.*;
 import io.javalin.http.Context;
 
@@ -9,6 +10,7 @@ import java.util.Map;
 public class Server {
 
     private final Javalin server;
+    private final Handler handler;
 
     public Server() {
         server = Javalin.create(config -> config.staticFiles.add("web"));
@@ -19,8 +21,10 @@ public class Server {
         server.get("game", this::listGames);
         server.post("game", this::createGame);
         server.put("game", this::joinGame);
-    }
 
+        handler = new Handler();
+    }
+;
     private void clear(Context ctx) {
         // Do Something...
         ctx.result("{}");
