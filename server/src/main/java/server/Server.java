@@ -19,8 +19,10 @@ public class Server {
         server.post("user", this::register);
         server.post("session", this::login);
 
-        server.beforeMatched(this::authenticate);
+        // Special authentication case.
         server.delete("session", this::logout);
+        
+        server.before("game",this::authenticate);
         server.get("game", this::listGames);
         server.post("game", this::createGame);
         server.put("game", this::joinGame);
@@ -28,14 +30,16 @@ public class Server {
         handler = new Handler();
     }
 
-    private void authenticate(Context context) {
-        System.out.println("🔑 Authenticate!");
+    private void authenticate(Context ctx) {
+        var info = String.format("🔑 Auth: %s %s", ctx.method().name(), ctx.path());
+        System.out.println(info);
     }
 
     ;
     private void clear(Context ctx) {
         // Do Something...
         handler.deleteDB();
+        System.out.println("clear");
         ctx.result("{}");
     }
 
