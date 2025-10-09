@@ -12,13 +12,18 @@ public class Server {
 
     public Server() {
         server = Javalin.create(config -> config.staticFiles.add("web"));
-        server.delete("db",ctx -> ctx.result("{}"));
+        server.delete("db", this::clear);
         server.post("user", this::register);
-        server.post("session", ctx -> ctx.result("{\"username\": \"CHASE_IS COOL\", \"authToken\": 24601}"));
-        server.delete("session", ctx -> ctx.result("{}"));
-        server.get("game", ctx -> ctx.result("{}"));
-        server.post("game", ctx -> ctx.result("{}"));
-        server.put("game", ctx -> ctx.result("{}"));
+        server.post("session", this::login);
+        server.delete("session", this::logout);
+        server.get("game", this::listGames);
+        server.post("game", this::createGame);
+        server.put("game", this::joinGame);
+    }
+
+    private void clear(Context ctx) {
+        // Do Something...
+        ctx.result("{}");
     }
 
     private void register(Context ctx) {
@@ -26,6 +31,39 @@ public class Server {
         var req = serializer.fromJson(ctx.body(), Map.class);
         var res = Map.of("username", req.get("username"), "authToken", "xyz");
         ctx.result(serializer.toJson(res));
+    }
+
+    private void login(Context ctx) {
+        var serializer = new Gson();
+        var req = serializer.fromJson(ctx.body(), Map.class);
+        var res = Map.of("username", req.get("username"), "authToken", "xyz");
+        ctx.result(serializer.toJson(res));
+    }
+
+    private void logout(Context ctx) {
+        var serializer = new Gson();
+        var req = serializer.fromJson(ctx.body(), Map.class);
+        // Do something...
+        ctx.result("{}");
+    }
+
+    private void listGames(Context ctx) {
+        // Do something...
+        ctx.result("{\"games\" : []}");
+    }
+
+    private void createGame(Context ctx) {
+        var serializer = new Gson();
+        var req = serializer.fromJson(ctx.body(), Map.class);
+        // Do something...
+        ctx.result("{\"gameID\": 24601}");
+    }
+
+    private void joinGame(Context ctx) {
+        var serializer = new Gson();
+        var req = serializer.fromJson(ctx.body(), Map.class);
+        // Do something...
+        ctx.result("{}");
     }
 
     public int run(int desiredPort) {
