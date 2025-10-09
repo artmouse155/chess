@@ -36,6 +36,7 @@ public class Handler {
     }
 
     public Map<String, String> handleLogout(String authToken) {
+
         return service.logout(authToken);
     }
 

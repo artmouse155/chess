@@ -9,6 +9,7 @@ import model.UserData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class Server {
 
@@ -62,9 +63,7 @@ public class Server {
 
     private void logout(Context ctx) {
         var serializer = new Gson();
-        var req = serializer.fromJson(ctx.body(), Map.class);
-        // Do something...
-        var res = handler.handleLogout((String) req.get("authToken"));
+        var res = handler.handleLogout(ctx.header("authToken"));
         ctx.result(serializer.toJson(res));
     }
 

@@ -41,7 +41,7 @@ public class Service {
         return authData;
     }
 
-    public AuthData login(String username, String password) {
+    public AuthData login(String username, String password) throws ResponseException {
 
         var userData = dataAccess.getUser(username);
 
@@ -55,7 +55,8 @@ public class Service {
         return authData;
     }
 
-    public Map<String, String> logout(String authToken) {
+    public Map<String, String> logout(String authToken) throws ResponseException {
+        dataAccess.removeAuth(authToken);
         return Map.of();
     }
 

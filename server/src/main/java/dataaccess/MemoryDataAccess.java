@@ -18,6 +18,17 @@ public class MemoryDataAccess implements DataAccess{
         userDataSet = new HashSet<>();
         authDataSet = new HashSet<>();
         gameDataSet = new HashSet<>();
+
+        debugPrint(userDataSet);
+        debugPrint(authDataSet);
+        debugPrint(gameDataSet);
+    }
+
+    private void debugPrint(Set s) {
+        System.out.println("Size = " + s.size() + ")");
+        for (var item : s) {
+            System.out.println(item.toString());
+        }
     }
 
     @Override
@@ -37,22 +48,21 @@ public class MemoryDataAccess implements DataAccess{
     @Override
     public void createUser(UserData userData) throws DataAccessException {
         userDataSet.add(userData);
-
-        System.out.println("UserData set: (Size = " + userDataSet.size() + ")");
-        for (var item : userDataSet) {
-            System.out.println(item);
-        }
+        debugPrint(userDataSet);
     }
 
     @Override
     public void createAuth(AuthData authData) throws DataAccessException {
         authDataSet.add(authData);
+        debugPrint(authDataSet);
     }
 
     @Override
-    public void removeAuth(AuthData authData) throws DataAccessException {
-
+    public void removeAuth(String authToken) throws DataAccessException {
+        authDataSet.removeIf(authData -> authData.authToken().equals(authToken));
+        debugPrint(authDataSet);
     }
+
 
     @Override
     public List<GameData> getGameData() throws DataAccessException {
@@ -66,7 +76,7 @@ public class MemoryDataAccess implements DataAccess{
 
     @Override
     public void addGame(GameData gameData) throws DataAccessException {
-
+        debugPrint(gameDataSet);
     }
 
     @Override
@@ -76,6 +86,6 @@ public class MemoryDataAccess implements DataAccess{
 
     @Override
     public void updateGame(int gameID, GameData gameData) throws DataAccessException {
-
+        debugPrint(gameDataSet);
     }
 }
