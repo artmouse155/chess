@@ -6,7 +6,7 @@ import java.util.Map;
 public class Handler {
     public Handler() {}
 
-    public void deleteDB() {
+    public Map<String, String> handleDeleteDB() {
     }
 
     public Map<String, String> handleRegister(String username, String password, String email) {

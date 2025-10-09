@@ -37,10 +37,9 @@ public class Server {
 
     ;
     private void clear(Context ctx) {
-        // Do Something...
-        handler.deleteDB();
+        var serializer = new Gson();
         System.out.println("clear");
-        ctx.result("{}");
+        ctx.result(serializer.toJson(handler.handleDeleteDB()));
     }
 
     private void register(Context ctx) {
