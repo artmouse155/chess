@@ -20,6 +20,10 @@ public class Handler {
     }
 
     public AuthData handleRegister(UserData userData) {
+        if (userData.password() == null || userData.username() == null || userData.email() == null)
+        {
+            throw new BadRequestException("One or more fields is invalid.");
+        }
         return service.register(userData);
     }
 
