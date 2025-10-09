@@ -1,9 +1,13 @@
 package service;
 
 import dataaccess.DataAccess;
+import dataaccess.DataAccessException;
 import handler.AlreadyTakenException;
+import handler.InternalServerErrorException;
+import handler.ResponseException;
 import model.AuthData;
 import model.UserData;
+import org.eclipse.jetty.server.Authentication;
 
 import java.util.List;
 import java.util.Map;
@@ -20,10 +24,18 @@ public class Service {
         return Map.of();
     }
 
-    public AuthData register(UserData userData) throws AlreadyTakenException {
+    public AuthData register(UserData userData) throws ResponseException {
 
         var username = userData.username();
-        if (dataAccess.getUser(username) != null)
+        UserData dataAccessResponse;
+        try {
+            dataAccessResponse = dataAccess.getUser(username);
+        } catch (DataAccessException e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
+
+
+        if (dataAccessResponse != null)
         {
             throw new AlreadyTakenException("Failed to register username \"" + username + "\". Already taken.");
         }

@@ -5,13 +5,13 @@ import model.UserData;
 
 public class DataAccess {
 
-    public Object getUser(String username) {
+    public UserData getUser(String username) throws DataAccessException {
         return null;
     }
 
-    public void createAuth(AuthData authData) {
+    public void createAuth(AuthData authData) throws DataAccessException{
     }
 
-    public void createUser(UserData userData) {
+    public void createUser(UserData userData) throws DataAccessException {
     }
 }
