@@ -47,7 +47,7 @@ public class Server {
         var req = serializer.fromJson(ctx.body(), Map.class);
 //        var res = Map.of("username", req.get("username"), "authToken", "xyz");
         var res = handler.handleRegister((String) req.get("username"), (String) req.get("password"), (String) req.get("email"));
-        ctx.result(serializer.toJson(res));
+        ctx.result(res.toString());
     }
 
     private void login(Context ctx) {
@@ -55,7 +55,7 @@ public class Server {
         var req = serializer.fromJson(ctx.body(), Map.class);
 //        var res = Map.of("username", req.get("username"), "authToken", "xyz");
         var res = handler.handleLogin((String) req.get("username"), (String) req.get("password"));
-        ctx.result(serializer.toJson(res));
+        ctx.result(res.toString());
     }
 
     private void logout(Context ctx) {
@@ -63,7 +63,7 @@ public class Server {
         var req = serializer.fromJson(ctx.body(), Map.class);
         // Do something...
         var res = handler.handleLogout((String) req.get("authToken"));
-        ctx.result();
+        ctx.result(serializer.toJson(res));
     }
 
     private void listGames(Context ctx) {
