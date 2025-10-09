@@ -1,11 +1,11 @@
 package dataaccess;
 
-import handler.ResponseException;
+import handler.InternalServerErrorException;
 
 /**
  * Indicates there was an error connecting to the database
  */
-public class DataAccessException extends ResponseException {
+public class DataAccessException extends InternalServerErrorException {
     public DataAccessException(String message) {
         super(message);
     }

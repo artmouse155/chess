@@ -27,15 +27,8 @@ public class Service {
     public AuthData register(UserData userData) throws ResponseException {
 
         var username = userData.username();
-        UserData dataAccessResponse;
-        try {
-            dataAccessResponse = dataAccess.getUser(username);
-        } catch (DataAccessException e) {
-            throw new InternalServerErrorException(e.getMessage());
-        }
 
-
-        if (dataAccessResponse != null)
+        if (dataAccess.getUser(username) != null)
         {
             throw new AlreadyTakenException("Failed to register username \"" + username + "\". Already taken.");
         }

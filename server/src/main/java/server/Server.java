@@ -2,6 +2,7 @@ package server;
 
 import com.google.gson.Gson;
 import handler.Handler;
+import handler.ResponseException;
 import io.javalin.*;
 import io.javalin.http.Context;
 import model.UserData;
@@ -27,6 +28,8 @@ public class Server {
         server.get("game", this::listGames);
         server.post("game", this::createGame);
         server.put("game", this::joinGame);
+
+        server.exception(ResponseException.class, this::exceptionHandler);
 
         handler = new Handler();
     }
@@ -83,6 +86,11 @@ public class Server {
         var req = serializer.fromJson(ctx.body(), Map.class);
         // Do something...
         ctx.result("{}");
+    }
+
+    private void exceptionHandler(ResponseException ex, Context ctx) {
+        ctx.status(ex.getHTTPCode());
+        ctx.result(ex.toJson());
     }
 
     public int run(int desiredPort) {
