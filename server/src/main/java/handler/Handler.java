@@ -21,11 +21,11 @@ public class Handler {
         return Map.of();
     }
 
-    public Map<String, List<Map<String, Object>>> handleGetGames(String authToken) {
+    public Map<String, List<Map<String, Object>>> handleGetGames() {
         return Map.of();
     }
 
-    public Map<String, Number> handleCreateGame(String authToken, String gameName) {
+    public Map<String, Number> handleCreateGame(String gameName) {
         return Map.of();
     }
 

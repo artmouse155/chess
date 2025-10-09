@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import handler.Handler;
 import io.javalin.*;
 import io.javalin.http.Context;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -17,6 +18,8 @@ public class Server {
         server.delete("db", this::clear);
         server.post("user", this::register);
         server.post("session", this::login);
+
+        server.beforeMatched(this::authenticate);
         server.delete("session", this::logout);
         server.get("game", this::listGames);
         server.post("game", this::createGame);
@@ -24,7 +27,12 @@ public class Server {
 
         handler = new Handler();
     }
-;
+
+    private void authenticate(Context context) {
+        System.out.println("🔑 Authenticate!");
+    }
+
+    ;
     private void clear(Context ctx) {
         // Do Something...
         handler.deleteDB();
