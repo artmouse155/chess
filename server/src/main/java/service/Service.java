@@ -2,6 +2,7 @@ package service;
 
 import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
+import dataaccess.MemoryDataAccess;
 import handler.AlreadyTakenException;
 import handler.InternalServerErrorException;
 import handler.ResponseException;
@@ -17,7 +18,7 @@ public class Service {
     private final DataAccess dataAccess;
 
     public Service() {
-        dataAccess = new DataAccess();
+        dataAccess = new MemoryDataAccess();
     }
 
     public Map<String, String> deleteDB() {
