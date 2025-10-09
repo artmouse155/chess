@@ -21,7 +21,7 @@ public class Server {
 
         // Special authentication case.
         server.delete("session", this::logout);
-        
+
         server.before("game",this::authenticate);
         server.get("game", this::listGames);
         server.post("game", this::createGame);
