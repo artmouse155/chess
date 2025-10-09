@@ -4,6 +4,7 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,9 +15,9 @@ public class MemoryDataAccess implements DataAccess{
     Set<GameData> gameDataSet;
 
     public MemoryDataAccess() {
-        userDataSet = Set.of();
-        authDataSet = Set.of();
-        gameDataSet = Set.of();
+        userDataSet = new HashSet<>();
+        authDataSet = new HashSet<>();
+        gameDataSet = new HashSet<>();
     }
 
     @Override
@@ -36,6 +37,11 @@ public class MemoryDataAccess implements DataAccess{
     @Override
     public void createUser(UserData userData) throws DataAccessException {
         userDataSet.add(userData);
+
+        System.out.println("UserData set: (Size = " + userDataSet.size() + ")");
+        for (var item : userDataSet) {
+            System.out.println(item);
+        }
     }
 
     @Override
