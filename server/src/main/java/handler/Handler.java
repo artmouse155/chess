@@ -1,36 +1,43 @@
 package handler;
 
+import service.Service;
+
 import java.util.List;
 import java.util.Map;
 
 public class Handler {
-    public Handler() {}
+
+    private final Service service;
+
+    public Handler() {
+        service = new Service();
+    }
 
     public Map<String, String> handleDeleteDB() {
-        return Map.of();
+        return service.deleteDB();
     }
 
     public Map<String, String> handleRegister(String username, String password, String email) {
-        return Map.of();
+        return service.register(username, password, email);
     }
 
     public Map<String, String> handleLogin(String username, String password) {
-        return Map.of();
+        return service.login(username, password);
     }
 
     public Map<String, String> handleLogout(String authToken) {
-        return Map.of();
+        return service.logout(authToken);
     }
 
     public Map<String, List<Map<String, Object>>> handleGetGames() {
-        return Map.of();
+        return service.getGames();
     }
 
     public Map<String, Number> handleCreateGame(String gameName) {
-        return Map.of();
+        return service.createGame(gameName);
     }
 
     public Map<String, String> handleJoinGame(String playerColor, int gameID) {
-        return Map.of();
+        return service.joinGame(playerColor, gameID);
     }
 }
