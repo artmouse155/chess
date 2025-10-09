@@ -29,7 +29,7 @@ public class Service {
         }
         dataAccess.createUser(userData);
         var authToken = generateAuthToken();
-        var authData = new AuthData(username, authToken);
+        var authData = new AuthData(authToken, username);
         dataAccess.createAuth(authData);
         return authData;
     }
