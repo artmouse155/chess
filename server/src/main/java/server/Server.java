@@ -25,7 +25,7 @@ public class Server {
         // Special authentication case.
         server.delete("session", this::logout);
 
-        server.before("game",this::authenticate);
+        server.before("game", this::authenticate);
         server.get("game", this::listGames);
         server.post("game", this::createGame);
         server.put("game", this::joinGame);
@@ -41,6 +41,7 @@ public class Server {
     }
 
     ;
+
     private void clear(Context ctx) throws ResponseException {
         var serializer = new Gson();
         System.out.println("clear");
@@ -63,7 +64,7 @@ public class Server {
 
     private void logout(Context ctx) throws ResponseException {
         var serializer = new Gson();
-        var res = handler.handleLogout(ctx.header("authToken"));
+        var res = handler.handleLogout(ctx.header("authorization"));
         ctx.result(serializer.toJson(res));
     }
 

@@ -18,12 +18,13 @@ public class MemoryDataAccess implements DataAccess {
         authDataSet = new HashSet<>();
         gameDataSet = new HashSet<>();
 
-        debugPrint(userDataSet);
-        debugPrint(authDataSet);
-        debugPrint(gameDataSet);
+        debugPrint("User Data Set Init", userDataSet);
+        debugPrint("Auth Data Set Init", authDataSet);
+        debugPrint("Game Data Set Init", gameDataSet);
     }
 
-    private void debugPrint(Set s) {
+    private void debugPrint(String message, Set s) {
+        System.out.println(message);
         System.out.println("Size = " + s.size());
         for (var item : s) {
             System.out.println(item.toString());
@@ -35,6 +36,9 @@ public class MemoryDataAccess implements DataAccess {
         userDataSet.clear();
         authDataSet.clear();
         gameDataSet.clear();
+        debugPrint("User Data Set Clear", userDataSet);
+        debugPrint("Auth Data Set Clear", authDataSet);
+        debugPrint("Game Data Set Clear", gameDataSet);
     }
 
     @Override
@@ -60,19 +64,19 @@ public class MemoryDataAccess implements DataAccess {
     @Override
     public void createUser(UserData userData) throws DataAccessException {
         userDataSet.add(userData);
-        debugPrint(userDataSet);
+        debugPrint("User Data Set Create", userDataSet);
     }
 
     @Override
     public void createAuth(AuthData authData) throws DataAccessException {
         authDataSet.add(authData);
-        debugPrint(authDataSet);
+        debugPrint("Auth Data Set Create", authDataSet);
     }
 
     @Override
     public void removeAuth(String authToken) throws DataAccessException {
         authDataSet.removeIf(authData -> authData.authToken().equals(authToken));
-        debugPrint(authDataSet);
+        debugPrint("Auth Data Set Remove " + authToken, authDataSet);
     }
 
     @Override
@@ -92,11 +96,11 @@ public class MemoryDataAccess implements DataAccess {
 
     @Override
     public void addGame(GameData gameData) throws DataAccessException {
-        debugPrint(gameDataSet);
+        debugPrint("Game Data Set Create", gameDataSet);
     }
 
     @Override
     public void updateGame(int gameID, GameData gameData) throws DataAccessException {
-        debugPrint(gameDataSet);
+        debugPrint("User Data Set Update", gameDataSet);
     }
 }
