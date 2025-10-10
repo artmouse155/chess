@@ -1,5 +1,6 @@
 package service;
 
+import chess.ChessGame;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import dataaccess.MemoryDataAccess;
@@ -84,7 +85,9 @@ public class Service {
 
     public Map<String, Number> createGame(String gameName) throws ResponseException {
         try {
-            return Map.of();
+            int gameID = gameName.hashCode();
+            dataAccess.addGame(new GameData(gameID, null, null, gameName, new ChessGame()));
+            return Map.of("gameID", gameID);
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }

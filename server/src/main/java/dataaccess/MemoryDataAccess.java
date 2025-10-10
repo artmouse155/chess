@@ -65,8 +65,8 @@ public class MemoryDataAccess implements DataAccess{
 
 
     @Override
-    public List<GameData> getGameData() throws DataAccessException {
-        return List.of();
+    public Set<GameData> getGameDataSet() throws DataAccessException {
+        return gameDataSet;
     }
 
     @Override
