@@ -2,6 +2,7 @@ package handler;
 
 import model.AuthData;
 import model.GameData;
+import model.GameDataStripped;
 import model.UserData;
 import service.Service;
 
@@ -45,7 +46,7 @@ public class Handler {
         return service.logout(authToken);
     }
 
-    public Set<GameData> handleGetGames() throws ResponseException {
+    public Map<String, Set<GameDataStripped>> handleGetGames() throws ResponseException {
         return service.getGames();
     }
 

@@ -10,10 +10,12 @@ import handler.ResponseException;
 import handler.UnauthorizedException;
 import model.AuthData;
 import model.GameData;
+import model.GameDataStripped;
 import model.UserData;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Service {
 
@@ -92,9 +94,9 @@ public class Service {
         }
     }
 
-    public Set<GameData> getGames() throws ResponseException {
+    public Map<String, Set<GameDataStripped>> getGames() throws ResponseException {
         try {
-            return dataAccess.getGameDataSet();
+            return Map.of("games", dataAccess.getGameDataSet().stream().map(GameData::stripped).collect(Collectors.toSet()));
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }

@@ -6,11 +6,14 @@ import handler.ResponseException;
 import handler.UnauthorizedException;
 import io.javalin.*;
 import io.javalin.http.Context;
+import model.GameData;
 import model.UserData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Server {
 
@@ -73,8 +76,9 @@ public class Server {
     }
 
     private void listGames(Context ctx) throws ResponseException {
-        // Do something...
-        ctx.result("{\"games\" : []}");
+        var serializer = new Gson();
+        var res = handler.handleGetGames();
+        ctx.result(serializer.toJson(res));
     }
 
     private void createGame(Context ctx) throws ResponseException {
