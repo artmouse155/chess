@@ -55,4 +55,40 @@ Creates static values
   - But the shortcut for this is `Records`!!
   - Use Records for `UserData` and other classes we write later
 
+### Phase 2 Unit Tests
+
+#### DELETE /db
+
+- [ ] There's not really a way to mess this one up...
+
+#### POST /user
+
+- [ ] Missing `username`
+- [ ] Missing `password`
+- [ ] Missing `email`
+- [ ] Correct `username`, invalid `password`
+- [ ] Invalid `username`, invalid `password`
+- [ ] `username` field is the wrong type (Object, List, etc.)
+- [ ] `password` field is the wrong type (Object, List, etc.)
+- [ ] `email` field is the wrong type (Object, List, etc.)
+
+#### POST /session
+
+- [ ] Missing `username`
+- [ ] Missing `password`
+- [ ] `username` is the wrong type (Object, List, etc.)
+- [ ] `password` is the wrong type (Object, List, etc.)
+
+#### DELETE /session
+
+- [ ] No `authToken`
+- [ ] `authToken` is the wrong type (Object, List, etc.)
+- [ ] Double logout
+- [ ] Login session 1, logout session 1, attempt create game using session 1
+
+#### GET /game
+
+- [ ] No `authToken`
+- [ ]
+
 Developed by Chase Odom
