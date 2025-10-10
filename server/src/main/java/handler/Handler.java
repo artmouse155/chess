@@ -17,21 +17,23 @@ public class Handler {
         service = new Service();
     }
 
+    public AuthData handleAuth(String authToken) throws ResponseException {
+        return service.authenticate(authToken);
+    }
+
     public Map<String, String> handleDeleteDB() throws ResponseException {
         return service.deleteDB();
     }
 
     public AuthData handleRegister(UserData userData) throws ResponseException {
-        if (userData.password() == null || userData.username() == null || userData.email() == null)
-        {
+        if (userData.password() == null || userData.username() == null || userData.email() == null) {
             throw new BadRequestException("One or more fields is invalid.");
         }
         return service.register(userData);
     }
 
     public AuthData handleLogin(String username, String password) throws ResponseException {
-        if (username == null || password == null)
-        {
+        if (username == null || password == null) {
             throw new BadRequestException("One or more fields is invalid.");
         }
         return service.login(username, password);

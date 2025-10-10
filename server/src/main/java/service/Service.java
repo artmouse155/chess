@@ -23,6 +23,10 @@ public class Service {
         dataAccess = new MemoryDataAccess();
     }
 
+    public AuthData authenticate(String authToken) throws ResponseException {
+
+    }
+
     public Map<String, String> deleteDB() throws ResponseException {
         try {
             dataAccess.deleteDB();

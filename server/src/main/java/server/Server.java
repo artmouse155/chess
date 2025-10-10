@@ -3,6 +3,7 @@ package server;
 import com.google.gson.Gson;
 import handler.Handler;
 import handler.ResponseException;
+import handler.UnauthorizedException;
 import io.javalin.*;
 import io.javalin.http.Context;
 import model.UserData;
@@ -35,9 +36,11 @@ public class Server {
         handler = new Handler();
     }
 
-    private void authenticate(Context ctx) {
+    private void authenticate(Context ctx) throws ResponseException {
         var info = String.format("🔑 Auth: %s %s", ctx.method().name(), ctx.path());
         System.out.println(info);
+        var authData = handler.handleAuth(ctx.header("authentication"));
+        ctx.attribute("authData", authData);
     }
 
     ;
@@ -63,6 +66,7 @@ public class Server {
     }
 
     private void logout(Context ctx) throws ResponseException {
+        authenticate(ctx);
         var serializer = new Gson();
         var res = handler.handleLogout(ctx.header("authorization"));
         ctx.result(serializer.toJson(res));
