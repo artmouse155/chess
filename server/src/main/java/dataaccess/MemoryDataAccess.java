@@ -44,7 +44,7 @@ public class MemoryDataAccess implements DataAccess{
         var first = filteredStream.findFirst();
         if (first.isEmpty())
         {
-            throw new DataAccessException("Attempted to get user that did not exist.");
+            throw new UserNotFoundException("Attempted to get user that did not exist.");
         }
         return first.get();
     }
@@ -53,7 +53,7 @@ public class MemoryDataAccess implements DataAccess{
     public boolean hasUser(String username) throws DataAccessException {
         try {
             getUser(username);
-        } catch (DataAccessException e)
+        } catch (UserNotFoundException e)
         {
             return false;
         }
