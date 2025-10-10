@@ -38,6 +38,7 @@ public class Service {
     public Map<String, String> deleteDB() throws ResponseException {
         try {
             dataAccess.deleteDB();
+            gameCount = 0;
             return Map.of();
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
