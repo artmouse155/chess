@@ -105,12 +105,12 @@ public class MemoryDataAccess implements DataAccess {
     }
 
     @Override
-    public GameData getGame(String gameName) throws DataAccessException {
+    public GameData getGame(int gameID) throws DataAccessException {
         return null;
     }
 
     @Override
-    public GameData getGame(int gameID) throws DataAccessException {
+    public GameData hasGame(int gameID) throws DataAccessException {
         return null;
     }
 
@@ -121,6 +121,11 @@ public class MemoryDataAccess implements DataAccess {
 
     @Override
     public void updateGame(int gameID, GameData gameData) throws DataAccessException {
-        debugPrint("User Data Set Update", gameDataSet);
+        debugPrint("Game Data Set Update", gameDataSet);
+    }
+
+    @Override
+    public void removeGame(int gameID) throws DataAccessException {
+        debugPrint("Game Data Set Remove", gameDataSet);
     }
 }

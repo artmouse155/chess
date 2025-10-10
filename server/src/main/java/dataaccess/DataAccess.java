@@ -26,12 +26,13 @@ public interface DataAccess {
 
     public Set<GameData> getGameDataSet() throws DataAccessException;
 
-    public GameData getGame(String gameName) throws DataAccessException;
-
     public GameData getGame(int gameID) throws DataAccessException;
+
+    public GameData hasGame(int gameID) throws DataAccessException;
 
     public void addGame(GameData gameData) throws DataAccessException;
 
     public void updateGame(int gameID, GameData gameData) throws DataAccessException;
 
+    public void removeGame(int gameID) throws DataAccessException;
 }

@@ -87,7 +87,7 @@ public class Server {
     private void joinGame(Context ctx) throws ResponseException {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), Map.class);
-        // Do something...
+        var res = handler.handleJoinGame((String) req.get("playerColor"), (int) req.get("gameID"));
         ctx.result("{}");
     }
 

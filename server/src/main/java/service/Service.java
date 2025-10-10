@@ -111,9 +111,23 @@ public class Service {
         }
     }
 
-    public Map<String, String> joinGame(String playerColor, int gameID) throws ResponseException {
+    public Map<String, String> joinGame(String username, String playerColor, int gameID) throws ResponseException {
         try {
             GameData game = dataAccess.getGame(gameID);
+            if (playerColor.equals("WHITE")) {
+                if (game.whiteUsername() != null) {
+                    throw new AlreadyTakenException("The color white has already been taken.");
+                }
+                game = game.setWhiteUsername(username);
+            } else if (playerColor.equals("BLACK")) {
+                if (game.blackUsername() != null) {
+                    throw new AlreadyTakenException("The color black has already been taken.");
+                }
+                game = game.setBlackUsername(username);
+            } else {
+                throw new InternalServerErrorException("Unrecognized color requested.");
+            }
+            dataAccess.updateGame(gameID, game);
             return Map.of();
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);

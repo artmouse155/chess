@@ -7,6 +7,7 @@ import service.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class Handler {
@@ -56,6 +57,9 @@ public class Handler {
     }
 
     public Map<String, String> handleJoinGame(String playerColor, int gameID) throws ResponseException {
+        if (gameID < 0 || (!Objects.equals(playerColor, "WHITE") && !Objects.equals(playerColor, "BLACK"))) {
+            throw new BadRequestException("One or more fields is invalid.");
+        }
         return service.joinGame(playerColor, gameID);
     }
 }
