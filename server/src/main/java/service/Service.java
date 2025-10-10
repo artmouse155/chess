@@ -8,10 +8,12 @@ import handler.InternalServerErrorException;
 import handler.ResponseException;
 import handler.UnauthorizedException;
 import model.AuthData;
+import model.GameData;
 import model.UserData;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Service {
 
@@ -22,7 +24,12 @@ public class Service {
     }
 
     public Map<String, String> deleteDB() throws ResponseException {
-        return Map.of();
+        try {
+            dataAccess.deleteDB();
+            return Map.of();
+        } catch (DataAccessException e) {
+            throw new InternalServerErrorException(e);
+        }
     }
 
     public AuthData register(UserData userData) throws ResponseException {
@@ -43,38 +50,55 @@ public class Service {
     }
 
     public AuthData login(String username, String password) throws ResponseException {
-
+        try {
         var userData = dataAccess.getUser(username);
 
-        if (userData == null || !password.equals(userData.password()))
-        {
+        if (userData == null || !password.equals(userData.password())) {
             throw new UnauthorizedException("Credentials don't match.");
         }
         var authToken = generateAuthToken();
         var authData = new AuthData(authToken, username);
         dataAccess.createAuth(authData);
         return authData;
+        } catch (DataAccessException e) {
+            throw new InternalServerErrorException(e);
+        }
     }
 
     public Map<String, String> logout(String authToken) throws ResponseException {
+        try {
         dataAccess.removeAuth(authToken);
         return Map.of();
+        } catch (DataAccessException e) {
+            throw new InternalServerErrorException(e);
+        }
     }
 
-    public Map<String, List<Map<String, Object>>> getGames() {
-        return Map.of();
+    public Set<GameData> getGames() throws ResponseException {
+        try {
+            return dataAccess.getGameDataSet();
+        } catch (DataAccessException e) {
+            throw new InternalServerErrorException(e);
+        }
     }
 
-    public Map<String, Number> createGame(String gameName) {
-        return Map.of();
+    public Map<String, Number> createGame(String gameName) throws ResponseException {
+        try {
+            return Map.of();
+        } catch (DataAccessException e) {
+            throw new InternalServerErrorException(e);
+        }
     }
 
-    public Map<String, String> joinGame(String playerColor, int gameID) {
-        return Map.of();
+    public Map<String, String> joinGame(String playerColor, int gameID) throws ResponseException {
+        try {
+            return Map.of();
+        } catch (DataAccessException e) {
+            throw new InternalServerErrorException(e);
+        }
     }
 
-    public String generateAuthToken()
-    {
+    public String generateAuthToken() {
         return "Service auth token";
     }
 

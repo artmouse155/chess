@@ -1,11 +1,13 @@
 package handler;
 
 import model.AuthData;
+import model.GameData;
 import model.UserData;
 import service.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Handler {
 
@@ -15,7 +17,7 @@ public class Handler {
         service = new Service();
     }
 
-    public Map<String, String> handleDeleteDB() {
+    public Map<String, String> handleDeleteDB() throws ResponseException {
         return service.deleteDB();
     }
 
@@ -40,7 +42,7 @@ public class Handler {
         return service.logout(authToken);
     }
 
-    public Map<String, List<Map<String, Object>>> handleGetGames() throws ResponseException {
+    public Set<GameData> handleGetGames() throws ResponseException {
         return service.getGames();
     }
 

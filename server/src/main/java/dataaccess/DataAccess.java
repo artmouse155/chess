@@ -5,6 +5,7 @@ import model.GameData;
 import model.UserData;
 
 import java.util.List;
+import java.util.Set;
 
 public interface DataAccess {
 
@@ -18,7 +19,7 @@ public interface DataAccess {
 
     public void removeAuth(String authToken) throws DataAccessException;
 
-    public List<GameData> getGameData() throws DataAccessException;
+    public Set<GameData> getGameDataSet() throws DataAccessException;
 
     public GameData getGame(String gameName) throws DataAccessException;
 
@@ -27,4 +28,5 @@ public interface DataAccess {
     public void getGame(int gameID) throws DataAccessException;
 
     public void updateGame(int gameID, GameData gameData) throws DataAccessException;
+
 }
