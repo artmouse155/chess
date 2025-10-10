@@ -16,6 +16,10 @@ public interface DataAccess {
 
     public void createUser(UserData userData) throws DataAccessException;
 
+    public AuthData getAuth(String authToken) throws DataAccessException;
+
+    public boolean hasAuth(String authToken) throws DataAccessException;
+
     public void createAuth(AuthData authData) throws DataAccessException;
 
     public void removeAuth(String authToken) throws DataAccessException;

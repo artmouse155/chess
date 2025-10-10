@@ -68,6 +68,21 @@ public class MemoryDataAccess implements DataAccess {
     }
 
     @Override
+    public AuthData getAuth(String authToken) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    public boolean hasAuth(String authToken) throws DataAccessException {
+        try {
+            getAuth(authToken);
+        } catch (AuthNotFoundException e) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public void createAuth(AuthData authData) throws DataAccessException {
         authDataSet.add(authData);
         debugPrint("Auth Data Set Create", authDataSet);

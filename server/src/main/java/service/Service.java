@@ -24,7 +24,14 @@ public class Service {
     }
 
     public AuthData authenticate(String authToken) throws ResponseException {
-
+        try {
+            if (!dataAccess.hasAuth(authToken)) {
+                throw new UnauthorizedException("Invalid authToken.");
+            }
+            return dataAccess.getAuth(authToken);
+        } catch (DataAccessException e) {
+            throw new InternalServerErrorException(e);
+        }
     }
 
     public Map<String, String> deleteDB() throws ResponseException {
