@@ -25,7 +25,7 @@ public class MemoryDataAccess implements DataAccess{
     }
 
     private void debugPrint(Set s) {
-        System.out.println("Size = " + s.size() + ")");
+        System.out.println("Size = " + s.size());
         for (var item : s) {
             System.out.println(item.toString());
         }
