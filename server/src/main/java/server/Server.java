@@ -39,7 +39,7 @@ public class Server {
     private void authenticate(Context ctx) throws ResponseException {
         var info = String.format("🔑 Auth: %s %s", ctx.method().name(), ctx.path());
         System.out.println(info);
-        var authData = handler.handleAuth(ctx.header("authentication"));
+        var authData = handler.handleAuth(ctx.header("authorization"));
         ctx.attribute("authData", authData);
     }
 
