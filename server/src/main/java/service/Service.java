@@ -37,7 +37,7 @@ public class Service {
         try {
             var username = userData.username();
 
-            if (dataAccess.getUser(username) != null) {
+            if (dataAccess.hasUser(username)) {
                 throw new AlreadyTakenException("Failed to register username \"" + username + "\". Already taken.");
             }
             dataAccess.createUser(userData);

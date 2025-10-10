@@ -42,7 +42,22 @@ public class MemoryDataAccess implements DataAccess{
     public UserData getUser(String username) throws DataAccessException {
         var filteredStream = userDataSet.stream().filter(userData -> userData.username().equals(username));
         var first = filteredStream.findFirst();
-        return first.orElse(null);
+        if (first.isEmpty())
+        {
+            throw new DataAccessException("Attempted to get user that did not exist.");
+        }
+        return first.get();
+    }
+
+    @Override
+    public boolean hasUser(String username) throws DataAccessException {
+        try {
+            getUser(username);
+        } catch (DataAccessException e)
+        {
+            return false;
+        }
+        return true;
     }
 
     @Override

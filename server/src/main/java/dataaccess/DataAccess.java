@@ -29,4 +29,5 @@ public interface DataAccess {
 
     public void updateGame(int gameID, GameData gameData) throws DataAccessException;
 
+    public boolean hasUser(String username) throws DataAccessException;
 }
