@@ -57,6 +57,8 @@ Creates static values
 
 ### Phase 2 Unit Tests
 
+**Important:** Every test case must have an assert statement.
+
 #### DELETE /db
 
 - [ ] There's not really a way to mess this one up...
@@ -81,14 +83,40 @@ Creates static values
 
 #### DELETE /session
 
-- [ ] No `authToken`
+- [ ] Missing `authToken`
 - [ ] `authToken` is the wrong type (Object, List, etc.)
 - [ ] Double logout
 - [ ] Login session 1, logout session 1, attempt create game using session 1
 
 #### GET /game
 
-- [ ] No `authToken`
-- [ ]
+- [ ] Missing `authToken`
+- [ ] `authToken` is the wrong type (Object, List, etc.)
+- [ ] A failed game creation does not update the list of games
+- [ ] A long combo involving creating, updating adding / removing games, with `GET /game` at the end
+
+#### CREATE /game
+
+- [ ] Missing `authToken`
+- [ ] `authToken` is the wrong type (Object, List, etc.)
+- [ ] Missing `gameName`
+- [ ] `gameName` is the wrong type (Object, List, etc.)
+- [ ] Create 2 games with same gameName
+
+#### JOIN /game
+
+- [ ] Missing `authToken`
+- [ ] `authToken` is the wrong type (Object, List, etc.)
+- [ ] Missing `playerColor`
+- [ ] `playerColor` is the wrong type (Object, List, etc.)
+- [ ] `playerColor` is a string other than `"WHITE"` or `"BLACK"`
+- [ ] Missing `gameID`
+- [ ] `gameID` is the wrong type (Object, List, etc.)
+- [ ] `gameID` is negative
+- [ ] `gameID` is a VERY large number (greater than size of an int)
+- [ ] `gameID` is a double
+- [ ] Join a game in an occupied spot
+- [ ] Same player tries to be both black and white
+- [ ] (See final test of `GET /game`)
 
 Developed by Chase Odom
