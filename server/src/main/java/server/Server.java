@@ -1,6 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
+import handler.BadRequestException;
 import handler.Handler;
 import handler.ResponseException;
 import handler.UnauthorizedException;
@@ -92,8 +93,11 @@ public class Server {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), Map.class);
         Double gameID = (Double) req.get("gameID");
+        if (gameID == null) {
+            throw new BadRequestException("That Game ID is not valid.");
+        }
         var res = handler.handleJoinGame((String) ctx.attribute("username"), (String) req.get("playerColor"), gameID.intValue());
-        ctx.result("{}");
+        ctx.result(serializer.toJson(res));
     }
 
     private void exceptionHandler(ResponseException ex, Context ctx) {
