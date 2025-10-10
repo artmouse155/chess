@@ -9,7 +9,6 @@ import handler.ResponseException;
 import handler.UnauthorizedException;
 import model.AuthData;
 import model.UserData;
-import org.eclipse.jetty.server.Authentication;
 
 import java.util.List;
 import java.util.Map;
@@ -22,23 +21,25 @@ public class Service {
         dataAccess = new MemoryDataAccess();
     }
 
-    public Map<String, String> deleteDB() {
+    public Map<String, String> deleteDB() throws ResponseException {
         return Map.of();
     }
 
     public AuthData register(UserData userData) throws ResponseException {
+        try {
+            var username = userData.username();
 
-        var username = userData.username();
-
-        if (dataAccess.getUser(username) != null)
-        {
-            throw new AlreadyTakenException("Failed to register username \"" + username + "\". Already taken.");
+            if (dataAccess.getUser(username) != null) {
+                throw new AlreadyTakenException("Failed to register username \"" + username + "\". Already taken.");
+            }
+            dataAccess.createUser(userData);
+            var authToken = generateAuthToken();
+            var authData = new AuthData(authToken, username);
+            dataAccess.createAuth(authData);
+            return authData;
+        } catch (DataAccessException e) {
+            throw new InternalServerErrorException(e);
         }
-        dataAccess.createUser(userData);
-        var authToken = generateAuthToken();
-        var authData = new AuthData(authToken, username);
-        dataAccess.createAuth(authData);
-        return authData;
     }
 
     public AuthData login(String username, String password) throws ResponseException {

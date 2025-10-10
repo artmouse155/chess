@@ -1,6 +1,6 @@
 package handler;
 
-public abstract class ResponseException extends RuntimeException {
+public abstract class ResponseException extends Exception {
     public ResponseException(String message) {
         super(message);
     }

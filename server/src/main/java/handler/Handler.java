@@ -19,7 +19,7 @@ public class Handler {
         return service.deleteDB();
     }
 
-    public AuthData handleRegister(UserData userData) {
+    public AuthData handleRegister(UserData userData) throws ResponseException {
         if (userData.password() == null || userData.username() == null || userData.email() == null)
         {
             throw new BadRequestException("One or more fields is invalid.");
@@ -27,7 +27,7 @@ public class Handler {
         return service.register(userData);
     }
 
-    public AuthData handleLogin(String username, String password) {
+    public AuthData handleLogin(String username, String password) throws ResponseException {
         if (username == null || password == null)
         {
             throw new BadRequestException("One or more fields is invalid.");
@@ -35,20 +35,20 @@ public class Handler {
         return service.login(username, password);
     }
 
-    public Map<String, String> handleLogout(String authToken) {
+    public Map<String, String> handleLogout(String authToken) throws ResponseException {
 
         return service.logout(authToken);
     }
 
-    public Map<String, List<Map<String, Object>>> handleGetGames() {
+    public Map<String, List<Map<String, Object>>> handleGetGames() throws ResponseException {
         return service.getGames();
     }
 
-    public Map<String, Number> handleCreateGame(String gameName) {
+    public Map<String, Number> handleCreateGame(String gameName) throws ResponseException {
         return service.createGame(gameName);
     }
 
-    public Map<String, String> handleJoinGame(String playerColor, int gameID) {
+    public Map<String, String> handleJoinGame(String playerColor, int gameID) throws ResponseException {
         return service.joinGame(playerColor, gameID);
     }
 }
