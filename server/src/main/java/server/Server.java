@@ -40,7 +40,7 @@ public class Server {
         var info = String.format("🔑 Auth: %s %s", ctx.method().name(), ctx.path());
         System.out.println(info);
         var authData = handler.handleAuth(ctx.header("authorization"));
-        ctx.attribute("authData", authData);
+        ctx.attribute("username", authData.username());
     }
 
     ;
@@ -87,7 +87,8 @@ public class Server {
     private void joinGame(Context ctx) throws ResponseException {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), Map.class);
-        var res = handler.handleJoinGame((String) req.get("playerColor"), (int) req.get("gameID"));
+        Double gameID = (Double) req.get("gameID");
+        var res = handler.handleJoinGame((String) ctx.attribute("username"), (String) req.get("playerColor"), gameID.intValue());
         ctx.result("{}");
     }
 

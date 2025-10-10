@@ -56,10 +56,10 @@ public class Handler {
         return service.createGame(gameName);
     }
 
-    public Map<String, String> handleJoinGame(String playerColor, int gameID) throws ResponseException {
+    public Map<String, String> handleJoinGame(String username, String playerColor, int gameID) throws ResponseException {
         if (gameID < 0 || (!Objects.equals(playerColor, "WHITE") && !Objects.equals(playerColor, "BLACK"))) {
             throw new BadRequestException("One or more fields is invalid.");
         }
-        return service.joinGame(playerColor, gameID);
+        return service.joinGame(username, playerColor, gameID);
     }
 }

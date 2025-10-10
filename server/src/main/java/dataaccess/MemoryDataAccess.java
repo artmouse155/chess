@@ -106,26 +106,40 @@ public class MemoryDataAccess implements DataAccess {
 
     @Override
     public GameData getGame(int gameID) throws DataAccessException {
-        return null;
+        var filteredStream = gameDataSet.stream().filter(gameData -> gameData.gameID() == gameID);
+        var first = filteredStream.findFirst();
+        if (first.isEmpty()) {
+            throw new GameNotFoundException("Attempted to get game that did not exist.");
+        }
+        return first.get();
     }
 
     @Override
-    public GameData hasGame(int gameID) throws DataAccessException {
-        return null;
+    public boolean hasGame(int gameID) throws DataAccessException {
+        try {
+            getGame(gameID);
+        } catch (GameNotFoundException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public void addGame(GameData gameData) throws DataAccessException {
+        gameDataSet.add(gameData);
         debugPrint("Game Data Set Create", gameDataSet);
     }
 
     @Override
     public void updateGame(int gameID, GameData gameData) throws DataAccessException {
+        removeGame(gameID);
+        addGame(gameData);
         debugPrint("Game Data Set Update", gameDataSet);
     }
 
     @Override
     public void removeGame(int gameID) throws DataAccessException {
+        gameDataSet.removeIf(gameData -> gameData.gameID() == gameID);
         debugPrint("Game Data Set Remove", gameDataSet);
     }
 }

@@ -18,8 +18,9 @@ public record GameData(int gameID, String whiteUsername, String blackUsername, S
     @Override
     public String toString() {
         // Don't include ChessGame in toString
-        var strippedData = Map.of("gameID", gameID, "whiteUsername", whiteUsername, "blackUsername", blackUsername, "gameName", gameName);
-        return new Gson().toJson(strippedData);
+        record StrippedGameData(int gameID, String whiteUsername, String blackUsername, String gameName) {
+        }
+        return new Gson().toJson(new StrippedGameData(gameID, whiteUsername, blackUsername, gameName));
     }
 
 }

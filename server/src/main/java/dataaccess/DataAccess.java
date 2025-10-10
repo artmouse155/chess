@@ -28,7 +28,7 @@ public interface DataAccess {
 
     public GameData getGame(int gameID) throws DataAccessException;
 
-    public GameData hasGame(int gameID) throws DataAccessException;
+    public boolean hasGame(int gameID) throws DataAccessException;
 
     public void addGame(GameData gameData) throws DataAccessException;
 
