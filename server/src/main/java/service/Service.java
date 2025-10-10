@@ -12,6 +12,7 @@ import model.UserData;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Service {
@@ -134,7 +135,7 @@ public class Service {
     }
 
     public String generateAuthToken() {
-        return "Service auth token";
+        return UUID.randomUUID().toString();
     }
 
 }
