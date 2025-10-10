@@ -51,15 +51,21 @@ public class Service {
 
     public AuthData login(String username, String password) throws ResponseException {
         try {
-        var userData = dataAccess.getUser(username);
 
-        if (userData == null || !password.equals(userData.password())) {
-            throw new UnauthorizedException("Credentials don't match.");
-        }
-        var authToken = generateAuthToken();
-        var authData = new AuthData(authToken, username);
-        dataAccess.createAuth(authData);
-        return authData;
+
+            if (!dataAccess.hasUser(username)) {
+                throw new UnauthorizedException("User does not exist.");
+            }
+
+            var userData = dataAccess.getUser(username);
+            if (!password.equals(userData.password())) {
+                throw new UnauthorizedException("Password is incorrect.");
+            }
+
+            var authToken = generateAuthToken();
+            var authData = new AuthData(authToken, username);
+            dataAccess.createAuth(authData);
+            return authData;
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }
@@ -67,8 +73,8 @@ public class Service {
 
     public Map<String, String> logout(String authToken) throws ResponseException {
         try {
-        dataAccess.removeAuth(authToken);
-        return Map.of();
+            dataAccess.removeAuth(authToken);
+            return Map.of();
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }
