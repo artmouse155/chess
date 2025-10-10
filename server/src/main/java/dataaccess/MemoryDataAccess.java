@@ -69,7 +69,12 @@ public class MemoryDataAccess implements DataAccess {
 
     @Override
     public AuthData getAuth(String authToken) throws DataAccessException {
-        return null;
+        var filteredStream = authDataSet.stream().filter(authData -> authData.authToken().equals(authToken));
+        var first = filteredStream.findFirst();
+        if (first.isEmpty()) {
+            throw new AuthNotFoundException("Attempted to get authData that did not exist.");
+        }
+        return first.get();
     }
 
     @Override
