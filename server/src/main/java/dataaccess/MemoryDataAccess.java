@@ -5,10 +5,9 @@ import model.GameData;
 import model.UserData;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public class MemoryDataAccess implements DataAccess{
+public class MemoryDataAccess implements DataAccess {
 
     Set<UserData> userDataSet;
     Set<AuthData> authDataSet;
@@ -42,8 +41,7 @@ public class MemoryDataAccess implements DataAccess{
     public UserData getUser(String username) throws DataAccessException {
         var filteredStream = userDataSet.stream().filter(userData -> userData.username().equals(username));
         var first = filteredStream.findFirst();
-        if (first.isEmpty())
-        {
+        if (first.isEmpty()) {
             throw new UserNotFoundException("Attempted to get user that did not exist.");
         }
         return first.get();
@@ -53,8 +51,7 @@ public class MemoryDataAccess implements DataAccess{
     public boolean hasUser(String username) throws DataAccessException {
         try {
             getUser(username);
-        } catch (UserNotFoundException e)
-        {
+        } catch (UserNotFoundException e) {
             return false;
         }
         return true;
@@ -78,7 +75,6 @@ public class MemoryDataAccess implements DataAccess{
         debugPrint(authDataSet);
     }
 
-
     @Override
     public Set<GameData> getGameDataSet() throws DataAccessException {
         return gameDataSet;
@@ -90,13 +86,13 @@ public class MemoryDataAccess implements DataAccess{
     }
 
     @Override
-    public void addGame(GameData gameData) throws DataAccessException {
-        debugPrint(gameDataSet);
+    public GameData getGame(int gameID) throws DataAccessException {
+
     }
 
     @Override
-    public void getGame(int gameID) throws DataAccessException {
-
+    public void addGame(GameData gameData) throws DataAccessException {
+        debugPrint(gameDataSet);
     }
 
     @Override

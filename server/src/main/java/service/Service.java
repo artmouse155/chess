@@ -12,7 +12,6 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -95,7 +94,7 @@ public class Service {
 
     public Map<String, String> joinGame(String playerColor, int gameID) throws ResponseException {
         try {
-            return Map.of();
+            ChessGame game = dataAccess.getGame(gameID);
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }
