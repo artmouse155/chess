@@ -17,6 +17,7 @@ import java.util.Set;
 
 public class Service {
 
+    private int gameCount = 0;
     private final DataAccess dataAccess;
 
     public Service() {
@@ -101,8 +102,9 @@ public class Service {
 
     public Map<String, Number> createGame(String gameName) throws ResponseException {
         try {
-            int gameID = gameName.hashCode();
+            int gameID = gameCount + 1;
             dataAccess.addGame(new GameData(gameID, null, null, gameName, new ChessGame()));
+            gameCount++;
             return Map.of("gameID", gameID);
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);

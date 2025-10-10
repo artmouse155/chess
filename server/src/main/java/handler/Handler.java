@@ -49,6 +49,9 @@ public class Handler {
     }
 
     public Map<String, Number> handleCreateGame(String gameName) throws ResponseException {
+        if (gameName == null) {
+            throw new BadRequestException("One or more fields is invalid.");
+        }
         return service.createGame(gameName);
     }
 

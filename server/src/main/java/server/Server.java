@@ -80,8 +80,8 @@ public class Server {
     private void createGame(Context ctx) throws ResponseException {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), Map.class);
-        // Do something...
-        ctx.result("{\"gameID\": 24601}");
+        var res = handler.handleCreateGame((String) req.get("gameName"));
+        ctx.result(serializer.toJson(res));
     }
 
     private void joinGame(Context ctx) throws ResponseException {
