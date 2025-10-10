@@ -94,7 +94,8 @@ public class Service {
 
     public Map<String, String> joinGame(String playerColor, int gameID) throws ResponseException {
         try {
-            ChessGame game = dataAccess.getGame(gameID);
+            GameData game = dataAccess.getGame(gameID);
+            return Map.of();
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }
