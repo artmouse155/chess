@@ -113,8 +113,5 @@ public class Server {
     public void stop() {
         server.stop();
     }
-
-    public Map<String, Set<? extends Record>> getDB() throws DataAccessException {
-        return handler.handleGetDB();
-    }
+    
 }
