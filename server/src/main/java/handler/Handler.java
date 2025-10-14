@@ -56,7 +56,7 @@ public class Handler {
     }
 
     public EmptyResponse handleLogout(String authToken) throws ResponseException {
-
+        handleAuth(authToken);
         return service.logout(authToken);
     }
 

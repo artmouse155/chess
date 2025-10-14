@@ -25,7 +25,7 @@ public class Server {
         server.post("user", this::register);
         server.post("session", this::login);
 
-        // Special authentication case.
+        // Special authentication case. This authentication is called from within handler.
         server.delete("session", this::logout);
 
         server.before("game", this::authenticate);
@@ -67,7 +67,6 @@ public class Server {
     }
 
     public void logout(Context ctx) throws ResponseException {
-        authenticate(ctx);
         var res = handler.handleLogout(ctx.header("authorization"));
         ctx.result(res.toString());
     }
