@@ -30,5 +30,25 @@ public class RegisterTests extends EndpointTests {
         Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleRegister(new UserData("test1234", "soSecure!!!", "")));
     }
 
+    @Test
+    @Order(1)
+    @DisplayName("Null username")
+    public void nullUsername() {
+        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleRegister(new UserData(null, "soSecure!!!", "test@gmail.com")));
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("Null password")
+    public void nullPassword() {
+        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleRegister(new UserData("test1234", null, "test@gmail.com")));
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("Null email")
+    public void nullEmail() {
+        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleRegister(new UserData("test1234", "soSecure!!!", null)));
+    }
 
 }
