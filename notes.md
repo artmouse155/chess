@@ -110,14 +110,20 @@ Creates static values
 
 #### JOIN /game
 
-- [ ] ❌ Invalid `playerColor` *2
-- [ ] ❌ Invalid `gameID`
-- [ ] ❌ `gameID` is the wrong type (Object, List, etc.)
-- [ ] ❌ `gameID` is negative
-- [ ] ❌ `gameID` is a VERY large number (greater than size of an int)
-- [ ] ❌ `gameID` is a double
-- [ ] ❌ Join a game in an occupied spot
+- [x] ❌ Invalid `username` *2
+- [x] ❌  `username` not in database
+- [x] ❌  `username` not in an active authenticated session
+- [x] ❌ Invalid `playerColor` *2
+- [x] ❌ `playerColor` is not `"WHITE"` nor `"BLACK"`
+- [x] ❌ `playerColor` is correct but lowercase
+- [x] ❌ Incorrect `gameID`
+~~- [ ] ❌ `gameID` is the wrong type (Object, List, etc.)~~ // impossible because function only allows for ints
+- [x] ❌ `gameID` is negative
+- [x] ❌ `gameID` is a VERY large number (greater than size of an int)
+~~- [ ] ❌ `gameID` is a double~~ // impossible because function does not allow for double input
+- [x] ❌ Join a game in an occupied spot
 - [ ] ❌ Same player tries to be both black and white
+- [ ] ✅ One player joins black, one player joins white
 - [ ] ✅ A long combo involving creating, updating adding / removing games, with `GET /game` at the end
 
 Developed by Chase Odom
