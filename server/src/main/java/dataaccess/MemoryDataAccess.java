@@ -24,7 +24,7 @@ public class MemoryDataAccess implements DataAccess {
         debugPrint("Game Data Set Init", gameDataSet);
     }
 
-    private void debugPrint(String message, Set s) {
+    private void debugPrint(String message, Set<? extends Record> s) {
         System.out.println(message);
         System.out.println("Size = " + s.size());
         for (var item : s) {
