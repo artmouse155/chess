@@ -38,7 +38,7 @@ public class Server {
         handler = new Handler();
     }
 
-    private void authenticate(Context ctx) throws ResponseException {
+    public void authenticate(Context ctx) throws ResponseException {
         var info = String.format("🔑 Auth: %s %s", ctx.method().name(), ctx.path());
         System.out.println(info);
         var authData = handler.handleAuth(ctx.header("authorization"));
@@ -47,47 +47,47 @@ public class Server {
 
     ;
 
-    private void clear(Context ctx) throws ResponseException {
+    public void clear(Context ctx) throws ResponseException {
         var serializer = new Gson();
         System.out.println("clear");
         ctx.result(serializer.toJson(handler.handleDeleteDB()));
     }
 
-    private void register(Context ctx) throws ResponseException {
+    public void register(Context ctx) throws ResponseException {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), UserData.class);
         var res = handler.handleRegister(req);
         ctx.result(res.toString());
     }
 
-    private void login(Context ctx) throws ResponseException {
+    public void login(Context ctx) throws ResponseException {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), Map.class);
         var res = handler.handleLogin((String) req.get("username"), (String) req.get("password"));
         ctx.result(res.toString());
     }
 
-    private void logout(Context ctx) throws ResponseException {
+    public void logout(Context ctx) throws ResponseException {
         authenticate(ctx);
         var serializer = new Gson();
         var res = handler.handleLogout(ctx.header("authorization"));
         ctx.result(serializer.toJson(res));
     }
 
-    private void listGames(Context ctx) throws ResponseException {
+    public void listGames(Context ctx) throws ResponseException {
         var serializer = new Gson();
         var res = handler.handleGetGames();
         ctx.result(serializer.toJson(res));
     }
 
-    private void createGame(Context ctx) throws ResponseException {
+    public void createGame(Context ctx) throws ResponseException {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), Map.class);
         var res = handler.handleCreateGame((String) req.get("gameName"));
         ctx.result(serializer.toJson(res));
     }
 
-    private void joinGame(Context ctx) throws ResponseException {
+    public void joinGame(Context ctx) throws ResponseException {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), Map.class);
         Double gameID = (Double) req.get("gameID");
