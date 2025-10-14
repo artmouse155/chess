@@ -1,6 +1,7 @@
 package service;
 
 import handler.Handler;
+import model.AuthData;
 import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -20,6 +21,14 @@ public class EndpointTests {
         Assertions.assertTrue(db.get("userDataSet").isEmpty(), String.format("userDataSet was not empty. (%s)", db.get("userDataSet").toString()));
         Assertions.assertTrue(db.get("authDataSet").isEmpty(), String.format("authDataSet was not empty. (%s)", db.get("authDataSet").toString()));
         Assertions.assertTrue(db.get("gameDataSet").isEmpty(), String.format("gameDataSet was not empty. (%s)", db.get("gameDataSet").toString()));
+    }
+
+    public void registerTestUser() {
+        Assertions.assertDoesNotThrow(() -> handler.handleRegister(testUser));
+    }
+
+    public AuthData loginTestUser() {
+        return Assertions.assertDoesNotThrow(() -> handler.handleLogin(testUser.username(), testUser.password()));
     }
 
     // Assert empty database

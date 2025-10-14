@@ -85,8 +85,8 @@ Creates static values
 
 #### AUTHENTICATE
 
-- [ ] ❌ Invalid `authToken` *2
-- [ ] ✅ Valid `authToken`
+- [x] ❌ Invalid `authToken` *3
+- [x] ✅ Valid `authToken`
 
 #### DELETE /session
 

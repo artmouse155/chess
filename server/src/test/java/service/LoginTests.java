@@ -2,14 +2,13 @@ package service;
 
 import handler.exception.BadRequestException;
 import handler.exception.UnauthorizedException;
-import model.UserData;
 import org.junit.jupiter.api.*;
 
 public class LoginTests extends EndpointTests {
 
     @BeforeEach
-    public void register() {
-        Assertions.assertDoesNotThrow(() -> handler.handleRegister(testUser));
+    public void beforeEach() {
+        registerTestUser();
     }
 
     @Test
@@ -58,6 +57,6 @@ public class LoginTests extends EndpointTests {
     @Order(7)
     @DisplayName("Correct username and password")
     public void correctUsernameCorrectPassword() {
-        Assertions.assertDoesNotThrow(() -> handler.handleLogin(testUser.username(), testUser.password()));
+        loginTestUser();
     }
 }
