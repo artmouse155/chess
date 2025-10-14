@@ -4,8 +4,11 @@ import handler.exception.AlreadyTakenException;
 import handler.exception.BadRequestException;
 import handler.exception.UnauthorizedException;
 import model.AuthData;
+import model.GameDataStripped;
 import model.UserData;
 import org.junit.jupiter.api.*;
+
+import java.util.Set;
 
 public class JoinGameTests extends EndpointTests {
 
@@ -119,16 +122,51 @@ public class JoinGameTests extends EndpointTests {
     @Order(12)
     @DisplayName("Same user in both spots")
     public void sameUserInBothSpots() {
-        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "BLACK", gameID));
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "WHITE", gameID));
         Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(secondAuthData, "WHITE", gameID));
     }
 
     @Test
-    @Order(12)
+    @Order(13)
     @DisplayName("One user in each spot")
     public void oneUserInEachSpot() {
-        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "BLACK", gameID));
-        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(secondAuthData, "WHITE", gameID));
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "WHITE", gameID));
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(secondAuthData, "BLACK", gameID));
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("Combination of creating and joining games")
+    public void createAndJoinManyGames() {
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "WHITE", gameID));
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(secondAuthData, "BLACK", gameID));
+
+        // TestUser joins a self game
+        final String soloGameName = "I am solo";
+        int soloGameID = Assertions.assertDoesNotThrow(() -> handler.handleCreateGame(soloGameName)).gameID();
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "WHITE", soloGameID));
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "BLACK", soloGameID));
+
+        // Second duo game
+        final String secondDuoGameName = "Second duo game";
+        int secondDuoGameID = Assertions.assertDoesNotThrow(() -> handler.handleCreateGame(secondDuoGameName)).gameID();
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "WHITE", secondDuoGameID));
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(secondAuthData, "BLACK", secondDuoGameID));
+
+        // Null game
+        final String nullGameName = "Null game";
+        int nullGameID = Assertions.assertDoesNotThrow(() -> handler.handleCreateGame(nullGameName)).gameID();
+
+        final String testUsername = testUser.username();
+        final String secondUsername = secondUser.username();
+
+        var getGamesResponse = Assertions.assertDoesNotThrow(() -> handler.handleGetGames());
+        Assertions.assertEquals(getGamesResponse.games(), Set.of(
+                new GameDataStripped(gameID, testUsername, secondUsername, gameName),
+                new GameDataStripped(soloGameID, testUsername, testUsername, soloGameName),
+                new GameDataStripped(secondDuoGameID, testUsername, secondUsername, secondDuoGameName),
+                new GameDataStripped(nullGameID, null, null, nullGameName)
+        ));
     }
 
 }

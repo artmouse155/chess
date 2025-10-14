@@ -124,6 +124,6 @@ Creates static values
 - [x] ❌ Join a game in an occupied spot
 - [x] ✅ Same player tries to be both black and white // Turns out a self-game is OK
 - [x] ✅ One player joins black, one player joins white
-- [ ] ✅ A long combo involving creating, updating adding / removing games, with `GET /game` at the end
+- [x] ✅ A long combo involving creating and joining games, with `GET /game` at the end
 
 Developed by Chase Odom
