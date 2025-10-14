@@ -15,7 +15,7 @@ The tests use a textual representation of a gameboard.
 
 Java has a special signature entry point. We can put it in any class that we like.
 ```java
-public static void main(String[] args) {
+void main(String[] args) {
     
 }
 ```
@@ -70,8 +70,9 @@ Creates static values
 
 #### POST /user
 
-- [ ] ❌ Correct `username`, invalid `password`
-- [ ] ❌ Invalid `username`, invalid `password`
+- [x] ❌ Invalid `username`
+- [x] ❌ Invalid `password`
+- [x] ❌ Invalid `email`
 - [ ] ❌ `username` field is the wrong type (Object, List, etc.)
 - [ ] ❌ `password` field is the wrong type (Object, List, etc.)
 - [ ] ❌ `email` field is the wrong type (Object, List, etc.)
@@ -92,7 +93,7 @@ Creates static values
 - [ ] ❌ Missing `authToken`
 - [ ] ❌ `authToken` is the wrong type (Object, List, etc.)
 - [ ] ❌ Double logout
-- [ ] ❌ Login session 1, logout session 1, attempt create game using session 1
+- [ ] ❌ Login session 1, logout session 1, attempt to create game using session 1
 - [ ] ✅ Login then logout
 
 #### GET /game
