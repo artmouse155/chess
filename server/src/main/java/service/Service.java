@@ -115,6 +115,10 @@ public class Service {
 
     public EmptyResponse joinGame(String username, String playerColor, int gameID) throws ResponseException {
         try {
+            if (!dataAccess.hasGame(gameID)) {
+                throw new BadRequestException("Game does not exist.");
+            }
+
             GameData game = dataAccess.getGame(gameID);
             if (playerColor.equals("WHITE")) {
                 if (game.whiteUsername() != null) {
