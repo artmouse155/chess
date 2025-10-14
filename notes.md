@@ -61,8 +61,8 @@ Creates static values
 
 #### DELETE /db
 
-- [ ] Delete with no data in DB
-- [ ] Delete users and games
+- [x] Delete with no data in DB
+- [x] Delete users and games
 
 #### POST /user
 
