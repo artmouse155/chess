@@ -83,29 +83,30 @@ Creates static values
 - [x] ❌ Correct `username` and incorrect `password`
 - [x] ✅ Correct `username` and `password`
 
-#### DELETE /session
+#### AUTHENTICATE
 
 - [ ] ❌ Invalid `authToken` *2
+- [ ] ✅ Valid `authToken`
+
+#### DELETE /session
+
 - [ ] ❌ Double logout
 - [ ] ❌ Login session 1, logout session 1, attempt to create game using session 1
 - [ ] ✅ Login then logout
 
 #### GET /game
 
-- [ ] ❌ Invalid `authToken` *2
 - [ ] ❌ A failed game creation does not update the list of games
 - [ ] ✅ Creating a game and getting it
 
 #### CREATE /game
 
-- [ ] ❌ Invalid `authToken` *2
 - [ ] ❌ Invalid `gameName` *2
 - [ ] ❌ Create 2 games with same gameName
 - [ ] ✅ Creating a game
 
 #### JOIN /game
 
-- [ ] ❌ Invalid `authToken` *2
 - [ ] ❌ Invalid `playerColor` *2
 - [ ] ❌ Invalid `gameID`
 - [ ] ❌ `gameID` is the wrong type (Object, List, etc.)
