@@ -31,24 +31,30 @@ public class RegisterTests extends EndpointTests {
     }
 
     @Test
-    @Order(1)
+    @Order(4)
     @DisplayName("Null username")
     public void nullUsername() {
         Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleRegister(new UserData(null, "soSecure!!!", "test@gmail.com")));
     }
 
     @Test
-    @Order(2)
+    @Order(5)
     @DisplayName("Null password")
     public void nullPassword() {
         Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleRegister(new UserData("test1234", null, "test@gmail.com")));
     }
 
     @Test
-    @Order(3)
+    @Order(6)
     @DisplayName("Null email")
     public void nullEmail() {
         Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleRegister(new UserData("test1234", "soSecure!!!", null)));
     }
 
+    @Test
+    @Order(7)
+    @DisplayName("Successful Register")
+    public void successfulRegister() {
+        Assertions.assertDoesNotThrow(() -> handler.handleRegister(new UserData("test1234", "soSecure!!!", "test@gmail.com")));
+    }
 }
