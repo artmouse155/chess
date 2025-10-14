@@ -3,9 +3,7 @@ package handler;
 import dataaccess.DataAccessException;
 import handler.exception.BadRequestException;
 import handler.exception.ResponseException;
-import model.AuthData;
-import model.GameDataStripped;
-import model.UserData;
+import model.*;
 import service.Service;
 
 import java.util.Map;
@@ -28,7 +26,7 @@ public class Handler {
         return service.getDB();
     }
 
-    public Map<String, String> handleDeleteDB() throws ResponseException {
+    public EmptyResponse handleDeleteDB() throws ResponseException {
         return service.deleteDB();
     }
 
@@ -53,7 +51,7 @@ public class Handler {
         return service.login(username, password);
     }
 
-    public Map<String, String> handleLogout(String authToken) throws ResponseException {
+    public EmptyResponse handleLogout(String authToken) throws ResponseException {
 
         return service.logout(authToken);
     }
@@ -62,14 +60,14 @@ public class Handler {
         return service.getGames();
     }
 
-    public Map<String, Number> handleCreateGame(String gameName) throws ResponseException {
+    public CreateGameResponse handleCreateGame(String gameName) throws ResponseException {
         if (gameName == null) {
             throw new BadRequestException("One or more fields is invalid.");
         }
         return service.createGame(gameName);
     }
 
-    public Map<String, String> handleJoinGame(String username, String playerColor, int gameID) throws ResponseException {
+    public EmptyResponse handleJoinGame(String username, String playerColor, int gameID) throws ResponseException {
         if (gameID < 0 || (!Objects.equals(playerColor, "WHITE") && !Objects.equals(playerColor, "BLACK"))) {
             throw new BadRequestException("One or more fields is invalid.");
         }

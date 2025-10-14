@@ -8,10 +8,7 @@ import handler.exception.AlreadyTakenException;
 import handler.exception.InternalServerErrorException;
 import handler.exception.ResponseException;
 import handler.exception.UnauthorizedException;
-import model.AuthData;
-import model.GameData;
-import model.GameDataStripped;
-import model.UserData;
+import model.*;
 
 import java.util.Map;
 import java.util.Set;
@@ -42,11 +39,11 @@ public class Service {
         return dataAccess.getDB();
     }
 
-    public Map<String, String> deleteDB() throws ResponseException {
+    public EmptyResponse deleteDB() throws ResponseException {
         try {
             dataAccess.deleteDB();
             gameCount = 0;
-            return Map.of();
+            return new EmptyResponse();
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }
@@ -91,10 +88,10 @@ public class Service {
         }
     }
 
-    public Map<String, String> logout(String authToken) throws ResponseException {
+    public EmptyResponse logout(String authToken) throws ResponseException {
         try {
             dataAccess.removeAuth(authToken);
-            return Map.of();
+            return new EmptyResponse();
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }
@@ -108,18 +105,18 @@ public class Service {
         }
     }
 
-    public Map<String, Number> createGame(String gameName) throws ResponseException {
+    public CreateGameResponse createGame(String gameName) throws ResponseException {
         try {
             int gameID = gameCount + 1;
             dataAccess.addGame(new GameData(gameID, null, null, gameName, new ChessGame()));
             gameCount++;
-            return Map.of("gameID", gameID);
+            return new CreateGameResponse(gameID);
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }
     }
 
-    public Map<String, String> joinGame(String username, String playerColor, int gameID) throws ResponseException {
+    public EmptyResponse joinGame(String username, String playerColor, int gameID) throws ResponseException {
         try {
             GameData game = dataAccess.getGame(gameID);
             if (playerColor.equals("WHITE")) {
@@ -136,7 +133,7 @@ public class Service {
                 throw new InternalServerErrorException("Unrecognized color requested.");
             }
             dataAccess.updateGame(gameID, game);
-            return Map.of();
+            return new EmptyResponse();
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }
