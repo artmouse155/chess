@@ -65,7 +65,7 @@ public class Handler {
     }
 
     public CreateGameResponse handleCreateGame(String gameName) throws ResponseException {
-        if (gameName == null) {
+        if (gameName == null || gameName.isEmpty()) {
             throw new BadRequestException("One or more fields is invalid.");
         }
         return service.createGame(gameName);

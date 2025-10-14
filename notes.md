@@ -104,9 +104,9 @@ Creates static values
 
 #### CREATE /game
 
-- [ ] ❌ Invalid `gameName` *2
-- [ ] ❌ Create 2 games with same gameName
-- [ ] ✅ Creating a game
+- [x] ❌ Invalid `gameName` *2
+- [x] ✅ Create 2 games with same gameName Note: This is fine because game name does not distinguish the games; it is the gameID that does.
+- [x] ✅ Creating 3 games
 
 #### JOIN /game
 
