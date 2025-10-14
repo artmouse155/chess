@@ -79,6 +79,8 @@ Creates static values
 
 - [ ] ❌ Invalid `username` *2
 - [ ] ❌ Invalid `password` *2
+- [ ] ❌ Nonexistent `username`
+- [ ] ❌ Correct `username` and incorrect `password`
 - [ ] ✅ Correct `username` and `password`
 
 #### DELETE /session
