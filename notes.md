@@ -122,8 +122,8 @@ Creates static values
 - [x] ❌ `gameID` is a VERY large number (greater than size of an int)
 ~~- [ ] ❌ `gameID` is a double~~ // impossible because function does not allow for double input
 - [x] ❌ Join a game in an occupied spot
-- [ ] ❌ Same player tries to be both black and white
-- [ ] ✅ One player joins black, one player joins white
+- [x] ❌ Same player tries to be both black and white
+- [x] ✅ One player joins black, one player joins white
 - [ ] ✅ A long combo involving creating, updating adding / removing games, with `GET /game` at the end
 
 Developed by Chase Odom

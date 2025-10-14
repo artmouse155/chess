@@ -14,11 +14,18 @@ public class JoinGameTests extends EndpointTests {
     private AuthData authData;
     private int gameID;
 
+    private UserData secondUser = new UserData("username dos", "abc123", "second@gmail.com");
+
     @BeforeEach
     public void beforeEach() {
         registerTestUser();
         authData = loginTestUser();
         gameID = Assertions.assertDoesNotThrow(() -> handler.handleCreateGame(gameName)).gameID();
+
+        // Login second user
+        Assertions.assertDoesNotThrow(() -> handler.handleRegister(new UserData(secondUser.username(), "abc123", "second@gmail.com")));
+        var secondAuthData = Assertions.assertDoesNotThrow(() -> handler.handleLogin(secondUser.username(), secondUser.password()));
+
     }
 
     @Test
@@ -104,14 +111,24 @@ public class JoinGameTests extends EndpointTests {
     @Order(11)
     @DisplayName("Join in occupied spot")
     public void alreadyTaken() {
-        // Register and login new user
-        String secondUsername = "username dos";
-        String secondPassword = "abc123";
-        Assertions.assertDoesNotThrow(() -> handler.handleRegister(new UserData(secondUsername, "abc123", "second@gmail.com")));
-        Assertions.assertDoesNotThrow(() -> handler.handleLogin(secondUsername, secondPassword));
-
         Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(testUser.username(), "BLACK", gameID));
-        Assertions.assertThrowsExactly(AlreadyTakenException.class, () -> handler.handleJoinGame(secondUsername, "BLACK", gameID));
+        Assertions.assertThrowsExactly(AlreadyTakenException.class, () -> handler.handleJoinGame(secondUser.username(), "BLACK", gameID));
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("Same user in both spots")
+    public void sameUserInBothSpots() {
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(testUser.username(), "BLACK", gameID));
+        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleJoinGame(testUser.username(), "WHITE", gameID));
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("One user in each spot")
+    public void oneUserInEachSpot() {
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(testUser.username(), "BLACK", gameID));
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(secondUser.username(), "WHITE", gameID));
     }
 
 }
