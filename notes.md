@@ -59,65 +59,72 @@ Creates static values
 
 **Important:** Every test case must have an assert statement.
 
+#### KEY
+- ❌ = should throw an error
+- ✅ = should not throw an error
+
 #### DELETE /db
 
-- [x] Delete with no data in DB
-- [x] Delete users and games
+- [x] ✅ Delete with no data in DB
+- [x] ✅ Delete users and games
 
 #### POST /user
 
-- [ ] Missing `username`
-- [ ] Missing `password`
-- [ ] Missing `email`
-- [ ] Correct `username`, invalid `password`
-- [ ] Invalid `username`, invalid `password`
-- [ ] `username` field is the wrong type (Object, List, etc.)
-- [ ] `password` field is the wrong type (Object, List, etc.)
-- [ ] `email` field is the wrong type (Object, List, etc.)
+- [ ] ❌ Correct `username`, invalid `password`
+- [ ] ❌ Invalid `username`, invalid `password`
+- [ ] ❌ `username` field is the wrong type (Object, List, etc.)
+- [ ] ❌ `password` field is the wrong type (Object, List, etc.)
+- [ ] ❌ `email` field is the wrong type (Object, List, etc.)
+- [ ] ✅ Correct `username` and `password`
 
 #### POST /session
 
-- [ ] Missing `username`
-- [ ] Missing `password`
-- [ ] `username` is the wrong type (Object, List, etc.)
-- [ ] `password` is the wrong type (Object, List, etc.)
+- [ ] ❌ Missing `username`
+- [ ] ❌ Missing `password`
+- [ ] ❌ `username` is the wrong type (Object, List, etc.)
+- [ ] ❌ `password` is the wrong type (Object, List, etc.)
+- [ ] ❌ Correct `username`, invalid `password`
+- [ ] ❌ Invalid `username`, invalid `password`
+- [ ] ✅ Correct `username` and `password`
 
 #### DELETE /session
 
-- [ ] Missing `authToken`
-- [ ] `authToken` is the wrong type (Object, List, etc.)
-- [ ] Double logout
-- [ ] Login session 1, logout session 1, attempt create game using session 1
+- [ ] ❌ Missing `authToken`
+- [ ] ❌ `authToken` is the wrong type (Object, List, etc.)
+- [ ] ❌ Double logout
+- [ ] ❌ Login session 1, logout session 1, attempt create game using session 1
+- [ ] ✅ Login then logout
 
 #### GET /game
 
-- [ ] Missing `authToken`
-- [ ] `authToken` is the wrong type (Object, List, etc.)
-- [ ] A failed game creation does not update the list of games
-- [ ] A long combo involving creating, updating adding / removing games, with `GET /game` at the end
+- [ ] ❌ Missing `authToken`
+- [ ] ❌ `authToken` is the wrong type (Object, List, etc.)
+- [ ] ❌ A failed game creation does not update the list of games
+- [ ] ✅ Creating a game and getting it
 
 #### CREATE /game
 
-- [ ] Missing `authToken`
-- [ ] `authToken` is the wrong type (Object, List, etc.)
-- [ ] Missing `gameName`
-- [ ] `gameName` is the wrong type (Object, List, etc.)
-- [ ] Create 2 games with same gameName
+- [ ] ❌ Missing `authToken`
+- [ ] ❌ `authToken` is the wrong type (Object, List, etc.)
+- [ ] ❌ Missing `gameName`
+- [ ] ❌ `gameName` is the wrong type (Object, List, etc.)
+- [ ] ❌ Create 2 games with same gameName
+- [ ] ✅ Creating a game
 
 #### JOIN /game
 
-- [ ] Missing `authToken`
-- [ ] `authToken` is the wrong type (Object, List, etc.)
-- [ ] Missing `playerColor`
-- [ ] `playerColor` is the wrong type (Object, List, etc.)
-- [ ] `playerColor` is a string other than `"WHITE"` or `"BLACK"`
-- [ ] Missing `gameID`
-- [ ] `gameID` is the wrong type (Object, List, etc.)
-- [ ] `gameID` is negative
-- [ ] `gameID` is a VERY large number (greater than size of an int)
-- [ ] `gameID` is a double
-- [ ] Join a game in an occupied spot
-- [ ] Same player tries to be both black and white
-- [ ] (See final test of `GET /game`)
+- [ ] ❌ Missing `authToken`
+- [ ] ❌ `authToken` is the wrong type (Object, List, etc.)
+- [ ] ❌ Missing `playerColor`
+- [ ] ❌ `playerColor` is the wrong type (Object, List, etc.)
+- [ ] ❌ `playerColor` is a string other than `"WHITE"` or `"BLACK"`
+- [ ] ❌ Missing `gameID`
+- [ ] ❌ `gameID` is the wrong type (Object, List, etc.)
+- [ ] ❌ `gameID` is negative
+- [ ] ❌ `gameID` is a VERY large number (greater than size of an int)
+- [ ] ❌ `gameID` is a double
+- [ ] ❌ Join a game in an occupied spot
+- [ ] ❌ Same player tries to be both black and white
+- [ ] ✅ A long combo involving creating, updating adding / removing games, with `GET /game` at the end
 
 Developed by Chase Odom
