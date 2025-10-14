@@ -128,10 +128,6 @@ public class Service {
 
             GameData game = dataAccess.getGame(gameID);
 
-            if (username.equals(game.blackUsername()) || username.equals(game.whiteUsername())) {
-                throw new BadRequestException("Player already in game.");
-            }
-
             if (playerColor.equals("WHITE")) {
                 if (game.whiteUsername() != null) {
                     throw new AlreadyTakenException("The color white has already been taken.");

@@ -120,7 +120,7 @@ public class JoinGameTests extends EndpointTests {
     @DisplayName("Same user in both spots")
     public void sameUserInBothSpots() {
         Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "BLACK", gameID));
-        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleJoinGame(secondAuthData, "WHITE", gameID));
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(secondAuthData, "WHITE", gameID));
     }
 
     @Test
