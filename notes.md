@@ -95,10 +95,12 @@ Creates static values
 - [x] ❌ Login session 1, logout session 1, attempt to authenticate with session 1
 - [x] ✅ Login then logout
 
+> Note: None of the /game endpoints test authentication because authentication is a separate method from the /game functions.
+
 #### GET /game
 
-- [ ] ❌ A failed game creation does not update the list of games
-- [ ] ✅ Creating a game and getting it
+- [x] ❌ A failed game creation does not update the list of games
+- [x] ✅ Creating a game and getting it
 
 #### CREATE /game
 
