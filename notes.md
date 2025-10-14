@@ -90,9 +90,10 @@ Creates static values
 
 #### DELETE /session
 
-- [ ] ❌ Double logout
-- [ ] ❌ Login session 1, logout session 1, attempt to create game using session 1
-- [ ] ✅ Login then logout
+- [x] ❌ Double logout
+- [x] ❌ Logout with wrong authToken
+- [x] ❌ Login session 1, logout session 1, attempt to authenticate with session 1
+- [x] ✅ Login then logout
 
 #### GET /game
 
