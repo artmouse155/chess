@@ -1,6 +1,6 @@
 package model;
 
-public record EmptyResponse {
+public record EmptyResponse() {
 
     @Override
     public String toString() {

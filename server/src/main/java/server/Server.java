@@ -48,9 +48,8 @@ public class Server {
     ;
 
     public void clear(Context ctx) throws ResponseException {
-        var serializer = new Gson();
         System.out.println("clear");
-        ctx.result(serializer.toJson(handler.handleDeleteDB()));
+        ctx.result(handler.handleDeleteDB().toString());
     }
 
     public void register(Context ctx) throws ResponseException {
@@ -69,22 +68,20 @@ public class Server {
 
     public void logout(Context ctx) throws ResponseException {
         authenticate(ctx);
-        var serializer = new Gson();
         var res = handler.handleLogout(ctx.header("authorization"));
-        ctx.result(serializer.toJson(res));
+        ctx.result(res.toString());
     }
 
     public void listGames(Context ctx) throws ResponseException {
-        var serializer = new Gson();
         var res = handler.handleGetGames();
-        ctx.result(serializer.toJson(res));
+        ctx.result(res.toString());
     }
 
     public void createGame(Context ctx) throws ResponseException {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), Map.class);
         var res = handler.handleCreateGame((String) req.get("gameName"));
-        ctx.result(serializer.toJson(res));
+        ctx.result(res.toString());
     }
 
     public void joinGame(Context ctx) throws ResponseException {
@@ -95,7 +92,7 @@ public class Server {
             throw new BadRequestException("That Game ID is not valid.");
         }
         var res = handler.handleJoinGame((String) ctx.attribute("username"), (String) req.get("playerColor"), gameID.intValue());
-        ctx.result(serializer.toJson(res));
+        ctx.result(res.toString());
     }
 
     private void exceptionHandler(ResponseException ex, Context ctx) {
