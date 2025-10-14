@@ -35,6 +35,10 @@ public class Service {
         }
     }
 
+    public Map<String, Set<? extends Record>> getDB() throws DataAccessException {
+        return dataAccess.getDB();
+    }
+
     public Map<String, String> deleteDB() throws ResponseException {
         try {
             dataAccess.deleteDB();

@@ -1,12 +1,11 @@
 package handler;
 
+import dataaccess.DataAccessException;
 import model.AuthData;
-import model.GameData;
 import model.GameDataStripped;
 import model.UserData;
 import service.Service;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -21,6 +20,10 @@ public class Handler {
 
     public AuthData handleAuth(String authToken) throws ResponseException {
         return service.authenticate(authToken);
+    }
+
+    public Map<String, Set<? extends Record>> handleGetDB() throws DataAccessException {
+        return service.getDB();
     }
 
     public Map<String, String> handleDeleteDB() throws ResponseException {

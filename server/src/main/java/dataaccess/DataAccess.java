@@ -4,9 +4,13 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 
+import java.util.Map;
 import java.util.Set;
 
 public interface DataAccess {
+
+    // For testing purposes.
+    public Map<String, Set<? extends Record>> getDB() throws DataAccessException;
 
     public void deleteDB() throws DataAccessException;
 
@@ -35,4 +39,5 @@ public interface DataAccess {
     public void updateGame(int gameID, GameData gameData) throws DataAccessException;
 
     public void removeGame(int gameID) throws DataAccessException;
+
 }

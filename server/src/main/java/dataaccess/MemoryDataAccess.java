@@ -5,6 +5,7 @@ import model.GameData;
 import model.UserData;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class MemoryDataAccess implements DataAccess {
@@ -29,6 +30,11 @@ public class MemoryDataAccess implements DataAccess {
         for (var item : s) {
             System.out.println(item.toString());
         }
+    }
+
+    @Override
+    public Map<String, Set<? extends Record>> getDB() throws DataAccessException {
+        return Map.of("userDataSet", userDataSet, "authDataSet", authDataSet, "gameDataSet", gameDataSet);
     }
 
     @Override
