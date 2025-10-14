@@ -31,7 +31,14 @@ public class Handler {
     }
 
     public AuthData handleRegister(UserData userData) throws ResponseException {
-        if (userData.password() == null || userData.username() == null || userData.email() == null) {
+        if (
+                userData.password() == null ||
+                        userData.username() == null ||
+                        userData.email() == null ||
+                        userData.password().isEmpty() ||
+                        userData.username().isEmpty() ||
+                        userData.email().isEmpty()
+        ) {
             throw new BadRequestException("One or more fields is invalid.");
         }
         return service.register(userData);
