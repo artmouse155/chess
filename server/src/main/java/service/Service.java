@@ -113,17 +113,25 @@ public class Service {
         }
     }
 
-    public EmptyResponse joinGame(String username, String playerColor, int gameID) throws ResponseException {
+    public EmptyResponse joinGame(AuthData authData, String playerColor, int gameID) throws ResponseException {
         try {
             if (!dataAccess.hasGame(gameID)) {
                 throw new BadRequestException("Game does not exist.");
             }
 
-            if (!dataAccess.hasUser(username)) {
-                throw new UnauthorizedException("User does not exist.");
+            if (!dataAccess.hasAuth(authData.authToken())) {
+                throw new UnauthorizedException("Bad Authorization.");
             }
 
+            // Username can't be wrong because the username isn't supplied by the client; it comes from the database during the authentication middleware
+            final String username = authData.username();
+
             GameData game = dataAccess.getGame(gameID);
+
+            if (username.equals(game.blackUsername()) || username.equals(game.whiteUsername())) {
+                throw new BadRequestException("Player already in game.");
+            }
+
             if (playerColor.equals("WHITE")) {
                 if (game.whiteUsername() != null) {
                     throw new AlreadyTakenException("The color white has already been taken.");

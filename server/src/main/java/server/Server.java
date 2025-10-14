@@ -9,6 +9,7 @@ import handler.exception.ResponseException;
 import io.javalin.*;
 import io.javalin.http.Context;
 
+import model.AuthData;
 import model.UserData;
 
 import java.util.Map;
@@ -42,7 +43,7 @@ public class Server {
         var info = String.format("🔑 Auth: %s %s", ctx.method().name(), ctx.path());
         System.out.println(info);
         var authData = handler.handleAuth(ctx.header("authorization"));
-        ctx.attribute("username", authData.username());
+        ctx.attribute("authData", authData);
     }
 
     ;
@@ -90,7 +91,7 @@ public class Server {
         if (gameID == null) {
             throw new BadRequestException("That Game ID is not valid.");
         }
-        var res = handler.handleJoinGame((String) ctx.attribute("username"), (String) req.get("playerColor"), gameID.intValue());
+        var res = handler.handleJoinGame((AuthData) ctx.attribute("authData"), (String) req.get("playerColor"), gameID.intValue());
         ctx.result(res.toString());
     }
 
