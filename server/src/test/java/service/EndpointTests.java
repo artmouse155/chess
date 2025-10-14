@@ -1,12 +1,14 @@
 package service;
 
 import handler.Handler;
+import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.*;
 
 public class EndpointTests {
 
     protected static Handler handler;
+    protected static UserData testUser = new UserData("test1234", "soSecure!!!", "test@gmail.com");
 
     @BeforeAll
     public static void init() {
