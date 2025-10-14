@@ -73,7 +73,7 @@ Creates static values
 - [x] ❌ Invalid `username` *2
 - [x] ❌ Invalid `password` *2
 - [x] ❌ Invalid `email` *2
-- [ ] ✅ Correct `username` and `password`
+- [x] ✅ Correct `username` and `password`
 
 #### POST /session
 
