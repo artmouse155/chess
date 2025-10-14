@@ -1,4 +1,4 @@
-package handler;
+package handler.exception;
 
 public class UnauthorizedException extends ResponseException {
     public UnauthorizedException(String message) {

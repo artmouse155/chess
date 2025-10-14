@@ -1,4 +1,4 @@
-package handler;
+package handler.exception;
 
 public class AlreadyTakenException extends ResponseException {
     public AlreadyTakenException(String message) {

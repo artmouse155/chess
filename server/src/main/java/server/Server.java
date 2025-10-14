@@ -2,10 +2,9 @@ package server;
 
 import com.google.gson.Gson;
 
-import dataaccess.DataAccessException;
-import handler.BadRequestException;
+import handler.exception.BadRequestException;
 import handler.Handler;
-import handler.ResponseException;
+import handler.exception.ResponseException;
 
 import io.javalin.*;
 import io.javalin.http.Context;
@@ -13,7 +12,6 @@ import io.javalin.http.Context;
 import model.UserData;
 
 import java.util.Map;
-import java.util.Set;
 
 
 public class Server {
@@ -113,5 +111,5 @@ public class Server {
     public void stop() {
         server.stop();
     }
-    
+
 }

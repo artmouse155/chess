@@ -1,6 +1,8 @@
 package handler;
 
 import dataaccess.DataAccessException;
+import handler.exception.BadRequestException;
+import handler.exception.ResponseException;
 import model.AuthData;
 import model.GameDataStripped;
 import model.UserData;

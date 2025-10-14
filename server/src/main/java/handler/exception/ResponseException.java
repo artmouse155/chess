@@ -1,4 +1,4 @@
-package handler;
+package handler.exception;
 
 public abstract class ResponseException extends Exception {
     public ResponseException(String message) {

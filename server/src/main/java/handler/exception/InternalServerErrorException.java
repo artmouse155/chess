@@ -1,4 +1,4 @@
-package handler;
+package handler.exception;
 
 import dataaccess.DataAccessException;
 
@@ -6,6 +6,7 @@ public class InternalServerErrorException extends ResponseException {
     public InternalServerErrorException(String message) {
         super(message);
     }
+
     public InternalServerErrorException(String message, Throwable ex) {
         super(message, ex);
     }

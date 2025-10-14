@@ -1,4 +1,4 @@
-package handler;
+package handler.exception;
 
 public class BadRequestException extends ResponseException {
     public BadRequestException(String message) {
