@@ -12,9 +12,24 @@ public class RegisterTests extends EndpointTests {
 
     @Test
     @Order(1)
-    @DisplayName("Correct username, invalid password")
-    public void correctUsernameInvalidPassword() {
-        Assertions.assertThrowsExactly(BadRequestException.class, () -> service.register(new UserData("test1234", "", "email@gmail.com")));
+    @DisplayName("Empty username")
+    public void emptyUsername() {
+        Assertions.assertThrowsExactly(BadRequestException.class, () -> service.register(new UserData("", "soSecure!!!", "test@gmail.com")));
     }
+
+    @Test
+    @Order(2)
+    @DisplayName("Empty password")
+    public void emptyPassword() {
+        Assertions.assertThrowsExactly(BadRequestException.class, () -> service.register(new UserData("test1234", "", "test@gmail.com")));
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("Empty email")
+    public void emptyEmail() {
+        Assertions.assertThrowsExactly(BadRequestException.class, () -> service.register(new UserData("test1234", "soSecure!!!", "")));
+    }
+
 
 }
