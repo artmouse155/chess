@@ -119,6 +119,10 @@ public class Service {
                 throw new BadRequestException("Game does not exist.");
             }
 
+            if (!dataAccess.hasUser(username)) {
+                throw new UnauthorizedException("User does not exist.");
+            }
+
             GameData game = dataAccess.getGame(gameID);
             if (playerColor.equals("WHITE")) {
                 if (game.whiteUsername() != null) {
