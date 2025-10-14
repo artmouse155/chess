@@ -10,7 +10,7 @@ public class DeleteDBTests extends EndpointTests {
     @Order(1)
     @DisplayName("Delete empty database")
     public void deleteEmptyDatabase() {
-        Assertions.assertDoesNotThrow(() -> service.deleteDB());
+        Assertions.assertDoesNotThrow(() -> handler.handleGetDB());
         assertEmptyDatabase();
     }
 
@@ -18,10 +18,10 @@ public class DeleteDBTests extends EndpointTests {
     @Order(2)
     @DisplayName("Delete non-empty database")
     public void deleteNonEmptyDatabase() {
-        Assertions.assertDoesNotThrow(() -> service.register(new UserData("Test McTestFace", "securePassword", "the_real_test_mctestface@test.com")));
-        Assertions.assertDoesNotThrow(() -> service.login("Test McTestFace", "securePassword"));
-        Assertions.assertDoesNotThrow(() -> service.createGame("Checkers"));
-        Assertions.assertDoesNotThrow(() -> service.deleteDB());
+        Assertions.assertDoesNotThrow(() -> handler.handleRegister(new UserData("Test McTestFace", "securePassword", "the_real_test_mctestface@test.com")));
+        Assertions.assertDoesNotThrow(() -> handler.handleLogin("Test McTestFace", "securePassword"));
+        Assertions.assertDoesNotThrow(() -> handler.handleCreateGame("Checkers"));
+        Assertions.assertDoesNotThrow(() -> handler.handleDeleteDB());
         assertEmptyDatabase();
     }
 

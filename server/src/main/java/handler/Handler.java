@@ -22,6 +22,10 @@ public class Handler {
         return service.authenticate(authToken);
     }
 
+    public Map<String, Set<? extends Record>> handleGetDB() throws DataAccessException {
+        return service.getDB();
+    }
+
     public Map<String, String> handleDeleteDB() throws ResponseException {
         return service.deleteDB();
     }
