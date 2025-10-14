@@ -56,7 +56,7 @@ public class Handler {
         return service.logout(authToken);
     }
 
-    public Map<String, Set<GameDataStripped>> handleGetGames() throws ResponseException {
+    public GamesList handleGetGames() throws ResponseException {
         return service.getGames();
     }
 

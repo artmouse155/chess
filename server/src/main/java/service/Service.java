@@ -97,9 +97,9 @@ public class Service {
         }
     }
 
-    public Map<String, Set<GameDataStripped>> getGames() throws ResponseException {
+    public GamesList getGames() throws ResponseException {
         try {
-            return Map.of("games", dataAccess.getGameDataSet().stream().map(GameData::stripped).collect(Collectors.toSet()));
+            return new GamesList(dataAccess.getGameDataSet().stream().map(GameData::stripped).collect(Collectors.toSet()));
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }
