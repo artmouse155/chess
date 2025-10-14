@@ -72,7 +72,11 @@ public class Handler {
     }
 
     public EmptyResponse handleJoinGame(String username, String playerColor, int gameID) throws ResponseException {
-        if (gameID < 0 || (!Objects.equals(playerColor, "WHITE") && !Objects.equals(playerColor, "BLACK"))) {
+        if (gameID < 0 ||
+                (!Objects.equals(playerColor, "WHITE") && !Objects.equals(playerColor, "BLACK")) ||
+                username == null ||
+                username.isEmpty()
+        ) {
             throw new BadRequestException("One or more fields is invalid.");
         }
         return service.joinGame(username, playerColor, gameID);

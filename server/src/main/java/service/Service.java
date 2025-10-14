@@ -4,10 +4,7 @@ import chess.ChessGame;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import dataaccess.MemoryDataAccess;
-import handler.exception.AlreadyTakenException;
-import handler.exception.InternalServerErrorException;
-import handler.exception.ResponseException;
-import handler.exception.UnauthorizedException;
+import handler.exception.*;
 import model.*;
 
 import java.util.Map;
@@ -130,7 +127,7 @@ public class Service {
                 }
                 game = game.setBlackUsername(username);
             } else {
-                throw new InternalServerErrorException("Unrecognized color requested.");
+                throw new BadRequestException("Unrecognized color requested.");
             }
             dataAccess.updateGame(gameID, game);
             return new EmptyResponse();
