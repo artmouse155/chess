@@ -70,56 +70,42 @@ Creates static values
 
 #### POST /user
 
-- [x] ❌ Invalid `username`
-- [x] ❌ Invalid `password`
-- [x] ❌ Invalid `email`
-- [ ] ❌ `username` field is the wrong type (Object, List, etc.)
-- [ ] ❌ `password` field is the wrong type (Object, List, etc.)
-- [ ] ❌ `email` field is the wrong type (Object, List, etc.)
+- [x] ❌ Invalid `username` *2
+- [x] ❌ Invalid `password` *2
+- [x] ❌ Invalid `email` *2
 - [ ] ✅ Correct `username` and `password`
 
 #### POST /session
 
-- [ ] ❌ Missing `username`
-- [ ] ❌ Missing `password`
-- [ ] ❌ `username` is the wrong type (Object, List, etc.)
-- [ ] ❌ `password` is the wrong type (Object, List, etc.)
-- [ ] ❌ Correct `username`, invalid `password`
-- [ ] ❌ Invalid `username`, invalid `password`
+- [ ] ❌ Invalid `username` *2
+- [ ] ❌ Invalid `password` *2
 - [ ] ✅ Correct `username` and `password`
 
 #### DELETE /session
 
-- [ ] ❌ Missing `authToken`
-- [ ] ❌ `authToken` is the wrong type (Object, List, etc.)
+- [ ] ❌ Invalid `authToken` *2
 - [ ] ❌ Double logout
 - [ ] ❌ Login session 1, logout session 1, attempt to create game using session 1
 - [ ] ✅ Login then logout
 
 #### GET /game
 
-- [ ] ❌ Missing `authToken`
-- [ ] ❌ `authToken` is the wrong type (Object, List, etc.)
+- [ ] ❌ Invalid `authToken` *2
 - [ ] ❌ A failed game creation does not update the list of games
 - [ ] ✅ Creating a game and getting it
 
 #### CREATE /game
 
-- [ ] ❌ Missing `authToken`
-- [ ] ❌ `authToken` is the wrong type (Object, List, etc.)
-- [ ] ❌ Missing `gameName`
-- [ ] ❌ `gameName` is the wrong type (Object, List, etc.)
+- [ ] ❌ Invalid `authToken` *2
+- [ ] ❌ Invalid `gameName` *2
 - [ ] ❌ Create 2 games with same gameName
 - [ ] ✅ Creating a game
 
 #### JOIN /game
 
-- [ ] ❌ Missing `authToken`
-- [ ] ❌ `authToken` is the wrong type (Object, List, etc.)
-- [ ] ❌ Missing `playerColor`
-- [ ] ❌ `playerColor` is the wrong type (Object, List, etc.)
-- [ ] ❌ `playerColor` is a string other than `"WHITE"` or `"BLACK"`
-- [ ] ❌ Missing `gameID`
+- [ ] ❌ Invalid `authToken` *2
+- [ ] ❌ Invalid `playerColor` *2
+- [ ] ❌ Invalid `gameID`
 - [ ] ❌ `gameID` is the wrong type (Object, List, etc.)
 - [ ] ❌ `gameID` is negative
 - [ ] ❌ `gameID` is a VERY large number (greater than size of an int)
