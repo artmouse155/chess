@@ -45,7 +45,11 @@ public class Handler {
     }
 
     public AuthData handleLogin(String username, String password) throws ResponseException {
-        if (username == null || password == null) {
+        if (username == null ||
+                password == null ||
+                username.isEmpty() ||
+                password.isEmpty()
+        ) {
             throw new BadRequestException("One or more fields is invalid.");
         }
         return service.login(username, password);

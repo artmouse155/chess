@@ -77,11 +77,11 @@ Creates static values
 
 #### POST /session
 
-- [ ] ❌ Invalid `username` *2
-- [ ] ❌ Invalid `password` *2
-- [ ] ❌ Nonexistent `username`
-- [ ] ❌ Correct `username` and incorrect `password`
-- [ ] ✅ Correct `username` and `password`
+- [x] ❌ Invalid `username` *2
+- [x] ❌ Invalid `password` *2
+- [x] ❌ Nonexistent `username`
+- [x] ❌ Correct `username` and incorrect `password`
+- [x] ✅ Correct `username` and `password`
 
 #### DELETE /session
 
