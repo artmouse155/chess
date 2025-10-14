@@ -1,20 +1,18 @@
 package server;
 
 import com.google.gson.Gson;
+
 import handler.BadRequestException;
 import handler.Handler;
 import handler.ResponseException;
-import handler.UnauthorizedException;
+
 import io.javalin.*;
 import io.javalin.http.Context;
-import model.GameData;
+
 import model.UserData;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 
 public class Server {
 
