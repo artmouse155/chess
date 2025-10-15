@@ -18,8 +18,8 @@ public class DeleteDBTests extends EndpointTests {
     @Order(2)
     @DisplayName("Delete non-empty database")
     public void deleteNonEmptyDatabase() {
-        Assertions.assertDoesNotThrow(() -> handler.handleRegister(new UserData("Test McTestFace", "securePassword", "the_real_test_mctestface@test.com")));
-        Assertions.assertDoesNotThrow(() -> handler.handleLogin("Test McTestFace", "securePassword"));
+        Assertions.assertDoesNotThrow(() -> handler.handleRegister(testUser));
+        Assertions.assertDoesNotThrow(() -> handler.handleLogin(testUser.username(), testUser.password()));
         Assertions.assertDoesNotThrow(() -> handler.handleCreateGame("Checkers"));
         Assertions.assertDoesNotThrow(() -> handler.handleDeleteDB());
         assertEmptyDatabase();

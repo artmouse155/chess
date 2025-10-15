@@ -123,7 +123,8 @@ public class Service {
                 throw new UnauthorizedException("Bad Authorization.");
             }
 
-            // Username can't be wrong because the username isn't supplied by the client; it comes from the database during the authentication middleware
+            // Username can't be wrong because the username isn't supplied by the client
+            // it comes from the database during the authentication middleware
             final String username = authData.username();
 
             GameData game = dataAccess.getGame(gameID);

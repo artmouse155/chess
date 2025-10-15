@@ -49,7 +49,13 @@ public class JoinGameTests extends EndpointTests {
     @Order(3)
     @DisplayName("Username not in database")
     public void usernameNotInDatabase() {
-        Assertions.assertThrowsExactly(UnauthorizedException.class, () -> handler.handleJoinGame(new AuthData("1234", "JamesGosling12345"), "BLACK", gameID));
+        Assertions.assertThrowsExactly(UnauthorizedException.class,
+                () -> handler.handleJoinGame(
+                        new AuthData("1234",
+                                "JamesGosling12345"
+                        ),
+                        "BLACK", gameID)
+        );
     }
 
     @Test
@@ -123,7 +129,7 @@ public class JoinGameTests extends EndpointTests {
     @DisplayName("Same user in both spots")
     public void sameUserInBothSpots() {
         Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "WHITE", gameID));
-        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(secondAuthData, "WHITE", gameID));
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "BLACK", gameID));
     }
 
     @Test
