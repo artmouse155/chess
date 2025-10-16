@@ -148,8 +148,6 @@ public class Service {
                     throw new AlreadyTakenException("The color black has already been taken.");
                 }
                 game = game.setBlackUsername(username);
-            } else {
-                throw new BadRequestException("Unrecognized color requested.");
             }
             dataAccess.updateGame(gameID, game);
             return new EmptyResponse();
