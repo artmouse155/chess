@@ -117,15 +117,24 @@ public class JoinGameTests extends EndpointTests {
     }
 
     @Test
-    @Order(11)
-    @DisplayName("Join in occupied spot")
-    public void alreadyTaken() {
+    @Order(12)
+    @DisplayName("Join in occupied spot (white)")
+    public void alreadyTakenWhite() {
+        Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "WHITE", gameID));
+        Assertions.assertThrowsExactly(AlreadyTakenException.class, () -> handler.handleJoinGame(secondAuthData, "WHITE", gameID));
+    }
+
+
+    @Test
+    @Order(13)
+    @DisplayName("Join in occupied spot (black)")
+    public void alreadyTakenBlack() {
         Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "BLACK", gameID));
         Assertions.assertThrowsExactly(AlreadyTakenException.class, () -> handler.handleJoinGame(secondAuthData, "BLACK", gameID));
     }
 
     @Test
-    @Order(12)
+    @Order(14)
     @DisplayName("Same user in both spots")
     public void sameUserInBothSpots() {
         Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "WHITE", gameID));
@@ -133,7 +142,7 @@ public class JoinGameTests extends EndpointTests {
     }
 
     @Test
-    @Order(13)
+    @Order(15)
     @DisplayName("One user in each spot")
     public void oneUserInEachSpot() {
         Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "WHITE", gameID));
@@ -141,7 +150,7 @@ public class JoinGameTests extends EndpointTests {
     }
 
     @Test
-    @Order(13)
+    @Order(16)
     @DisplayName("Combination of creating and joining games")
     public void createAndJoinManyGames() {
         Assertions.assertDoesNotThrow(() -> handler.handleJoinGame(authData, "WHITE", gameID));
