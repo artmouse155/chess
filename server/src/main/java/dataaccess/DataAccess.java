@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface DataAccess {
 
-    // For testing purposes.
+    // For debug purposes
     public Map<String, Set<? extends Record>> getDB() throws DataAccessException;
 
     public void deleteDB() throws DataAccessException;

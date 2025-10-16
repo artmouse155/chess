@@ -32,6 +32,7 @@ public class Service {
         }
     }
 
+    // For debug purposes
     public Map<String, Set<? extends Record>> getDB() throws DataAccessException {
         return dataAccess.getDB();
     }

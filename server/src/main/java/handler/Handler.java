@@ -22,6 +22,7 @@ public class Handler {
         return service.authenticate(authToken);
     }
 
+    // For debug purposes
     public Map<String, Set<? extends Record>> handleGetDB() throws DataAccessException {
         return service.getDB();
     }
@@ -73,7 +74,7 @@ public class Handler {
 
     public EmptyResponse handleJoinGame(AuthData authData, String playerColor, int gameID) throws ResponseException {
         final String username = authData.username();
-        
+
         if (gameID < 0 ||
                 (!Objects.equals(playerColor, "WHITE") && !Objects.equals(playerColor, "BLACK")) ||
                 username == null ||
