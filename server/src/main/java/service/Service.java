@@ -54,7 +54,13 @@ public class Service {
             if (dataAccess.hasUser(username)) {
                 throw new AlreadyTakenException("Failed to register username \"" + username + "\". Already taken.");
             }
-            dataAccess.createUser(userData);
+            var encryptedPassword = encrypt(userData.password());
+            var encryptedUserData = new UserData(
+                    userData.username(),
+                    encryptedPassword,
+                    userData.email()
+            );
+            dataAccess.createUser(encryptedUserData);
             var authToken = generateAuthToken();
             var authData = new AuthData(authToken, username);
             dataAccess.createAuth(authData);
@@ -72,8 +78,10 @@ public class Service {
                 throw new UnauthorizedException("User does not exist.");
             }
 
+            var encryptedPassword = encrypt(password);
+
             var userData = dataAccess.getUser(username);
-            if (!password.equals(userData.password())) {
+            if (!encryptedPassword.equals(userData.password())) {
                 throw new UnauthorizedException("Password is incorrect.");
             }
 
@@ -152,6 +160,10 @@ public class Service {
 
     public String generateAuthToken() {
         return UUID.randomUUID().toString();
+    }
+
+    public String encrypt(String s) {
+        return s + "_encrypted";
     }
 
 }
