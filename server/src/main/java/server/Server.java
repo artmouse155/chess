@@ -45,8 +45,7 @@ public class Server {
         var authData = handler.handleAuth(ctx.header("authorization"));
         ctx.attribute("authData", authData);
     }
-
-    ;
+    
 
     public void clear(Context ctx) throws ResponseException {
         System.out.println("clear");
