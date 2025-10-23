@@ -15,16 +15,6 @@ import static java.sql.Types.NULL;
 
 public class SQLDataAccess implements DataAccess {
 
-    Connection getConnection() throws DataAccessException {
-        final String user = "";
-        final String password = "";
-        try {
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306", user, password);
-        } catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
-        }
-    }
-
     private int executeUpdate(String statement, Object... params) throws DataAccessException {
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
@@ -88,11 +78,7 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void deleteDB() throws DataAccessException {
-        try (var conn = getConnection()) {
-            // Do something...
-        } catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
-        }
+
     }
 
     @Override
