@@ -15,6 +15,10 @@ import static java.sql.Types.NULL;
 
 public class SQLDataAccess implements DataAccess {
 
+    public SQLDataAccess() throws DataAccessException {
+        configureDatabase();
+    }
+
     private int executeUpdate(String statement, Object... params) throws DataAccessException {
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
