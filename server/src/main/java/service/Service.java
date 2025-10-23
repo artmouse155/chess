@@ -6,6 +6,7 @@ import dataaccess.DataAccessException;
 import dataaccess.MemoryDataAccess;
 import handler.exception.*;
 import model.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Map;
 import java.util.Set;
@@ -78,10 +79,8 @@ public class Service {
                 throw new UnauthorizedException("User does not exist.");
             }
 
-            var encryptedPassword = encrypt(password);
-
             var userData = dataAccess.getUser(username);
-            if (!encryptedPassword.equals(userData.password())) {
+            if (!checkPassword(password, userData.password())) {
                 throw new UnauthorizedException("Password is incorrect.");
             }
 
@@ -160,8 +159,12 @@ public class Service {
         return UUID.randomUUID().toString();
     }
 
-    public String encrypt(String s) {
-        return s + "_encrypted";
+    public String encrypt(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+    public boolean checkPassword(String password, String hashedPassword) {
+        return BCrypt.checkpw(password, hashedPassword);
     }
 
 }
