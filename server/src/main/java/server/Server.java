@@ -18,7 +18,7 @@ import java.util.Map;
 public class Server {
 
     private final Javalin server;
-    private final Handler handler;
+    private Handler handler;
 
     public Server() {
         server = Javalin.create(config -> config.staticFiles.add("web"));
@@ -36,7 +36,16 @@ public class Server {
 
         server.exception(ResponseException.class, this::exceptionHandler);
 
-        handler = new Handler();
+        handler = new Handler(false);
+    }
+
+    public Server(boolean doSql) {
+        this();
+        handler = new Handler(doSql);
+    }
+
+    private void initializeServer() {
+
     }
 
     public void authenticate(Context ctx) throws ResponseException {
@@ -45,7 +54,7 @@ public class Server {
         var authData = handler.handleAuth(ctx.header("authorization"));
         ctx.attribute("authData", authData);
     }
-    
+
 
     public void clear(Context ctx) throws ResponseException {
         System.out.println("clear");

@@ -4,6 +4,7 @@ import chess.ChessGame;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import dataaccess.MemoryDataAccess;
+import dataaccess.SQLDataAccess;
 import handler.exception.*;
 import model.*;
 import org.mindrot.jbcrypt.BCrypt;
@@ -18,8 +19,12 @@ public class Service {
     private int gameCount = 0;
     private final DataAccess dataAccess;
 
-    public Service() {
-        dataAccess = new MemoryDataAccess();
+    public Service(boolean doSQL) {
+        try {
+            dataAccess = doSQL ? new SQLDataAccess() : new MemoryDataAccess();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public AuthData authenticate(String authToken) throws ResponseException {

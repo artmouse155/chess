@@ -14,8 +14,8 @@ public class Handler {
 
     private final Service service;
 
-    public Handler() {
-        service = new Service();
+    public Handler(boolean doSQL) {
+        service = new Service(doSQL);
     }
 
     public AuthData handleAuth(String authToken) throws ResponseException {
