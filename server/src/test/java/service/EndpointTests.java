@@ -13,7 +13,7 @@ public class EndpointTests {
 
     @BeforeAll
     public static void init() {
-        handler = new Handler(false);
+        handler = new Handler(true);
     }
 
     protected void assertEmptyDatabase() {
