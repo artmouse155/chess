@@ -174,12 +174,19 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public AuthData getAuth(String authToken) throws DataAccessException {
-        return null;
+        var outputSet = getTableAsSet("SELECT * FROM auth_data WHERE auth_token=?", this::readAuthData, authToken);
+        var optionalFirst = outputSet.stream().findFirst();
+        return optionalFirst.orElseThrow(DataAccessException::new);
     }
 
     @Override
     public boolean hasAuth(String authToken) throws DataAccessException {
-        return false;
+        try {
+            getAuth(authToken);
+        } catch (DataAccessException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
