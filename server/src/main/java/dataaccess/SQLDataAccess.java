@@ -41,10 +41,18 @@ public class SQLDataAccess implements DataAccess {
         }
     }
 
-    private <T extends Record> Set<T> getTableAsSet(String tableName, Class<T> recordClass) throws DataAccessException {
+    private <T extends Record> Set<T> getTableAsSet(Class<T> recordClass) throws DataAccessException {
         try (Connection conn = DatabaseManager.getConnection()) {
-            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM ?")) {
-                ps.setString(1, tableName);
+            String statement = "";
+            if (UserData.class.equals(recordClass)) {
+                statement = "SELECT * FROM user_data";
+            } else if (AuthData.class.equals(recordClass)) {
+                statement = "SELECT * FROM auth_data";
+            } else if (GameData.class.equals(recordClass)) {
+                statement = "SELECT * FROM game_data";
+            }
+
+            try (PreparedStatement ps = conn.prepareStatement(statement)) {
                 try (var rs = ps.executeQuery()) {
                     var set = new HashSet<T>();
                     while (rs.next()) {
@@ -60,7 +68,7 @@ public class SQLDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException e) {
-            throw new DataAccessException(String.format("unable to get table from database: %s, %s", tableName, e.getMessage()));
+            throw new DataAccessException(String.format("unable to get table from database: %s, %s", recordClass, e.getMessage()));
         }
     }
 
@@ -118,11 +126,11 @@ public class SQLDataAccess implements DataAccess {
     public Map<String, Set<? extends Record>> getDB() throws DataAccessException {
         return Map.of(
                 "UserDataSet",
-                getTableAsSet("user_data", UserData.class),
+                getTableAsSet(UserData.class),
                 "AuthDataSet",
-                getTableAsSet("auth_data", AuthData.class),
+                getTableAsSet(AuthData.class),
                 "GameDataSet",
-                getTableAsSet("game_data", GameData.class)
+                getTableAsSet(GameData.class)
         );
     }
 
