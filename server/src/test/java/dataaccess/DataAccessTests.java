@@ -115,4 +115,48 @@ public class DataAccessTests {
     public void createUserNegative() {
         Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.createUser(new UserData(null, null, null)));
     }
+
+    // get auth Positive
+    @Test
+    public void getAuthPositive() {
+        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(testAuth));
+        AuthData resultAuth = Assertions.assertDoesNotThrow(() ->
+                dataAccess.getAuth(testAuth.authToken()));
+        Assertions.assertEquals(testAuth, resultAuth);
+    }
+
+    // get auth Negative
+    @Test
+    public void getAuthNegative() {
+        Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.getAuth(testAuth.authToken()));
+    }
+
+    // has auth Positive
+    @Test
+    public void hasAuthPositive() {
+        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(testAuth));
+        boolean result = Assertions.assertDoesNotThrow(() ->
+                dataAccess.hasAuth(testAuth.authToken()));
+        Assertions.assertTrue(result);
+    }
+
+    // has auth Negative
+    @Test
+    public void hasAuthNegative() {
+        boolean result = Assertions.assertDoesNotThrow(() ->
+                dataAccess.hasAuth(testAuth.username()));
+        Assertions.assertFalse(result);
+    }
+
+    // create auth Positive
+    @Test
+    public void createAuthPositive() {
+        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(testAuth));
+    }
+
+    // create auth Negative
+    @Test
+    public void createAuthNegative() {
+        Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.createAuth(new AuthData(null, null)));
+    }
 }
