@@ -39,6 +39,24 @@ public class SQLDataAccess implements DataAccess {
         }
     }
 
+    private Set<Map<String, ?>> getTableAsMapSet(String tableName, String... cols) throws DataAccessException {
+        try (Connection conn = DatabaseManager.getConnection()) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM ?")) {
+                ps.setString(0, tableName);
+                try (var rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        var obj
+                        for (String col : cols) {
+
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException(String.format("unable to get table from database: %s, %s", tableName, e.getMessage()));
+        }
+    }
+
     private final String[] createStatements = {
             """
             CREATE TABLE IF NOT EXISTS  pet (
