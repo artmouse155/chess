@@ -16,6 +16,10 @@ import static java.sql.Types.NULL;
 
 public class SQLDataAccess implements DataAccess {
 
+    private interface Reader<T> {
+        T readFunc(ResultSet rs) throws SQLException;
+    }
+
     public SQLDataAccess() throws DataAccessException {
         configureDatabase();
     }
@@ -41,34 +45,19 @@ public class SQLDataAccess implements DataAccess {
         }
     }
 
-    private <T extends Record> Set<T> getTableAsSet(Class<T> recordClass) throws DataAccessException {
+    private <T extends Record> Set<T> getTableAsSet(String statement, Reader<T> reader) throws DataAccessException {
         try (Connection conn = DatabaseManager.getConnection()) {
-            String statement = "";
-            if (UserData.class.equals(recordClass)) {
-                statement = "SELECT * FROM user_data";
-            } else if (AuthData.class.equals(recordClass)) {
-                statement = "SELECT * FROM auth_data";
-            } else if (GameData.class.equals(recordClass)) {
-                statement = "SELECT * FROM game_data";
-            }
-
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
                 try (var rs = ps.executeQuery()) {
                     var set = new HashSet<T>();
                     while (rs.next()) {
-                        if (UserData.class.equals(recordClass)) {
-                            set.add((T) readUserData(rs));
-                        } else if (AuthData.class.equals(recordClass)) {
-                            set.add((T) readAuthData(rs));
-                        } else if (GameData.class.equals(recordClass)) {
-                            set.add((T) readGameData(rs));
-                        }
+                        set.add(reader.readFunc(rs));
                     }
                     return set;
                 }
             }
         } catch (SQLException e) {
-            throw new DataAccessException(String.format("unable to get table from database: %s, %s", recordClass, e.getMessage()));
+            throw new DataAccessException(String.format("unable to get table from database with statement: \"%s\", %s", statement, e.getMessage()));
         }
     }
 
@@ -105,7 +94,27 @@ public class SQLDataAccess implements DataAccess {
               INDEX(password),
               INDEX(email)
             )
+            """,
             """
+            CREATE TABLE IF NOT EXISTS auth_data (
+              `username` varchar(128) NOT NULL,
+              `password` varchar(128) NOT NULL,
+              `email` varchar(128) NOT NULL,
+              PRIMARY KEY (`username`),
+              INDEX(password),
+              INDEX(email)
+            )
+            """,
+            """
+            CREATE TABLE IF NOT EXISTS game_data (
+              `username` varchar(128) NOT NULL,
+              `password` varchar(128) NOT NULL,
+              `email` varchar(128) NOT NULL,
+              PRIMARY KEY (`username`),
+              INDEX(password),
+              INDEX(email)
+            )
+            """,
     };
 
 
@@ -126,11 +135,11 @@ public class SQLDataAccess implements DataAccess {
     public Map<String, Set<? extends Record>> getDB() throws DataAccessException {
         return Map.of(
                 "UserDataSet",
-                getTableAsSet(UserData.class),
+                getTableAsSet("SELECT * FROM user_data", this::readUserData),
                 "AuthDataSet",
-                getTableAsSet(AuthData.class),
+                getTableAsSet("SELECT * FROM auth_data", this::readAuthData),
                 "GameDataSet",
-                getTableAsSet(GameData.class)
+                getTableAsSet("SELECT * FROM game_data", this::readGameData)
         );
     }
 

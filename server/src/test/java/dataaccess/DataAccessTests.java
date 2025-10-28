@@ -24,6 +24,9 @@ public class DataAccessTests {
     protected void assertEmptyDatabase() {
         var db = Assertions.assertDoesNotThrow(() -> dataAccess.getDB(), "getDB threw an exception");
         Assertions.assertFalse(db.isEmpty());
+        Assertions.assertTrue(db.containsKey("userDataSet"));
+        Assertions.assertTrue(db.containsKey("authDataSet"));
+        Assertions.assertTrue(db.containsKey("gameDataSet"));
         Assertions.assertTrue(db.get("userDataSet").isEmpty(), String.format("userDataSet was not empty. (%s)", db.get("userDataSet").toString()));
         Assertions.assertTrue(db.get("authDataSet").isEmpty(), String.format("authDataSet was not empty. (%s)", db.get("authDataSet").toString()));
         Assertions.assertTrue(db.get("gameDataSet").isEmpty(), String.format("gameDataSet was not empty. (%s)", db.get("gameDataSet").toString()));
