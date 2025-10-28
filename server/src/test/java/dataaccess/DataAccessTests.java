@@ -5,16 +5,15 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 import org.junit.jupiter.api.*;
-import passoff.model.TestUser;
 
 import java.util.Set;
 
 public class DataAccessTests {
 
     static DataAccess dataAccess;
-    final static UserData testUser = new UserData("test1234", "soSecure!!!", "test@gmail.com");
-    final static AuthData testAuth = new AuthData("auth1234", testUser.username());
-    final static GameData testGame = new GameData(1111, null, null, "Checkers", new ChessGame());
+    final static UserData TEST_USER = new UserData("test1234", "soSecure!!!", "test@gmail.com");
+    final static AuthData TEST_AUTH = new AuthData("auth1234", TEST_USER.username());
+    final static GameData TEST_GAME = new GameData(1111, null, null, "Checkers", new ChessGame());
 
 
     @BeforeAll
@@ -45,14 +44,14 @@ public class DataAccessTests {
     // Get DB Positive
     @Test
     public void getNonEmptyDB() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(testUser));
-        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(testAuth));
-        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
+        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(TEST_USER));
+        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(TEST_AUTH));
+        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(TEST_GAME));
         var db = Assertions.assertDoesNotThrow(() -> dataAccess.getDB(), "getDB threw an exception");
         Assertions.assertFalse(db.isEmpty());
-        Assertions.assertEquals(Set.of(testUser), db.get("userDataSet"), String.format("userDataSet was empty. (%s)", db.get("userDataSet").toString()));
-        Assertions.assertEquals(Set.of(testAuth), db.get("authDataSet"), String.format("authDataSet was empty. (%s)", db.get("authDataSet").toString()));
-        Assertions.assertEquals(Set.of(testGame), db.get("gameDataSet"), String.format("gameDataSet was empty. (%s)", db.get("gameDataSet").toString()));
+        Assertions.assertEquals(Set.of(TEST_USER), db.get("userDataSet"), String.format("userDataSet was empty. (%s)", db.get("userDataSet").toString()));
+        Assertions.assertEquals(Set.of(TEST_AUTH), db.get("authDataSet"), String.format("authDataSet was empty. (%s)", db.get("authDataSet").toString()));
+        Assertions.assertEquals(Set.of(TEST_GAME), db.get("gameDataSet"), String.format("gameDataSet was empty. (%s)", db.get("gameDataSet").toString()));
 
     }
 
@@ -65,9 +64,9 @@ public class DataAccessTests {
     // Clear DB Positive
     @Test
     public void clearDBPositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(testUser));
-        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(testAuth));
-        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
+        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(TEST_USER));
+        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(TEST_AUTH));
+        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(TEST_GAME));
         Assertions.assertDoesNotThrow(() -> dataAccess.deleteDB());
         assertEmptyDatabase();
     }
@@ -77,24 +76,24 @@ public class DataAccessTests {
     // get user Positive
     @Test
     public void getUserPositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(testUser));
+        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(TEST_USER));
         UserData resultUser = Assertions.assertDoesNotThrow(() ->
-                dataAccess.getUser(testUser.username()));
-        Assertions.assertEquals(testUser, resultUser);
+                dataAccess.getUser(TEST_USER.username()));
+        Assertions.assertEquals(TEST_USER, resultUser);
     }
 
     // get user Negative
     @Test
     public void getUserNegative() {
-        Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.getUser(testUser.username()));
+        Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.getUser(TEST_USER.username()));
     }
 
     // has user Positive
     @Test
     public void hasUserPositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(testUser));
+        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(TEST_USER));
         boolean result = Assertions.assertDoesNotThrow(() ->
-                dataAccess.hasUser(testUser.username()));
+                dataAccess.hasUser(TEST_USER.username()));
         Assertions.assertTrue(result);
     }
 
@@ -102,14 +101,14 @@ public class DataAccessTests {
     @Test
     public void hasUserNegative() {
         boolean result = Assertions.assertDoesNotThrow(() ->
-                dataAccess.hasUser(testUser.username()));
+                dataAccess.hasUser(TEST_USER.username()));
         Assertions.assertFalse(result);
     }
 
     // create user Positive
     @Test
     public void createUserPositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(testUser));
+        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(TEST_USER));
     }
 
     // create user Negative
@@ -123,24 +122,24 @@ public class DataAccessTests {
     // get auth Positive
     @Test
     public void getAuthPositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(testAuth));
+        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(TEST_AUTH));
         AuthData resultAuth = Assertions.assertDoesNotThrow(() ->
-                dataAccess.getAuth(testAuth.authToken()));
-        Assertions.assertEquals(testAuth, resultAuth);
+                dataAccess.getAuth(TEST_AUTH.authToken()));
+        Assertions.assertEquals(TEST_AUTH, resultAuth);
     }
 
     // get auth Negative
     @Test
     public void getAuthNegative() {
-        Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.getAuth(testAuth.authToken()));
+        Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.getAuth(TEST_AUTH.authToken()));
     }
 
     // has auth Positive
     @Test
     public void hasAuthPositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(testAuth));
+        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(TEST_AUTH));
         boolean result = Assertions.assertDoesNotThrow(() ->
-                dataAccess.hasAuth(testAuth.authToken()));
+                dataAccess.hasAuth(TEST_AUTH.authToken()));
         Assertions.assertTrue(result);
     }
 
@@ -148,14 +147,14 @@ public class DataAccessTests {
     @Test
     public void hasAuthNegative() {
         boolean result = Assertions.assertDoesNotThrow(() ->
-                dataAccess.hasAuth(testAuth.authToken()));
+                dataAccess.hasAuth(TEST_AUTH.authToken()));
         Assertions.assertFalse(result);
     }
 
     // create auth Positive
     @Test
     public void createAuthPositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(testAuth));
+        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(TEST_AUTH));
     }
 
     // create auth Negative
@@ -167,7 +166,7 @@ public class DataAccessTests {
     // remove auth Positive
     @Test
     public void removeAuthPositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.removeAuth(testAuth.authToken()));
+        Assertions.assertDoesNotThrow(() -> dataAccess.removeAuth(TEST_AUTH.authToken()));
     }
 
     // remove auth Negative
@@ -179,10 +178,10 @@ public class DataAccessTests {
     // remove auth removes
     @Test
     public void removeAuthRemoves() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(testAuth));
-        Assertions.assertDoesNotThrow(() -> dataAccess.removeAuth(testAuth.authToken()));
+        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(TEST_AUTH));
+        Assertions.assertDoesNotThrow(() -> dataAccess.removeAuth(TEST_AUTH.authToken()));
         boolean result = Assertions.assertDoesNotThrow(() ->
-                dataAccess.hasAuth(testAuth.authToken()));
+                dataAccess.hasAuth(TEST_AUTH.authToken()));
         Assertions.assertFalse(result);
     }
 
@@ -191,10 +190,10 @@ public class DataAccessTests {
     // get GameData set Positive
     @Test
     public void getGameDatasetPositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
+        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(TEST_GAME));
         Set<GameData> resultGameData = Assertions.assertDoesNotThrow(() ->
                 dataAccess.getGameDataSet());
-        Assertions.assertEquals(Set.of(testGame), resultGameData);
+        Assertions.assertEquals(Set.of(TEST_GAME), resultGameData);
     }
 
     // get GameData set Negative
@@ -208,24 +207,24 @@ public class DataAccessTests {
     // get GameData Positive
     @Test
     public void getGamePositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
+        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(TEST_GAME));
         GameData resultGameData = Assertions.assertDoesNotThrow(() ->
-                dataAccess.getGame(testGame.gameID()));
-        Assertions.assertEquals(testGame, resultGameData);
+                dataAccess.getGame(TEST_GAME.gameID()));
+        Assertions.assertEquals(TEST_GAME, resultGameData);
     }
 
     // get gameData Negative
     @Test
     public void getGameNegative() {
-        Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.getGame(testGame.gameID()));
+        Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.getGame(TEST_GAME.gameID()));
     }
 
     // has gameData Positive
     @Test
     public void hasGamePositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
+        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(TEST_GAME));
         boolean result = Assertions.assertDoesNotThrow(() ->
-                dataAccess.hasGame(testGame.gameID()));
+                dataAccess.hasGame(TEST_GAME.gameID()));
         Assertions.assertTrue(result);
     }
 
@@ -233,14 +232,14 @@ public class DataAccessTests {
     @Test
     public void hasGameNegative() {
         boolean result = Assertions.assertDoesNotThrow(() ->
-                dataAccess.hasGame(testGame.gameID()));
+                dataAccess.hasGame(TEST_GAME.gameID()));
         Assertions.assertFalse(result);
     }
 
     // create gameData Positive
     @Test
     public void addGamePositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
+        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(TEST_GAME));
     }
 
     // create gameData Negative
@@ -252,26 +251,26 @@ public class DataAccessTests {
     // UpdateGame Positive
     @Test
     public void updateGamePositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
-        var goslingData = testGame.setWhiteUsername("James Gosling");
-        Assertions.assertDoesNotThrow(() -> dataAccess.updateGame(testGame.gameID(), goslingData));
+        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(TEST_GAME));
+        var goslingData = TEST_GAME.setWhiteUsername("James Gosling");
+        Assertions.assertDoesNotThrow(() -> dataAccess.updateGame(TEST_GAME.gameID(), goslingData));
         GameData resultGameData = Assertions.assertDoesNotThrow(() ->
-                dataAccess.getGame(testGame.gameID()));
+                dataAccess.getGame(TEST_GAME.gameID()));
         Assertions.assertEquals(goslingData, resultGameData);
     }
 
     // UpdateGame Negative
     @Test
     public void updateGameNegative() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
-        var goslingData = testGame.setWhiteUsername("James Gosling");
+        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(TEST_GAME));
+        var goslingData = TEST_GAME.setWhiteUsername("James Gosling");
         Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.updateGame(-105, goslingData));
     }
 
     // remove gameData Positive
     @Test
     public void removeGamePositive() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.removeGame(testGame.gameID()));
+        Assertions.assertDoesNotThrow(() -> dataAccess.removeGame(TEST_GAME.gameID()));
     }
 
     // remove gameData Negative
@@ -283,10 +282,10 @@ public class DataAccessTests {
     // remove gameData removes
     @Test
     public void removeGameRemoves() {
-        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
-        Assertions.assertDoesNotThrow(() -> dataAccess.removeGame(testGame.gameID()));
+        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(TEST_GAME));
+        Assertions.assertDoesNotThrow(() -> dataAccess.removeGame(TEST_GAME.gameID()));
         boolean result = Assertions.assertDoesNotThrow(() ->
-                dataAccess.hasGame(testGame.gameID()));
+                dataAccess.hasGame(TEST_GAME.gameID()));
         Assertions.assertFalse(result);
     }
 }

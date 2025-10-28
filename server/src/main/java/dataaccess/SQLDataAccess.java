@@ -34,7 +34,8 @@ public class SQLDataAccess implements DataAccess {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new DataAccessException(String.format("unable to update database: %s, %s", statement, e.getMessage()));
+            throw new DataAccessException(String.format("unable to update database: %s, %s", statement,
+                    e.getMessage()));
         }
     }
 
@@ -51,7 +52,13 @@ public class SQLDataAccess implements DataAccess {
                 }
             }
         } catch (SQLException e) {
-            throw new DataAccessException(String.format("unable to get table from database with statement: \"%s\", %s", statement, e.getMessage()));
+            throw new DataAccessException(
+                    String.format(
+                            "unable to get table from database with statement: \"%s\", %s",
+                            statement,
+                            e.getMessage()
+                    )
+            );
         }
     }
 
@@ -173,7 +180,12 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void createUser(UserData userData) throws DataAccessException {
-        executeUpdate("INSERT INTO user_data (username, password, email) VALUES(?, ?, ?)", userData.username(), userData.password(), userData.email());
+        executeUpdate(
+                "INSERT INTO user_data (username, password, email) VALUES(?, ?, ?)",
+                userData.username(),
+                userData.password(),
+                userData.email()
+        );
     }
 
     @Override
@@ -237,7 +249,8 @@ public class SQLDataAccess implements DataAccess {
         }
 
         executeUpdate(
-                "INSERT INTO game_data (game_id, white_username, black_username, game_name, game_json) VALUES(?, ?, ?, ?, ?)",
+                "INSERT INTO game_data (game_id, white_username, black_username, game_name, game_json) VALUES(?, ?, " +
+                        "?, ?, ?)",
                 gameData.gameID(),
                 gameData.whiteUsername(),
                 gameData.blackUsername(),
@@ -255,7 +268,8 @@ public class SQLDataAccess implements DataAccess {
             throw new DataAccessException("GameID should not be negative");
         }
 
-        executeUpdate("UPDATE game_data SET white_username=?, black_username=?, game_name=?, game_json=? WHERE game_id=?",
+        executeUpdate("UPDATE game_data SET white_username=?, black_username=?, game_name=?, game_json=? WHERE " +
+                        "game_id=?",
                 gameData.whiteUsername(),
                 gameData.blackUsername(),
                 gameData.gameName(),
