@@ -7,6 +7,7 @@ import model.UserData;
 
 import java.sql.*;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,17 +40,22 @@ public class SQLDataAccess implements DataAccess {
         }
     }
 
-    private Set<Map<String, ?>> getTableAsMapSet(String tableName, String... cols) throws DataAccessException {
+    private <T extends Record> Set<T> getTableAsSet(String tableName, Class<T> recordClass) throws DataAccessException {
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM ?")) {
                 ps.setString(0, tableName);
                 try (var rs = ps.executeQuery()) {
+                    var set = new HashSet<T>();
                     while (rs.next()) {
-                        var obj
-                        for (String col : cols) {
-
+                        if (UserData.class.equals(recordClass)) {
+                            set.add(readUserData(rs));
+                        } else if (AuthData.class.equals(recordClass)) {
+                            set.add(readAuthData(rs));
+                        } else if (GameData.class.equals(recordClass)) {
+                            set.add(readGameData(rs));
                         }
                     }
+                    return set;
                 }
             }
         } catch (SQLException e) {
