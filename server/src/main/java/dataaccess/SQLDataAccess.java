@@ -27,16 +27,7 @@ public class SQLDataAccess implements DataAccess {
     private void executeUpdate(String statement, Object... params) throws DataAccessException {
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
-                for (int i = 0; i < params.length; i++) {
-                    Object param = params[i];
-                    switch (param) {
-                        case String p -> ps.setString(i + 1, p);
-                        case Integer p -> ps.setInt(i + 1, p);
-                        case null -> ps.setNull(i + 1, NULL);
-                        default -> {
-                        }
-                    }
-                }
+                prepareStatement(ps, params);
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
@@ -44,9 +35,10 @@ public class SQLDataAccess implements DataAccess {
         }
     }
 
-    private <T extends Record> Set<T> getTableAsSet(String statement, Reader<T> reader) throws DataAccessException {
+    private <T extends Record> Set<T> getTableAsSet(String statement, Reader<T> reader, Object... params) throws DataAccessException {
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
+                prepareStatement(ps, params);
                 try (var rs = ps.executeQuery()) {
                     var set = new HashSet<T>();
                     while (rs.next()) {
@@ -57,6 +49,19 @@ public class SQLDataAccess implements DataAccess {
             }
         } catch (SQLException e) {
             throw new DataAccessException(String.format("unable to get table from database with statement: \"%s\", %s", statement, e.getMessage()));
+        }
+    }
+
+    private void prepareStatement(PreparedStatement ps, Object[] params) throws SQLException {
+        for (int i = 0; i < params.length; i++) {
+            Object param = params[i];
+            switch (param) {
+                case String p -> ps.setString(i + 1, p);
+                case Integer p -> ps.setInt(i + 1, p);
+                case null -> ps.setNull(i + 1, NULL);
+                default -> {
+                }
+            }
         }
     }
 
@@ -79,7 +84,7 @@ public class SQLDataAccess implements DataAccess {
         var blackUsername = rs.getString("black_username");
         var gameName = rs.getString("game_name");
         var gameJSON = rs.getString("game_json");
-        System.out.println(gameJSON);
+//        System.out.println(gameJSON);
         var game = ChessGame.fromString(gameJSON);
         return new GameData(gameID, whiteUsername, blackUsername, gameName, game);
     }
@@ -147,6 +152,7 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public UserData getUser(String username) throws DataAccessException {
+        var outputSet = getTableAsSet("SELECT * FROM user_data WHERE username=?", this::readUserData, username);
         return null;
     }
 

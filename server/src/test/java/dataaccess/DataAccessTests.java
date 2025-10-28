@@ -70,4 +70,19 @@ public class DataAccessTests {
         Assertions.assertDoesNotThrow(() -> dataAccess.deleteDB());
         assertEmptyDatabase();
     }
+
+    // get user Positive
+    @Test
+    public void getUserPositive() {
+        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(testUser));
+        UserData resultUser = Assertions.assertDoesNotThrow(() ->
+                dataAccess.getUser(testUser.username()));
+        Assertions.assertEquals(testUser, resultUser);
+    }
+
+    // get user Negative
+    @Test
+    public void getUserNegative() {
+        Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.getUser(testUser.username()));
+    }
 }
