@@ -35,7 +35,7 @@ public class ChessGame {
         var serializer = new Gson();
         var req = serializer.fromJson(gameJSON, Map.class);
         TeamColor _currentColor = TeamColor.valueOf(req.get("currentColor").toString());
-        String boardJSON = req.get("boardJSON").toString();
+        String boardJSON = req.get("board").toString();
         ChessBoard _board = ChessBoard.fromString(boardJSON);
         return new ChessGame(_currentColor, _board);
     }
@@ -337,6 +337,9 @@ public class ChessGame {
 
     @Override
     public String toString() {
-        return String.format("{ currentColor : \"%s\", board : \"%s\"}", currentColor.toString(), board.toString());
+        return new Gson().toJson(Map.of(
+                "currentColor", currentColor,
+                "board", board
+        ));
     }
 }

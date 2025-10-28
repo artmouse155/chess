@@ -31,13 +31,7 @@ public class ChessBoard {
 
     public static ChessBoard fromString(String boardJSON) {
         var serializer = new Gson();
-        var req = serializer.fromJson(boardJSON, Map.class);
-        String lJSON = req.get("lastPawnMoveTwicePosition").toString();
-        var _lastPawnMoveTwicePosition = ChessPosition.fromString(lJSON);
-        String squaresJSON = req.get("squares").toString();
-        // TODO: IMPLEMENT
-        var _squares = new ChessPiece[8][8];
-        return new ChessBoard(_squares, _lastPawnMoveTwicePosition);
+        return serializer.fromJson(boardJSON, ChessBoard.class);
     }
 
     /**

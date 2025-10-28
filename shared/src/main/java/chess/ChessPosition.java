@@ -18,11 +18,6 @@ public class ChessPosition {
         this.col = col;
     }
 
-    public static ChessPosition fromString(String lJSON) {
-        // TODO: FIX
-        return new ChessPosition(0, 0);
-    }
-
     /**
      * @return which row this position is in
      * 1 codes for the bottom row
