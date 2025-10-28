@@ -140,7 +140,9 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void deleteDB() throws DataAccessException {
-
+        executeUpdate("TRUNCATE user_data");
+        executeUpdate("TRUNCATE auth_data");
+        executeUpdate("TRUNCATE game_data");
     }
 
     @Override
