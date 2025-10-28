@@ -85,4 +85,21 @@ public class DataAccessTests {
     public void getUserNegative() {
         Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.getUser(testUser.username()));
     }
+
+    // has user Positive
+    @Test
+    public void hasUserPositive() {
+        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(testUser));
+        boolean result = Assertions.assertDoesNotThrow(() ->
+                dataAccess.hasUser(testUser.username()));
+        Assertions.assertTrue(result);
+    }
+
+    // has user Negative
+    @Test
+    public void hasUserNegative() {
+        boolean result = Assertions.assertDoesNotThrow(() ->
+                dataAccess.hasUser(testUser.username()));
+        Assertions.assertFalse(result);
+    }
 }
