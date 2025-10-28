@@ -89,15 +89,14 @@ public class SQLDataAccess implements DataAccess {
 
     private final String[] createStatements = {
             """
-            CREATE TABLE IF NOT EXISTS  pet (
-              `id` int NOT NULL AUTO_INCREMENT,
-              `name` varchar(256) NOT NULL,
-              `type` ENUM('CAT', 'DOG', 'FISH', 'FROG', 'ROCK') DEFAULT 'CAT',
-              `json` TEXT DEFAULT NULL,
-              PRIMARY KEY (`id`),
-              INDEX(type),
-              INDEX(name)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+            CREATE TABLE IF NOT EXISTS user_data (
+              `username` varchar(128) NOT NULL,
+              `password` varchar(128) NOT NULL,
+              `email` varchar(128) NOT NULL,
+              PRIMARY KEY (`username`),
+              INDEX(password),
+              INDEX(email)
+            )
             """
     };
 
@@ -117,7 +116,14 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public Map<String, Set<? extends Record>> getDB() throws DataAccessException {
-        return Map.of();
+        return Map.of(
+                "UserDataSet",
+                getTableAsSet("user_data", UserData.class),
+                "AuthDataSet",
+                getTableAsSet("auth_data", AuthData.class),
+                "GameDataSet",
+                getTableAsSet("game_data", GameData.class)
+        );
     }
 
     @Override
