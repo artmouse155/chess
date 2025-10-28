@@ -11,7 +11,9 @@ import java.util.Set;
 public class DataAccessTests {
 
     static DataAccess dataAccess;
-    protected static UserData testUser = new UserData("test1234", "soSecure!!!", "test@gmail.com");
+    final static UserData testUser = new UserData("test1234", "soSecure!!!", "test@gmail.com");
+    final static AuthData testAuth = new AuthData("auth1234", testUser.username());
+    final static GameData testGame = new GameData(1111, null, null, "Checkers", new ChessGame());
 
 
     @BeforeAll
@@ -41,13 +43,7 @@ public class DataAccessTests {
 
     // Get DB Positive
     @Test
-    @Order(1)
-    @DisplayName("Get non-empty DB")
     public void getNonEmptyDB() {
-
-        final var testAuth = new AuthData("auth1234", testUser.username());
-        final var testGame = new GameData(1111, null, null, "Checkers", new ChessGame());
-
         Assertions.assertDoesNotThrow(() -> dataAccess.createUser(testUser));
         Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(testAuth));
         Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
@@ -61,9 +57,17 @@ public class DataAccessTests {
 
     // Get DB Negative
     @Test
-    @Order(2)
-    @DisplayName("Get empty DB")
     public void getEmptyDB() {
+        assertEmptyDatabase();
+    }
+
+    // Clear DB Positive
+    @Test
+    public void clearDBPositive() {
+        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(testUser));
+        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(testAuth));
+        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
+        Assertions.assertDoesNotThrow(() -> dataAccess.deleteDB());
         assertEmptyDatabase();
     }
 }
