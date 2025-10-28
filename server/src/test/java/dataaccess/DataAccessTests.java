@@ -23,10 +23,10 @@ public class DataAccessTests {
 
     protected void assertEmptyDatabase() {
         var db = Assertions.assertDoesNotThrow(() -> dataAccess.getDB(), "getDB threw an exception");
-        Assertions.assertFalse(db.isEmpty());
-        Assertions.assertTrue(db.containsKey("userDataSet"));
-        Assertions.assertTrue(db.containsKey("authDataSet"));
-        Assertions.assertTrue(db.containsKey("gameDataSet"));
+        Assertions.assertFalse(db.isEmpty(), "getDB returned empty database.");
+        Assertions.assertTrue(db.containsKey("userDataSet"), "the database returned by getDB did not have the key \"userDataSet\".");
+        Assertions.assertTrue(db.containsKey("authDataSet"), "the database returned by getDB did not have the key \"authDataSet\".");
+        Assertions.assertTrue(db.containsKey("gameDataSet"), "the database returned by getDB did not have the key \"gameDataSet\".");
         Assertions.assertTrue(db.get("userDataSet").isEmpty(), String.format("userDataSet was not empty. (%s)", db.get("userDataSet").toString()));
         Assertions.assertTrue(db.get("authDataSet").isEmpty(), String.format("authDataSet was not empty. (%s)", db.get("authDataSet").toString()));
         Assertions.assertTrue(db.get("gameDataSet").isEmpty(), String.format("gameDataSet was not empty. (%s)", db.get("gameDataSet").toString()));
@@ -53,9 +53,9 @@ public class DataAccessTests {
         Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
         var db = Assertions.assertDoesNotThrow(() -> dataAccess.getDB(), "getDB threw an exception");
         Assertions.assertFalse(db.isEmpty());
-        Assertions.assertEquals(db.get("userDataSet"), Set.of(testUser), String.format("userDataSet was not empty. (%s)", db.get("userDataSet").toString()));
-        Assertions.assertEquals(db.get("authDataSet"), Set.of(testAuth), String.format("authDataSet was not empty. (%s)", db.get("authDataSet").toString()));
-        Assertions.assertEquals(db.get("gameDataSet"), Set.of(testGame), String.format("gameDataSet was not empty. (%s)", db.get("gameDataSet").toString()));
+        Assertions.assertEquals(Set.of(testUser), db.get("userDataSet"), String.format("userDataSet was empty. (%s)", db.get("userDataSet").toString()));
+        Assertions.assertEquals(Set.of(testAuth), db.get("authDataSet"), String.format("authDataSet was empty. (%s)", db.get("authDataSet").toString()));
+        Assertions.assertEquals(Set.of(testGame), db.get("gameDataSet"), String.format("gameDataSet was empty. (%s)", db.get("gameDataSet").toString()));
 
     }
 

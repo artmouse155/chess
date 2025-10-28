@@ -134,11 +134,11 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public Map<String, Set<? extends Record>> getDB() throws DataAccessException {
         return Map.of(
-                "UserDataSet",
+                "userDataSet",
                 getTableAsSet("SELECT * FROM user_data", this::readUserData),
-                "AuthDataSet",
+                "authDataSet",
                 getTableAsSet("SELECT * FROM auth_data", this::readAuthData),
-                "GameDataSet",
+                "gameDataSet",
                 getTableAsSet("SELECT * FROM game_data", this::readGameData)
         );
     }
