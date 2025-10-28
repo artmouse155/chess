@@ -139,7 +139,7 @@ public class SQLDataAccess implements DataAccess {
                 "authDataSet",
                 getTableAsSet("SELECT * FROM auth_data", this::readAuthData),
                 "gameDataSet",
-                getTableAsSet("SELECT * FROM game_data", this::readGameData)
+                getGameDataSet()
         );
     }
 
@@ -204,21 +204,32 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public Set<GameData> getGameDataSet() throws DataAccessException {
-        return Set.of();
+        return getTableAsSet("SELECT * FROM game_data", this::readGameData);
     }
 
     @Override
     public GameData getGame(int gameID) throws DataAccessException {
-        return null;
+        var outputSet = getTableAsSet("SELECT * FROM game_data WHERE game_id=?", this::readGameData, gameID);
+        var optionalFirst = outputSet.stream().findFirst();
+        return optionalFirst.orElseThrow(DataAccessException::new);
     }
 
     @Override
     public boolean hasGame(int gameID) throws DataAccessException {
-        return false;
+        try {
+            getGame(gameID);
+        } catch (DataAccessException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public void addGame(GameData gameData) throws DataAccessException {
+        if (gameData.game() == null) {
+            throw new DataAccessException("GameData should not be null");
+        }
+
         executeUpdate(
                 "INSERT INTO game_data (game_id, white_username, black_username, game_name, game_json) VALUES(?, ?, ?, ?, ?)",
                 gameData.gameID(),
@@ -231,11 +242,27 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void updateGame(int gameID, GameData gameData) throws DataAccessException {
+        if (gameData.game() == null) {
+            throw new DataAccessException("GameData should not be null");
+        }
+        if (gameID < 0) {
+            throw new DataAccessException("GameID should not be negative");
+        }
 
+        executeUpdate("UPDATE game_data SET white_username=?, black_username=?, game_name=?, game_json=? WHERE game_id=?",
+                gameData.whiteUsername(),
+                gameData.blackUsername(),
+                gameData.gameName(),
+                gameData.game().toString(),
+                gameID
+        );
     }
 
     @Override
     public void removeGame(int gameID) throws DataAccessException {
-
+        if (gameID < 0) {
+            throw new DataAccessException("GameID should not be null");
+        }
+        executeUpdate("DELETE FROM game_data WHERE game_id=?", gameID);
     }
 }
