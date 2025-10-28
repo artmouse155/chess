@@ -5,6 +5,7 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 import org.junit.jupiter.api.*;
+import passoff.model.TestUser;
 
 import java.util.Set;
 
@@ -101,5 +102,17 @@ public class DataAccessTests {
         boolean result = Assertions.assertDoesNotThrow(() ->
                 dataAccess.hasUser(testUser.username()));
         Assertions.assertFalse(result);
+    }
+
+    // create user Positive
+    @Test
+    public void createUserPositive() {
+        Assertions.assertDoesNotThrow(() -> dataAccess.createUser(testUser));
+    }
+
+    // create user Negative
+    @Test
+    public void createUserNegative() {
+        Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.createUser(new UserData(null, null, null)));
     }
 }
