@@ -188,6 +188,23 @@ public class DataAccessTests {
 
     // GameData tests
 
+    // get GameData set Positive
+    @Test
+    public void getGameDatasetPositive() {
+        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
+        Set<GameData> resultGameData = Assertions.assertDoesNotThrow(() ->
+                dataAccess.getGameDataSet());
+        Assertions.assertEquals(Set.of(testGame), resultGameData);
+    }
+
+    // get GameData set Negative
+    @Test
+    public void getGameDatasetNegative() {
+        Set<GameData> resultGameData = Assertions.assertDoesNotThrow(() ->
+                dataAccess.getGameDataSet());
+        Assertions.assertTrue(resultGameData.isEmpty());
+    }
+
     // get GameData Positive
     @Test
     public void getGamePositive() {
@@ -230,6 +247,25 @@ public class DataAccessTests {
     @Test
     public void addGameNegative() {
         Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.addGame(new GameData(-1, null, null, null, null)));
+    }
+
+    // UpdateGame Positive
+    @Test
+    public void updateGamePositive() {
+        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
+        var goslingData = testGame.setWhiteUsername("James Gosling");
+        Assertions.assertDoesNotThrow(() -> dataAccess.updateGame(testGame.gameID(), goslingData));
+        GameData resultGameData = Assertions.assertDoesNotThrow(() ->
+                dataAccess.getGame(testGame.gameID()));
+        Assertions.assertEquals(goslingData, resultGameData);
+    }
+
+    // UpdateGame Negative
+    @Test
+    public void updateGameNegative() {
+        Assertions.assertDoesNotThrow(() -> dataAccess.addGame(testGame));
+        var goslingData = testGame.setWhiteUsername("James Gosling");
+        Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.updateGame(-105, goslingData));
     }
 
     // remove gameData Positive
