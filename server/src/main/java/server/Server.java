@@ -36,7 +36,7 @@ public class Server {
 
         server.exception(ResponseException.class, this::exceptionHandler);
 
-        handler = new Handler(false);
+        handler = new Handler(true);
     }
 
     public Server(boolean doSql) {

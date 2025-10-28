@@ -1,7 +1,6 @@
 package dataaccess;
 
 import chess.ChessGame;
-import com.google.gson.Gson;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
@@ -22,6 +21,10 @@ public class SQLDataAccess implements DataAccess {
 
     public SQLDataAccess() throws DataAccessException {
         configureDatabase();
+    }
+
+    private void assertConnection() throws DataAccessException {
+        DatabaseManager.getConnection();
     }
 
     private void executeUpdate(String statement, Object... params) throws DataAccessException {
@@ -159,6 +162,7 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public boolean hasUser(String username) throws DataAccessException {
+        assertConnection();
         try {
             getUser(username);
         } catch (DataAccessException e) {
@@ -181,6 +185,7 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public boolean hasAuth(String authToken) throws DataAccessException {
+        assertConnection();
         try {
             getAuth(authToken);
         } catch (DataAccessException e) {
@@ -216,6 +221,7 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public boolean hasGame(int gameID) throws DataAccessException {
+        assertConnection();
         try {
             getGame(gameID);
         } catch (DataAccessException e) {
