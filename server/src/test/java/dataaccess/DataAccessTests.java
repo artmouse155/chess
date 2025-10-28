@@ -159,4 +159,26 @@ public class DataAccessTests {
     public void createAuthNegative() {
         Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.createAuth(new AuthData(null, null)));
     }
+
+    // remove auth Positive
+    @Test
+    public void removeAuthPositive() {
+        Assertions.assertDoesNotThrow(() -> dataAccess.removeAuth(testAuth.authToken()));
+    }
+
+    // remove auth Negative
+    @Test
+    public void removeAuthNegative() {
+        Assertions.assertThrowsExactly(DataAccessException.class, () -> dataAccess.removeAuth(null));
+    }
+
+    // remove auth removes
+    @Test
+    public void removeAuthRemoves() {
+        Assertions.assertDoesNotThrow(() -> dataAccess.createAuth(testAuth));
+        Assertions.assertDoesNotThrow(() -> dataAccess.removeAuth(testAuth.authToken()));
+        boolean result = Assertions.assertDoesNotThrow(() ->
+                dataAccess.hasAuth(testAuth.username()));
+        Assertions.assertFalse(result);
+    }
 }

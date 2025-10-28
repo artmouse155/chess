@@ -196,7 +196,10 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void removeAuth(String authToken) throws DataAccessException {
-
+        if (authToken == null) {
+            throw new DataAccessException("AuthToken should not be null");
+        }
+        executeUpdate("DELETE FROM auth_data WHERE auth_token=?", authToken);
     }
 
     @Override
