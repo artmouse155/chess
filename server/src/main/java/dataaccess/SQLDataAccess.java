@@ -159,7 +159,12 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public boolean hasUser(String username) throws DataAccessException {
-        return false;
+        try {
+            getUser(username);
+        } catch (DataAccessException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
