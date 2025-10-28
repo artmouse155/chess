@@ -160,7 +160,7 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void createUser(UserData userData) throws DataAccessException {
-
+        executeUpdate("INSERT INTO user_data (username, password, email) VALUES(?, ?, ?)", userData.username(), userData.password(), userData.email());
     }
 
     @Override
@@ -175,7 +175,7 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void createAuth(AuthData authData) throws DataAccessException {
-
+        executeUpdate("INSERT INTO auth_data (auth_token, username) VALUES(?, ?)", authData.authToken(), authData.username());
     }
 
     @Override
@@ -200,7 +200,14 @@ public class SQLDataAccess implements DataAccess {
 
     @Override
     public void addGame(GameData gameData) throws DataAccessException {
-
+        executeUpdate(
+                "INSERT INTO game_data (game_id, white_username, black_username, game_name, game_json) VALUES(?, ?, ?)",
+                gameData.gameID(),
+                gameData.whiteUsername(),
+                gameData.blackUsername(),
+                gameData.gameName(),
+                gameData.game().toString()
+        );
     }
 
     @Override
