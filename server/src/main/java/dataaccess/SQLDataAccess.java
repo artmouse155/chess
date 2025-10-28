@@ -44,7 +44,7 @@ public class SQLDataAccess implements DataAccess {
     private <T extends Record> Set<T> getTableAsSet(String tableName, Class<T> recordClass) throws DataAccessException {
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM ?")) {
-                ps.setString(0, tableName);
+                ps.setString(1, tableName);
                 try (var rs = ps.executeQuery()) {
                     var set = new HashSet<T>();
                     while (rs.next()) {
