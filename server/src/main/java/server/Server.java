@@ -44,10 +44,6 @@ public class Server {
         handler = new Handler(doSql);
     }
 
-    private void initializeServer() {
-
-    }
-
     public void authenticate(Context ctx) throws ResponseException {
         var info = String.format("🔑 Auth: %s %s", ctx.method().name(), ctx.path());
         System.out.println(info);
