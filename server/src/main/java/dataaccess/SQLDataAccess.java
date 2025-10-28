@@ -153,7 +153,8 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public UserData getUser(String username) throws DataAccessException {
         var outputSet = getTableAsSet("SELECT * FROM user_data WHERE username=?", this::readUserData, username);
-        return null;
+        var optionalFirst = outputSet.stream().findFirst();
+        return optionalFirst.orElseThrow(DataAccessException::new);
     }
 
     @Override
