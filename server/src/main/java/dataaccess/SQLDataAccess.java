@@ -102,7 +102,7 @@ public class SQLDataAccess implements DataAccess {
             CREATE TABLE IF NOT EXISTS auth_data (
               `auth_token` varchar(128) NOT NULL,
               `username` varchar(128) NOT NULL,
-              PRIMARY KEY (`username`)
+              PRIMARY KEY (`authToken`)
             )
             """,
             """
