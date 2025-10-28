@@ -32,7 +32,6 @@ public class SQLDataAccess implements DataAccess {
                     switch (param) {
                         case String p -> ps.setString(i + 1, p);
                         case Integer p -> ps.setInt(i + 1, p);
-                        case ChessGame p -> ps.setString(i + 1, p.toString());
                         case null -> ps.setNull(i + 1, NULL);
                         default -> {
                         }
@@ -75,11 +74,12 @@ public class SQLDataAccess implements DataAccess {
     }
 
     private GameData readGameData(ResultSet rs) throws SQLException {
-        var gameID = rs.getInt("gameID");
+        var gameID = rs.getInt("game_id");
         var whiteUsername = rs.getString("white_username");
         var blackUsername = rs.getString("black_username");
         var gameName = rs.getString("game_name");
         var gameJSON = rs.getString("game_json");
+        System.out.println(gameJSON);
         var game = new Gson().fromJson(gameJSON, ChessGame.class);
         return new GameData(gameID, whiteUsername, blackUsername, gameName, game);
     }
