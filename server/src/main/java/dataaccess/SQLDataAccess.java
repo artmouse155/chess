@@ -1,6 +1,7 @@
 package dataaccess;
 
 import chess.ChessGame;
+import com.google.gson.Gson;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
@@ -48,11 +49,11 @@ public class SQLDataAccess implements DataAccess {
                     var set = new HashSet<T>();
                     while (rs.next()) {
                         if (UserData.class.equals(recordClass)) {
-                            set.add(readUserData(rs));
+                            set.add((T) readUserData(rs));
                         } else if (AuthData.class.equals(recordClass)) {
-                            set.add(readAuthData(rs));
+                            set.add((T) readAuthData(rs));
                         } else if (GameData.class.equals(recordClass)) {
-                            set.add(readGameData(rs));
+                            set.add((T) readGameData(rs));
                         }
                     }
                     return set;
@@ -61,6 +62,29 @@ public class SQLDataAccess implements DataAccess {
         } catch (SQLException e) {
             throw new DataAccessException(String.format("unable to get table from database: %s, %s", tableName, e.getMessage()));
         }
+    }
+
+    private UserData readUserData(ResultSet rs) throws SQLException {
+        var username = rs.getString("username");
+        var password = rs.getString("password");
+        var email = rs.getString("email");
+        return new UserData(username, password, email);
+    }
+
+    private AuthData readAuthData(ResultSet rs) throws SQLException {
+        var authToken = rs.getString("authToken");
+        var username = rs.getString("username");
+        return new AuthData(authToken, username);
+    }
+
+    private GameData readGameData(ResultSet rs) throws SQLException {
+        var gameID = rs.getInt("gameID");
+        var whiteUsername = rs.getString("whiteUsername");
+        var blackUsername = rs.getString("blackUsername");
+        var gameName = rs.getString("gameName");
+        var gameJSON = rs.getString("gameJSON");
+        var game = new Gson().fromJson(gameJSON, ChessGame.class);
+        return new GameData(gameID, whiteUsername, blackUsername, gameName, game);
     }
 
     private final String[] createStatements = {
