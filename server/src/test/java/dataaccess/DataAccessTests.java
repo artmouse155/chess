@@ -49,9 +49,12 @@ public class DataAccessTests {
         Assertions.assertDoesNotThrow(() -> dataAccess.addGame(TEST_GAME));
         var db = Assertions.assertDoesNotThrow(() -> dataAccess.getDB(), "getDB threw an exception");
         Assertions.assertFalse(db.isEmpty());
-        Assertions.assertEquals(Set.of(TEST_USER), db.get("userDataSet"), String.format("userDataSet was empty. (%s)", db.get("userDataSet").toString()));
-        Assertions.assertEquals(Set.of(TEST_AUTH), db.get("authDataSet"), String.format("authDataSet was empty. (%s)", db.get("authDataSet").toString()));
-        Assertions.assertEquals(Set.of(TEST_GAME), db.get("gameDataSet"), String.format("gameDataSet was empty. (%s)", db.get("gameDataSet").toString()));
+        Assertions.assertEquals(Set.of(TEST_USER), db.get("userDataSet"), String.format("userDataSet was empty. (%s)",
+                db.get("userDataSet").toString()));
+        Assertions.assertEquals(Set.of(TEST_AUTH), db.get("authDataSet"), String.format("authDataSet was empty. (%s)",
+                db.get("authDataSet").toString()));
+        Assertions.assertEquals(Set.of(TEST_GAME), db.get("gameDataSet"), String.format("gameDataSet was empty. (%s)",
+                db.get("gameDataSet").toString()));
 
     }
 
