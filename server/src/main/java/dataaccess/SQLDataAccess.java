@@ -69,17 +69,17 @@ public class SQLDataAccess implements DataAccess {
     }
 
     private AuthData readAuthData(ResultSet rs) throws SQLException {
-        var authToken = rs.getString("authToken");
+        var authToken = rs.getString("auth_token");
         var username = rs.getString("username");
         return new AuthData(authToken, username);
     }
 
     private GameData readGameData(ResultSet rs) throws SQLException {
         var gameID = rs.getInt("gameID");
-        var whiteUsername = rs.getString("whiteUsername");
-        var blackUsername = rs.getString("blackUsername");
-        var gameName = rs.getString("gameName");
-        var gameJSON = rs.getString("gameJSON");
+        var whiteUsername = rs.getString("white_username");
+        var blackUsername = rs.getString("black_username");
+        var gameName = rs.getString("game_name");
+        var gameJSON = rs.getString("game_json");
         var game = new Gson().fromJson(gameJSON, ChessGame.class);
         return new GameData(gameID, whiteUsername, blackUsername, gameName, game);
     }
@@ -90,30 +90,25 @@ public class SQLDataAccess implements DataAccess {
               `username` varchar(128) NOT NULL,
               `password` varchar(128) NOT NULL,
               `email` varchar(128) NOT NULL,
-              PRIMARY KEY (`username`),
-              INDEX(password),
-              INDEX(email)
+              PRIMARY KEY (`username`)
             )
             """,
             """
             CREATE TABLE IF NOT EXISTS auth_data (
+              `auth_token` varchar(128) NOT NULL,
               `username` varchar(128) NOT NULL,
-              `password` varchar(128) NOT NULL,
-              `email` varchar(128) NOT NULL,
-              PRIMARY KEY (`username`),
-              INDEX(password),
-              INDEX(email)
+              PRIMARY KEY (`username`)
             )
             """,
             """
             CREATE TABLE IF NOT EXISTS game_data (
-              `username` varchar(128) NOT NULL,
-              `password` varchar(128) NOT NULL,
-              `email` varchar(128) NOT NULL,
-              PRIMARY KEY (`username`),
-              INDEX(password),
-              INDEX(email)
-            )
+              `game_id` int NOT NULL,
+              `white_username` varchar(128),
+              `black_username` varchar(128),
+              `game_name` varchar(128),
+              `game_json` LONGTEXT,
+              PRIMARY KEY (`game_id`)
+            );
             """,
     };
 
@@ -201,7 +196,7 @@ public class SQLDataAccess implements DataAccess {
     @Override
     public void addGame(GameData gameData) throws DataAccessException {
         executeUpdate(
-                "INSERT INTO game_data (game_id, white_username, black_username, game_name, game_json) VALUES(?, ?, ?)",
+                "INSERT INTO game_data (game_id, white_username, black_username, game_name, game_json) VALUES(?, ?, ?, ?, ?)",
                 gameData.gameID(),
                 gameData.whiteUsername(),
                 gameData.blackUsername(),
