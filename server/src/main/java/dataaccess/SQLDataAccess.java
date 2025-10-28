@@ -80,7 +80,7 @@ public class SQLDataAccess implements DataAccess {
         var gameName = rs.getString("game_name");
         var gameJSON = rs.getString("game_json");
         System.out.println(gameJSON);
-        var game = new Gson().fromJson(gameJSON, ChessGame.class);
+        var game = ChessGame.fromString(gameJSON);
         return new GameData(gameID, whiteUsername, blackUsername, gameName, game);
     }
 

@@ -1,9 +1,8 @@
 package chess;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
+import com.google.gson.Gson;
+
+import java.util.*;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
@@ -18,12 +17,27 @@ public class ChessBoard {
     private ChessPosition lastPawnMoveTwicePosition;
 
 
-
     public ChessBoard() {
     }
 
     public ChessBoard(ChessPiece[][] squares) {
         this.squares = squares;
+    }
+
+    public ChessBoard(ChessPiece[][] squares, ChessPosition lastPawnMoveTwicePosition) {
+        this.squares = squares;
+        this.lastPawnMoveTwicePosition = lastPawnMoveTwicePosition;
+    }
+
+    public static ChessBoard fromString(String boardJSON) {
+        var serializer = new Gson();
+        var req = serializer.fromJson(boardJSON, Map.class);
+        String lJSON = req.get("lastPawnMoveTwicePosition").toString();
+        var _lastPawnMoveTwicePosition = ChessPosition.fromString(lJSON);
+        String squaresJSON = req.get("squares").toString();
+        // TODO: IMPLEMENT
+        var _squares = new ChessPiece[8][8];
+        return new ChessBoard(_squares, _lastPawnMoveTwicePosition);
     }
 
     /**
@@ -33,11 +47,10 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        squares[position.getRow()-1][position.getColumn()-1] = piece;
+        squares[position.getRow() - 1][position.getColumn() - 1] = piece;
     }
 
-    public void removePiece(ChessPosition position)
-    {
+    public void removePiece(ChessPosition position) {
         addPiece(position, null);
     }
 
@@ -50,7 +63,7 @@ public class ChessBoard {
      */
     public ChessPiece getPiece(ChessPosition position) {
 
-        return squares[position.getRow()-1][position.getColumn()-1];
+        return squares[position.getRow() - 1][position.getColumn() - 1];
     }
 
     /**
@@ -140,18 +153,19 @@ public class ChessBoard {
             out = row + "\n" + out;
         }
 
-        return out;
+        return new Gson().toJson(Map.of(
+                "lastPawnMoveTwicePosition", lastPawnMoveTwicePosition,
+                "squares", out
+        ));
     }
 
-    public Collection<ChessPosition> getAllPositions(ChessGame.TeamColor color)
-    {
+    public Collection<ChessPosition> getAllPositions(ChessGame.TeamColor color) {
         HashSet<ChessPosition> positions = new HashSet<>();
         for (int row = 1; row <= squares.length; row++) {
             for (int col = 1; col <= squares[0].length; col++) {
                 ChessPosition position = new ChessPosition(row, col);
                 ChessPiece piece = getPiece(position);
-                if (piece != null && piece.getTeamColor() == color)
-                {
+                if (piece != null && piece.getTeamColor() == color) {
                     positions.add(position);
                 }
             }
@@ -168,9 +182,7 @@ public class ChessBoard {
                         piece != null
                                 && piece.getTeamColor() == color
                                 && piece.getPieceType() == ChessPiece.PieceType.KING
-                )
-
-                {
+                ) {
                     return position;
                 }
             }
@@ -178,8 +190,7 @@ public class ChessBoard {
         return null;
     }
 
-    public ChessBoard copyAndForceMove(ChessMove move)
-    {
+    public ChessBoard copyAndForceMove(ChessMove move) {
 
         ChessPiece[][] copySquares = new ChessPiece[squares.length][squares[0].length];
 
@@ -210,12 +221,9 @@ public class ChessBoard {
         this.lastPawnMoveTwicePosition = lastPawnMoveTwicePosition;
     }
 
-    public boolean positionsEmpty(ChessPosition[] positions)
-    {
-        for (ChessPosition position : positions)
-        {
-            if (getPiece(position ) != null)
-            {
+    public boolean positionsEmpty(ChessPosition[] positions) {
+        for (ChessPosition position : positions) {
+            if (getPiece(position) != null) {
                 return false;
             }
         }

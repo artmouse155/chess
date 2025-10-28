@@ -1,7 +1,10 @@
 package chess;
 
+import com.google.gson.Gson;
+
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.lang.Math.abs;
@@ -26,6 +29,15 @@ public class ChessGame {
     public ChessGame(TeamColor currentColor, ChessBoard board) {
         this.currentColor = currentColor;
         this.board = board;
+    }
+
+    public static ChessGame fromString(String gameJSON) {
+        var serializer = new Gson();
+        var req = serializer.fromJson(gameJSON, Map.class);
+        TeamColor _currentColor = TeamColor.valueOf(req.get("currentColor").toString());
+        String boardJSON = req.get("boardJSON").toString();
+        ChessBoard _board = ChessBoard.fromString(boardJSON);
+        return new ChessGame(_currentColor, _board);
     }
 
     /**
