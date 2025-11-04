@@ -27,7 +27,7 @@ public class Client {
     }
 
     private void printPrompt() {
-        System.out.print("\n" + RESET + ">>> " + GREEN);
+        System.out.print("CS 240 > ");
     }
 
 
@@ -46,7 +46,7 @@ public class Client {
                 case "quit" -> "quit";
                 default -> help();
             };
-        } catch (ResponseException ex) {
+        } catch (ClientException ex) {
             return ex.getMessage();
         }
     }
