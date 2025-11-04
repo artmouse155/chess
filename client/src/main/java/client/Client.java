@@ -5,15 +5,25 @@ import java.util.Scanner;
 
 public class Client {
 
-    private final ServerFacade server;
+    private final Handler handler;
+
+    enum AuthState {
+
+    }
+
+    interface TerminalFunction {
+
+        String evaluate(String... params);
+    }
 
     public Client(String serverUrl) {
-        server = new ServerFacade(serverUrl);
+        handler = new Handler(serverUrl);
+
     }
 
     public void run() {
         System.out.println("Welcome to Chess.");
-        System.out.print(help());
+        System.out.print(handler.help());
 
         Scanner scanner = new Scanner(System.in);
         var result = "";
@@ -36,16 +46,13 @@ public class Client {
             String[] tokens = input.toLowerCase().split(" ");
             String cmd = (tokens.length > 0) ? tokens[0] : "help";
             String[] params = Arrays.copyOfRange(tokens, 1, tokens.length);
-            return switch (cmd) {
-                case "signin" -> signIn(params);
-                case "rescue" -> rescuePet(params);
-                case "list" -> listPets();
-                case "signout" -> signOut();
-                case "adopt" -> adoptPet(params);
-                case "adoptall" -> adoptAllPets();
-                case "quit" -> "quit";
-                default -> help();
+            TerminalFunction terminalFunction = switch (cmd) {
+                case "login" -> handler::login;
+                case "register" -> handler::register;
+                case "quit" -> handler::quit;
+                default -> handler::help;
             };
+            return terminalFunction.evaluate();
         } catch (ClientException ex) {
             return ex.getMessage();
         }
