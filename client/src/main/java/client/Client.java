@@ -46,6 +46,10 @@ public class Client {
         System.out.print(prompt);
     }
 
+    private String formatError(ClientException ex) {
+        return String.format("%s%s", ex.getMessage(), ex.getHelp());
+    }
+
 
     public String eval(String input) {
         try {
@@ -71,7 +75,7 @@ public class Client {
 
             return terminalFunction.evaluate(params);
         } catch (ClientException ex) {
-            return ex.getMessage();
+            return formatError(ex);
         }
     }
 }
