@@ -6,9 +6,11 @@ import java.util.Scanner;
 public class Client {
 
     private final Handler handler;
+    private final AuthState authState;
 
     enum AuthState {
-
+        AUTHENTICATED,
+        UNAUTHENTICATED
     }
 
     interface TerminalFunction {
@@ -46,12 +48,23 @@ public class Client {
             String[] tokens = input.toLowerCase().split(" ");
             String cmd = (tokens.length > 0) ? tokens[0] : "help";
             String[] params = Arrays.copyOfRange(tokens, 1, tokens.length);
-            TerminalFunction terminalFunction = switch (cmd) {
-                case "login" -> handler::login;
-                case "register" -> handler::register;
-                case "quit" -> handler::quit;
-                default -> handler::help;
+            TerminalFunction terminalFunction = switch (authState) {
+                case AUTHENTICATED -> switch (cmd) {
+                    case "logout" -> handler::logout;
+                    case "create" -> handler::createGame;
+                    case "list" -> handler::listGame;
+                    case "play" -> handler::playGame;
+                    case "watch" -> handler::observeGame;
+                    default -> handler::help;
+                };
+                case UNAUTHENTICATED -> switch (cmd) {
+                    case "login" -> handler::login;
+                    case "register" -> handler::register;
+                    case "quit" -> handler::quit;
+                    default -> handler::help;
+                };
             };
+
             return terminalFunction.evaluate();
         } catch (ClientException ex) {
             return ex.getMessage();
