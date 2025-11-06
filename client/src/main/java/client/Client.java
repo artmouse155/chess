@@ -24,7 +24,7 @@ public class Client {
 
         Scanner scanner = new Scanner(System.in);
         var result = "";
-        while (!result.equals("quit")) {
+        while (true) {
             printPrompt();
             String line = scanner.nextLine();
             result = eval(line);
