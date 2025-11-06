@@ -6,12 +6,7 @@ import java.util.Scanner;
 public class Client {
 
     private final Handler handler;
-    private final AuthState authState;
 
-    enum AuthState {
-        AUTHENTICATED,
-        UNAUTHENTICATED
-    }
 
     interface TerminalFunction {
 
@@ -20,7 +15,7 @@ public class Client {
 
     public Client(String serverUrl) {
         handler = new Handler(serverUrl);
-        authState = AuthState.UNAUTHENTICATED;
+
     }
 
     public void run() {
@@ -39,7 +34,7 @@ public class Client {
     }
 
     private void printPrompt() {
-        System.out.print("CS 240 > ");
+        System.out.print("\nCS 240 > ");
     }
 
 
@@ -48,6 +43,7 @@ public class Client {
             String[] tokens = input.toLowerCase().split(" ");
             String cmd = (tokens.length > 0) ? tokens[0] : "help";
             String[] params = Arrays.copyOfRange(tokens, 1, tokens.length);
+            ServerFacade.AuthState authState = handler.getAuthState();
             TerminalFunction terminalFunction = switch (authState) {
                 case AUTHENTICATED -> switch (cmd) {
                     case "logout" -> handler::logout;
