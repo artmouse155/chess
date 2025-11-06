@@ -18,6 +18,24 @@ public class Handler {
         server = new ServerFacade(url);
     }
 
+    private void validateArgs(String[] args, String expectedMsg, Class<?>... types) throws ClientException {
+        int size = types.length;
+
+        if (args.length != size) {
+            throw new ClientException(
+                    String.format("Invalid number of arguments. (Expected %d, Found %d)\n%s", size, args.length, expectedMsg)
+            );
+        }
+        for (int i = 0; i < size; i++) {
+            if (types[i].equals(Integer.class)) {
+                if (!args[i].matches("/d+")) {
+                    throw new ClientException("\n" + expectedMsg);
+                }
+            }
+            ;
+        }
+    }
+
     public String help(String... params) {
         String helpString = switch (server.getAuthState()) {
             case AUTHENTICATED -> authHelp;
@@ -30,7 +48,8 @@ public class Handler {
         return "quit";
     }
 
-    public String login(String... params) {
+    public String login(String... params) throws ClientException {
+        validateArgs(params, "login <username> <password>\n", String.class, String.class);
         return "login\n";
     }
 

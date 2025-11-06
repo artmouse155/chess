@@ -28,6 +28,10 @@ public class Client {
             printPrompt();
             String line = scanner.nextLine();
             result = eval(line);
+            if (result.equals("quit")) {
+                return;
+            }
+
             System.out.print(result);
         }
         System.out.println();
@@ -65,7 +69,7 @@ public class Client {
                 };
             };
 
-            return terminalFunction.evaluate();
+            return terminalFunction.evaluate(params);
         } catch (ClientException ex) {
             return ex.getMessage();
         }
