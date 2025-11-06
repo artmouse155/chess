@@ -15,7 +15,7 @@ public class Client {
 
     interface TerminalFunction {
 
-        String evaluate(String... params);
+        String evaluate(String... params) throws ClientException;
     }
 
     public Client(String serverUrl) {
