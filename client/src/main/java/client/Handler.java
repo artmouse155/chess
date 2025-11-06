@@ -4,12 +4,26 @@ public class Handler {
 
     private final ServerFacade server;
 
+    private final String authHelp = """
+            authHelp
+            """;
+
+    private final String unauthHelp = """
+            login <username> <password>
+            register <email> <username> <password>
+            quit
+            """;
+
     public Handler(String url) {
         server = new ServerFacade(url);
     }
 
     public String help(String... params) {
-        return "help";
+        String helpString = switch (server.getAuthState()) {
+            case AUTHENTICATED -> authHelp;
+            case UNAUTHENTICATED -> unauthHelp;
+        };
+        return helpString;
     }
 
     public String quit(String... params) {
@@ -17,31 +31,31 @@ public class Handler {
     }
 
     public String login(String... params) {
-        return "login";
+        return "login\n";
     }
 
     public String register(String... params) {
-        return "register";
+        return "register\n";
     }
 
     public String logout(String... params) {
-        return "logout";
+        return "logout\n";
     }
 
     public String createGame(String... params) {
-        return "createGame";
+        return "createGame\n";
     }
 
     public String listGame(String... params) {
-        return "listGame";
+        return "listGame\n";
     }
 
     public String playGame(String... params) {
-        return "playGame";
+        return "playGame\n";
     }
 
     public String observeGame(String... params) {
-        return "observeGame";
+        return "observeGame\n";
     }
 
     public ServerFacade.AuthState getAuthState() {

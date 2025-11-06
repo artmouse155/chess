@@ -34,7 +34,12 @@ public class Client {
     }
 
     private void printPrompt() {
-        System.out.print("\nCS 240 > ");
+
+        String prompt = switch (handler.getAuthState()) {
+            case AUTHENTICATED -> "[CHASE] CS 240 > ";
+            case UNAUTHENTICATED -> "CS 240 > ";
+        };
+        System.out.print(prompt);
     }
 
 
@@ -43,8 +48,7 @@ public class Client {
             String[] tokens = input.toLowerCase().split(" ");
             String cmd = (tokens.length > 0) ? tokens[0] : "help";
             String[] params = Arrays.copyOfRange(tokens, 1, tokens.length);
-            ServerFacade.AuthState authState = handler.getAuthState();
-            TerminalFunction terminalFunction = switch (authState) {
+            TerminalFunction terminalFunction = switch (handler.getAuthState()) {
                 case AUTHENTICATED -> switch (cmd) {
                     case "logout" -> handler::logout;
                     case "create" -> handler::createGame;
