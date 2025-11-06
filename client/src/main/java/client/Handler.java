@@ -7,4 +7,8 @@ public class Handler {
     public Handler(String url) {
         server = new ServerFacade(url);
     }
+
+    public String help(String... params) {
+        return "help";
+    }
 }

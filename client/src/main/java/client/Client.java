@@ -20,7 +20,7 @@ public class Client {
 
     public Client(String serverUrl) {
         handler = new Handler(serverUrl);
-
+        authState = AuthState.UNAUTHENTICATED;
     }
 
     public void run() {
