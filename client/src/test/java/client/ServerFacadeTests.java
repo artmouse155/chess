@@ -7,9 +7,11 @@ import server.Server;
 public class ServerFacadeTests {
 
     private static Server server;
+    private ServerFacade serverFacade;
 
     @BeforeAll
     public static void init() {
+        serverFacade = new ServerFacade("http://localhost:0");
         server = new Server();
         var port = server.run(0);
         System.out.println("Started test HTTP server on " + port);
