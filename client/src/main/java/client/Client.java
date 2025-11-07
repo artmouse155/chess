@@ -39,7 +39,7 @@ public class Client {
     private void printPrompt() {
 
         String prompt = switch (handler.getAuthState()) {
-            case AUTHENTICATED -> "[CHASE] CS 240 > ";
+            case AUTHENTICATED -> String.format("[%s] CS 240 > ", handler.getUsername());
             case UNAUTHENTICATED -> "CS 240 > ";
         };
         System.out.print(prompt);

@@ -8,13 +8,17 @@ public class Handler {
     private final ServerFacade server;
 
     private final String authHelp = """
-            authHelp
+            list                     | List current chess games
+            join <game id> <b|w>     | Join a game as black or white
+            watch <game id>          | Observe a game
+            create <name>            | Create new chess game with specified name
+            logout                   | Log out
             """;
 
     private final String unauthHelp = """
-            login <username> <password>
-            register <email> <username> <password>
-            quit
+            login <username> <password>             | Log in existing user
+            register <email> <username> <password>  | Create new user
+            quit                                    | Quit application
             """;
 
     private final String STRING = ".*";
