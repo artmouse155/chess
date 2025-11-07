@@ -57,7 +57,8 @@ public class Handler {
         return "login\n";
     }
 
-    public String register(String... params) {
+    public String register(String... params) throws ClientException {
+        validateArgs(params, "register <email> <username> <password>\n", STRING, STRING, STRING);
         return "register\n";
     }
 

@@ -2,6 +2,7 @@ package client;
 
 import com.google.gson.Gson;
 import model.AuthData;
+import model.UserData;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -36,8 +37,8 @@ public class ServerFacade {
         return username;
     }
 
-    public AuthData register(String username, String password, String email) throws ClientException {
-        var request = buildRequest("POST", "/user", null);
+    public AuthData register(UserData userData) throws ClientException {
+        var request = buildRequest("POST", "/user", userData);
         var response = sendRequest(request);
         return handleResponse(response, AuthData.class);
     }
@@ -60,23 +61,23 @@ public class ServerFacade {
         }
     }
 
-    private HttpResponse<String> sendRequest(HttpRequest request) throws ResponseException {
+    private HttpResponse<String> sendRequest(HttpRequest request) throws ClientException {
         try {
             return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception ex) {
-            throw new ResponseException(ResponseException.Code.ServerError, ex.getMessage());
+            throw new ClientException(ex.getMessage());
         }
     }
 
-    private <T> T handleResponse(HttpResponse<String> response, Class<T> responseClass) throws ResponseException {
+    private <T> T handleResponse(HttpResponse<String> response, Class<T> responseClass) throws ClientException {
         var status = response.statusCode();
         if (!isSuccessful(status)) {
             var body = response.body();
             if (body != null) {
-                throw ResponseException.fromJson(body);
+                throw new ClientException(body);
             }
 
-            throw new ResponseException(ResponseException.fromHttpStatusCode(status), "other failure: " + status);
+            throw new ClientException(Integer.toString(status));
         }
 
         if (responseClass != null) {
