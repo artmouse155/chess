@@ -57,6 +57,11 @@ public class Server {
         ctx.result(handler.handleDeleteDB().toString());
     }
 
+    public void clear() throws ResponseException {
+        System.out.println("clear");
+        handler.handleDeleteDB();
+    }
+
     public void register(Context ctx) throws ResponseException {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), UserData.class);
