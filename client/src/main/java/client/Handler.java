@@ -62,7 +62,7 @@ public class Handler {
 
     public String register(String... params) throws ClientException {
         validateArgs(params, "register <email> <username> <password>\n", STRING, STRING, STRING);
-        UserData request = new UserData(params[0], params[1], params[2]);
+        UserData request = new UserData(params[1], params[2], params[0]);
         server.register(request);
         return String.format("Registration Successful. Welcome, %s!\n", server.getUsername());
     }
