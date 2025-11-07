@@ -34,7 +34,6 @@ public class Client {
 
             System.out.print(result);
         }
-        System.out.println();
     }
 
     private void printPrompt() {
