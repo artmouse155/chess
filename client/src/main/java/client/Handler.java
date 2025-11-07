@@ -68,11 +68,11 @@ public class Handler {
         validateArgs(params, "register <email> <username> <password>\n", STRING, STRING, STRING);
         UserData request = new UserData(params[1], params[2], params[0]);
         server.register(request);
-        return String.format("Registration Successful. Welcome, %s!\n", server.getUsername());
+        return String.format("Registration successful. Welcome, %s!\n", server.getUsername());
     }
 
     public String logout(String... params) {
-        return "logout\n";
+        return "Logout successful.";
     }
 
     public String createGame(String... params) {
