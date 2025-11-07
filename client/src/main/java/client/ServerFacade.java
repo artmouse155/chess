@@ -37,10 +37,13 @@ public class ServerFacade {
         return username;
     }
 
-    public AuthData register(UserData userData) throws ClientException {
+    public void register(UserData userData) throws ClientException {
         var request = buildRequest("POST", "/user", userData);
         var response = sendRequest(request);
-        return handleResponse(response, AuthData.class);
+        AuthData authData = handleResponse(response, AuthData.class);
+        username = authData.username();
+        authToken = authData.authToken();
+        authState = AuthState.AUTHENTICATED;
     }
 
     private HttpRequest buildRequest(String method, String path, Object body) {

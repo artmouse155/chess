@@ -1,5 +1,8 @@
 package client;
 
+import model.AuthData;
+import model.UserData;
+
 public class Handler {
 
     private final ServerFacade server;
@@ -59,7 +62,9 @@ public class Handler {
 
     public String register(String... params) throws ClientException {
         validateArgs(params, "register <email> <username> <password>\n", STRING, STRING, STRING);
-        return "register\n";
+        UserData request = new UserData(params[0], params[1], params[2]);
+        server.register(request);
+        return String.format("Registration Successful. Welcome, %s!\n", server.getUsername());
     }
 
     public String logout(String... params) {
