@@ -29,6 +29,10 @@ public class ServerFacade {
         authState = AuthState.UNAUTHENTICATED;
     }
 
+    public ServerFacade(int port) {
+        this(String.format("http://localhost:%d", port));
+    }
+
     public AuthState getAuthState() {
         return authState;
     }
