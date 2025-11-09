@@ -79,4 +79,15 @@ public class ServerFacadeTests {
         Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.logout());
     }
 
+    @Test
+    public void listGamesPositive() {
+        register();
+        Assertions.assertDoesNotThrow(() -> serverFacade.listGames());
+    }
+
+    @Test
+    public void listGamesNegative() {
+        Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.listGames());
+    }
+
 }
