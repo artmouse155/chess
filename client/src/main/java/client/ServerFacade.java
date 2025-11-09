@@ -74,6 +74,12 @@ public class ServerFacade {
         return gamesSet.simplyNumbered();
     }
 
+    public void createGame(CreateGameRequest createGameRequest) throws ClientException {
+        var request = buildRequest("POST", "/game", createGameRequest);
+        var response = sendRequest(request);
+        handleResponse(response, CreateGameResponse.class);
+    }
+
     private HttpRequest buildRequest(String method, String path, Object body) {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + path))

@@ -1,6 +1,7 @@
 package client;
 
 import handler.exception.ResponseException;
+import model.CreateGameRequest;
 import model.RegisterRequest;
 import model.UserData;
 import org.junit.jupiter.api.*;
@@ -11,6 +12,7 @@ public class ServerFacadeTests {
 
     private final UserData testUser = new UserData("clientName", "securePWD123", "mail@gmail.com");
     private final RegisterRequest testRegisterRequest;
+    private final String testGameName = "testGame";
 
     private static Server server;
     private static ServerFacade serverFacade;
@@ -88,6 +90,23 @@ public class ServerFacadeTests {
     @Test
     public void listGamesNegative() {
         Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.listGames());
+    }
+
+    @Test
+    public void createGamePositive() {
+        register();
+        Assertions.assertDoesNotThrow(() -> serverFacade.createGame(new CreateGameRequest(testGameName)));
+    }
+
+    @Test
+    public void createGameNegativeInput() {
+        register();
+        Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.createGame(null));
+    }
+
+    @Test
+    public void createGameNegativeAuth() {
+        Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.createGame(new CreateGameRequest(testGameName)));
     }
 
 }
