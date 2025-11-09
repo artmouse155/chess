@@ -10,6 +10,7 @@ import io.javalin.*;
 import io.javalin.http.Context;
 
 import model.AuthData;
+import model.JoinGameRequest;
 import model.RegisterRequest;
 import model.UserData;
 
@@ -96,12 +97,8 @@ public class Server {
 
     public void joinGame(Context ctx) throws ResponseException {
         var serializer = new Gson();
-        var req = serializer.fromJson(ctx.body(), Map.class);
-        Double gameID = (Double) req.get("gameID");
-        if (gameID == null) {
-            throw new BadRequestException("That Game ID is not valid.");
-        }
-        var res = handler.handleJoinGame((AuthData) ctx.attribute("authData"), (String) req.get("playerColor"), gameID.intValue());
+        var req = serializer.fromJson(ctx.body(), JoinGameRequest.class);
+        var res = handler.handleJoinGame((AuthData) ctx.attribute("authData"), req.playerColor().toString(), req.gameID());
         ctx.result(res.toString());
     }
 
