@@ -53,6 +53,11 @@ public class ServerFacade {
 
     public void login(RegisterRequest registerRequest) throws ClientException {
         var request = buildRequest("POST", "/session", registerRequest);
+        var response = sendRequest(request);
+        AuthData authData = handleResponse(response, AuthData.class);
+        username = authData.username();
+        authToken = authData.authToken();
+        authState = AuthState.AUTHENTICATED;
     }
 
     private HttpRequest buildRequest(String method, String path, Object body) {
