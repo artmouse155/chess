@@ -14,17 +14,28 @@ public record GamesList(Set<GameDataStripped> games) {
 
     public GamesList simplyNumbered() {
         var simplyNumberedGames = new HashSet<GameDataStripped>();
-        int index = 0;
+        int loop_index = 0;
         for (final var game : games) {
             simplyNumberedGames.add(new GameDataStripped(
-                    index,
+                    loop_index,
                     game.whiteUsername(),
                     game.blackUsername(),
                     game.gameName()
             ));
-            index++;
+            loop_index++;
         }
         return new GamesList(simplyNumberedGames);
+    }
+
+    public int gameIDAtIndex(int index) {
+        int loop_index = 0;
+        for (final var game : games) {
+            if (loop_index == index) {
+                return game.gameID();
+            }
+            loop_index++;
+        }
+        throw new ArrayIndexOutOfBoundsException();
     }
 
 }
