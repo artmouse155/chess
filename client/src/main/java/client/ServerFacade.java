@@ -17,7 +17,7 @@ public class ServerFacade {
 
     private AuthState authState;
     private String username;
-    private GamesList gamesList = new GamesList(Set.of());
+    private GamesSet gamesSet = new GamesSet(Set.of());
 
     public enum AuthState {
         AUTHENTICATED,
@@ -67,11 +67,11 @@ public class ServerFacade {
         authState = AuthState.UNAUTHENTICATED;
     }
 
-    public GamesList listGames() throws ClientException {
+    public GamesSet listGames() throws ClientException {
         var request = buildRequest("GET", "/game", null);
         var response = sendRequest(request);
-        gamesList = handleResponse(response, GamesList.class);
-        return gamesList.simplyNumbered();
+        gamesSet = handleResponse(response, GamesSet.class);
+        return gamesSet.simplyNumbered();
     }
 
     private HttpRequest buildRequest(String method, String path, Object body) {
