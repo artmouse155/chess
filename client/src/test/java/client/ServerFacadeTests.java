@@ -125,10 +125,9 @@ public class ServerFacadeTests {
     @Test
     public void joinGameNegative() {
         register();
-        Assertions.assertDoesNotThrow(() -> serverFacade.createGame(new CreateGameRequest(testGameName)));
         var gamesSet = Assertions.assertDoesNotThrow(() -> serverFacade.listGames());
         Assertions.assertTrue(gamesSet.games().isEmpty());
-        Assertions.assertDoesNotThrow(() -> serverFacade.joinGame(new JoinGameRequest(
+        Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.joinGame(new JoinGameRequest(
                 ChessGame.TeamColor.WHITE, 1234
         )));
     }
