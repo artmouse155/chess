@@ -1,15 +1,13 @@
 package client;
 
 import com.google.gson.Gson;
-import model.AuthData;
-import model.EmptyResponse;
-import model.RegisterRequest;
-import model.UserData;
+import model.*;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Set;
 
 public class ServerFacade {
 
@@ -19,6 +17,7 @@ public class ServerFacade {
 
     private AuthState authState;
     private String username;
+    private GamesList gamesList = new GamesList(Set.of());
 
     public enum AuthState {
         AUTHENTICATED,
@@ -66,6 +65,13 @@ public class ServerFacade {
         var response = sendRequest(request);
         handleResponse(response, EmptyResponse.class);
         authState = AuthState.UNAUTHENTICATED;
+    }
+
+    public GamesList listGames() throws ClientException {
+        var request = buildRequest("GET", "/game", null);
+        var response = sendRequest(request);
+        gamesList = handleResponse(response, GamesList.class);
+        return gamesList.simplyNumbered();
     }
 
     private HttpRequest buildRequest(String method, String path, Object body) {
