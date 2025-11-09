@@ -72,4 +72,15 @@ public class ServerFacadeTests {
         Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.login(testRegisterRequest));
     }
 
+    @Test
+    public void logoutPositive() {
+        register_and_login();
+        Assertions.assertDoesNotThrow(() -> serverFacade.logout());
+    }
+
+    @Test
+    public void logoutNegative() {
+        Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.logout());
+    }
+
 }

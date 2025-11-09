@@ -2,6 +2,7 @@ package client;
 
 import com.google.gson.Gson;
 import model.AuthData;
+import model.EmptyResponse;
 import model.RegisterRequest;
 import model.UserData;
 
@@ -58,6 +59,13 @@ public class ServerFacade {
         username = authData.username();
         authToken = authData.authToken();
         authState = AuthState.AUTHENTICATED;
+    }
+
+    public void logout() throws ClientException {
+        var request = buildRequest("DELETE", "/session", null);
+        var response = sendRequest(request);
+        handleResponse(response, EmptyResponse.class);
+        authState = AuthState.UNAUTHENTICATED;
     }
 
     private HttpRequest buildRequest(String method, String path, Object body) {
