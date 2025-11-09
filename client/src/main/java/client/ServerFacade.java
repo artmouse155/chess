@@ -72,11 +72,11 @@ public class ServerFacade {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + path))
                 .method(method, makeRequestBody(body));
+        if (authState == AuthState.AUTHENTICATED) {
+            request.setHeader("authorization", authToken);
+        }
         if (body != null) {
             request.setHeader("Content-Type", "application/json");
-            if (authState == AuthState.AUTHENTICATED) {
-                request.setHeader("authorization", authToken);
-            }
         }
         return request.build();
     }
