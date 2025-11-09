@@ -71,13 +71,19 @@ public class ServerFacade {
         var request = buildRequest("GET", "/game", null);
         var response = sendRequest(request);
         gamesSet = handleResponse(response, GamesSet.class);
-        return gamesSet.simplyNumbered();
+        return gamesSet;
     }
 
     public void createGame(CreateGameRequest createGameRequest) throws ClientException {
         var request = buildRequest("POST", "/game", createGameRequest);
         var response = sendRequest(request);
         handleResponse(response, CreateGameResponse.class);
+    }
+
+    public void joinGame(JoinGameRequest joinGameRequest) throws ClientException {
+        var request = buildRequest("PUT", "/game", joinGameRequest);
+        var response = sendRequest(request);
+        handleResponse(response, EmptyResponse.class);
     }
 
     private HttpRequest buildRequest(String method, String path, Object body) {
