@@ -36,11 +36,6 @@ public class ServerFacadeTests {
         Assertions.assertDoesNotThrow(() -> serverFacade.register(testUser));
     }
 
-    private void register_and_login() {
-        register();
-        Assertions.assertDoesNotThrow(() -> serverFacade.login(testRegisterRequest));
-    }
-
     @AfterAll
     static void stopServer() {
         server.stop();
@@ -64,7 +59,8 @@ public class ServerFacadeTests {
 
     @Test
     public void loginPositive() {
-        register_and_login();
+        register();
+        Assertions.assertDoesNotThrow(() -> serverFacade.login(testRegisterRequest));
     }
 
     @Test
@@ -74,7 +70,7 @@ public class ServerFacadeTests {
 
     @Test
     public void logoutPositive() {
-        register_and_login();
+        register();
         Assertions.assertDoesNotThrow(() -> serverFacade.logout());
     }
 
