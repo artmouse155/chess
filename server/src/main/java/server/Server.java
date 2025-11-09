@@ -9,10 +9,7 @@ import handler.exception.ResponseException;
 import io.javalin.*;
 import io.javalin.http.Context;
 
-import model.AuthData;
-import model.JoinGameRequest;
-import model.RegisterRequest;
-import model.UserData;
+import model.*;
 
 import java.util.Map;
 
@@ -21,6 +18,7 @@ public class Server {
 
     private final Javalin server;
     private Handler handler;
+    private final String authKey = "authorization";
 
     public Server() {
         server = Javalin.create(config -> config.staticFiles.add("web"));
@@ -49,7 +47,7 @@ public class Server {
     public void authenticate(Context ctx) throws ResponseException {
         var info = String.format("🔑 Auth: %s %s", ctx.method().name(), ctx.path());
         System.out.println(info);
-        var authData = handler.handleAuth(ctx.header("authorization"));
+        var authData = handler.handleAuth(ctx.header(authKey));
         ctx.attribute("authData", authData);
     }
 
@@ -79,7 +77,7 @@ public class Server {
     }
 
     public void logout(Context ctx) throws ResponseException {
-        var res = handler.handleLogout(ctx.header("authorization"));
+        var res = handler.handleLogout(ctx.header(authKey));
         ctx.result(res.toString());
     }
 
@@ -90,8 +88,8 @@ public class Server {
 
     public void createGame(Context ctx) throws ResponseException {
         var serializer = new Gson();
-        var req = serializer.fromJson(ctx.body(), Map.class);
-        var res = handler.handleCreateGame((String) req.get("gameName"));
+        var req = serializer.fromJson(ctx.body(), CreateGameRequest.class);
+        var res = handler.handleCreateGame(req.gameName());
         ctx.result(res.toString());
     }
 
