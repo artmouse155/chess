@@ -2,6 +2,7 @@ package service;
 
 import handler.exception.BadRequestException;
 import handler.exception.UnauthorizedException;
+import model.RegisterRequest;
 import org.junit.jupiter.api.*;
 
 public class LoginTests extends EndpointTests {
@@ -15,42 +16,44 @@ public class LoginTests extends EndpointTests {
     @Order(1)
     @DisplayName("Empty username")
     public void emptyUsername() {
-        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleLogin("", testUser.password()));
+        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleLogin(new RegisterRequest("", testUser.password())));
     }
 
     @Test
     @Order(2)
     @DisplayName("Empty password")
     public void emptyPassword() {
-        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleLogin(testUser.username(), ""));
+        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleLogin(new RegisterRequest(testUser.username(), "")));
     }
 
     @Test
     @Order(4)
     @DisplayName("Null username")
     public void nullUsername() {
-        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleLogin(null, testUser.password()));
+        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleLogin(new RegisterRequest(null, testUser.password())));
     }
 
     @Test
     @Order(5)
     @DisplayName("Null password")
     public void nullPassword() {
-        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleLogin(testUser.username(), null));
+        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleLogin(new RegisterRequest(testUser.username(), null)));
     }
 
     @Test
     @Order(6)
     @DisplayName("Nonexistent username")
     public void nonexistentUsername() {
-        Assertions.assertThrowsExactly(UnauthorizedException.class, () -> handler.handleLogin("jamesGosling12345", "c++IsBetter"));
+        Assertions.assertThrowsExactly(UnauthorizedException.class, () -> handler.handleLogin(new RegisterRequest("jamesGosling12345", "c++IsBetter"
+        )));
     }
 
     @Test
     @Order(7)
     @DisplayName("Correct username and incorrect password")
     public void correctUsernameIncorrectPassword() {
-        Assertions.assertThrowsExactly(UnauthorizedException.class, () -> handler.handleLogin(testUser.username(), "iForgotMyPassword"));
+        Assertions.assertThrowsExactly(UnauthorizedException.class, () -> handler.handleLogin(new RegisterRequest(testUser.username(),
+                "iForgotMyPassword")));
     }
 
     @Test

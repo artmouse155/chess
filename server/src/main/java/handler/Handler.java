@@ -45,15 +45,15 @@ public class Handler {
         return service.register(userData);
     }
 
-    public AuthData handleLogin(String username, String password) throws ResponseException {
-        if (username == null ||
-                password == null ||
-                username.isEmpty() ||
-                password.isEmpty()
+    public AuthData handleLogin(RegisterRequest registerRequest) throws ResponseException {
+        if (registerRequest.username() == null ||
+                registerRequest.password() == null ||
+                registerRequest.username().isEmpty() ||
+                registerRequest.password().isEmpty()
         ) {
             throw new BadRequestException("One or more fields is invalid.");
         }
-        return service.login(username, password);
+        return service.login(registerRequest);
     }
 
     public EmptyResponse handleLogout(String authToken) throws ResponseException {

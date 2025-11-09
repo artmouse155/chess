@@ -1,5 +1,6 @@
 package service;
 
+import model.RegisterRequest;
 import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -19,7 +20,7 @@ public class DeleteDBTests extends EndpointTests {
     @DisplayName("Delete non-empty database")
     public void deleteNonEmptyDatabase() {
         Assertions.assertDoesNotThrow(() -> handler.handleRegister(testUser));
-        Assertions.assertDoesNotThrow(() -> handler.handleLogin(testUser.username(), testUser.password()));
+        Assertions.assertDoesNotThrow(() -> handler.handleLogin(new RegisterRequest(testUser.username(), testUser.password())));
         Assertions.assertDoesNotThrow(() -> handler.handleCreateGame("Checkers"));
         Assertions.assertDoesNotThrow(() -> handler.handleDeleteDB());
         assertEmptyDatabase();

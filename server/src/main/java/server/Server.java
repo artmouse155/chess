@@ -10,6 +10,7 @@ import io.javalin.*;
 import io.javalin.http.Context;
 
 import model.AuthData;
+import model.RegisterRequest;
 import model.UserData;
 
 import java.util.Map;
@@ -71,8 +72,8 @@ public class Server {
 
     public void login(Context ctx) throws ResponseException {
         var serializer = new Gson();
-        var req = serializer.fromJson(ctx.body(), Map.class);
-        var res = handler.handleLogin((String) req.get("username"), (String) req.get("password"));
+        var req = serializer.fromJson(ctx.body(), RegisterRequest.class);
+        var res = handler.handleLogin(req);
         ctx.result(res.toString());
     }
 

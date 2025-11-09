@@ -76,21 +76,21 @@ public class Service {
         }
     }
 
-    public AuthData login(String username, String password) throws ResponseException {
+    public AuthData login(RegisterRequest registerRequest) throws ResponseException {
         try {
 
 
-            if (!dataAccess.hasUser(username)) {
+            if (!dataAccess.hasUser(registerRequest.username())) {
                 throw new UnauthorizedException("User does not exist.");
             }
 
-            var userData = dataAccess.getUser(username);
-            if (!checkPassword(password, userData.password())) {
+            var userData = dataAccess.getUser(registerRequest.username());
+            if (!checkPassword(registerRequest.password(), userData.password())) {
                 throw new UnauthorizedException("Password is incorrect.");
             }
 
             var authToken = generateAuthToken();
-            var authData = new AuthData(authToken, username);
+            var authData = new AuthData(authToken, registerRequest.username());
             dataAccess.createAuth(authData);
             return authData;
         } catch (DataAccessException e) {

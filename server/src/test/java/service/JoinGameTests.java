@@ -5,6 +5,7 @@ import handler.exception.BadRequestException;
 import handler.exception.UnauthorizedException;
 import model.AuthData;
 import model.GameDataStripped;
+import model.RegisterRequest;
 import model.UserData;
 import org.junit.jupiter.api.*;
 
@@ -27,7 +28,7 @@ public class JoinGameTests extends EndpointTests {
 
         // Login second user
         Assertions.assertDoesNotThrow(() -> handler.handleRegister(new UserData(secondUser.username(), "abc123", "second@gmail.com")));
-        secondAuthData = Assertions.assertDoesNotThrow(() -> handler.handleLogin(secondUser.username(), secondUser.password()));
+        secondAuthData = Assertions.assertDoesNotThrow(() -> handler.handleLogin(new RegisterRequest(secondUser.username(), secondUser.password())));
 
     }
 

@@ -2,6 +2,7 @@ package service;
 
 import handler.Handler;
 import model.AuthData;
+import model.RegisterRequest;
 import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -28,7 +29,7 @@ public class EndpointTests {
     }
 
     public AuthData loginTestUser() {
-        return Assertions.assertDoesNotThrow(() -> handler.handleLogin(testUser.username(), testUser.password()));
+        return Assertions.assertDoesNotThrow(() -> handler.handleLogin(new RegisterRequest(testUser.username(), testUser.password())));
     }
 
     // Assert empty database

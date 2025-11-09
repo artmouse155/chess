@@ -2,6 +2,7 @@ package client;
 
 import com.google.gson.Gson;
 import model.AuthData;
+import model.RegisterRequest;
 import model.UserData;
 
 import java.net.URI;
@@ -48,6 +49,10 @@ public class ServerFacade {
         username = authData.username();
         authToken = authData.authToken();
         authState = AuthState.AUTHENTICATED;
+    }
+
+    public void login(RegisterRequest registerRequest) throws ClientException {
+        var request = buildRequest("POST", "/session", registerRequest);
     }
 
     private HttpRequest buildRequest(String method, String path, Object body) {
