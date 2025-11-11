@@ -2,10 +2,7 @@ package client;
 
 import chess.ChessGame;
 import handler.exception.ResponseException;
-import model.CreateGameRequest;
-import model.JoinGameRequest;
-import model.LoginRequest;
-import model.UserData;
+import model.*;
 import org.junit.jupiter.api.*;
 import server.Server;
 
@@ -116,7 +113,8 @@ public class ServerFacadeTests {
         register();
         Assertions.assertDoesNotThrow(() -> serverFacade.createGame(new CreateGameRequest(testGameName)));
         var gamesSet = Assertions.assertDoesNotThrow(() -> serverFacade.listGames());
-        int gameID = gamesSet.games().stream().findFirst().orElse(null).gameID();
+        GameDataStripped game = Assertions.assertDoesNotThrow(() -> gamesSet.games().stream().findFirst().orElseThrow(AssertionError::new));
+        int gameID = game.gameID();
         Assertions.assertDoesNotThrow(() -> serverFacade.joinGame(new JoinGameRequest(
                 ChessGame.TeamColor.WHITE, gameID
         )));
