@@ -2,9 +2,7 @@ package client;
 
 import model.*;
 
-public class UIHandler {
-
-    private final ServerFacade server;
+public class UIHandler extends Handler {
 
     private final String authHelp = """
             list                     | List current chess games
@@ -20,31 +18,10 @@ public class UIHandler {
             quit                                    | Quit application
             """;
 
-    private final String STRING = ".*";
-    private final String POSITIVE_INTEGER = "/d+";
     private final String PLAYER_COLOR = "b|w|black|white";
 
     public UIHandler(String url) {
-        server = new ServerFacade(url);
-    }
-
-    private void validateArgs(String[] args, String expectedMsg, String... regexes) throws ClientException {
-        int size = regexes.length;
-
-        if (args.length != size) {
-            throw new ClientException(
-                    String.format("Invalid number of arguments. (Expected %d, Found %d)\n", size, args.length),
-                    expectedMsg
-            );
-        }
-        for (int i = 0; i < size; i++) {
-            if (!args[i].toUpperCase().matches(regexes[i])) {
-                throw new ClientException(
-                        String.format("Invalid argument \"%s\"\n", args[i]),
-                        expectedMsg
-                );
-            }
-        }
+        super(url);
     }
 
     public String help(String... params) {
@@ -116,13 +93,5 @@ public class UIHandler {
         CreateGameRequest createGameRequest = new CreateGameRequest(params[0]);
         server.createGame(createGameRequest);
         return String.format("Game %s created. Use the \"list\" command to show a list of all games.\n", params[0]);
-    }
-
-    public ServerFacade.AuthState getAuthState() {
-        return server.getAuthState();
-    }
-
-    public String getUsername() {
-        return server.getUsername();
     }
 }
