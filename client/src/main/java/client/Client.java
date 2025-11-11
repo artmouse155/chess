@@ -8,5 +8,5 @@ public abstract class Client {
 
     protected abstract String formatError(ClientException ex);
 
-    public abstract String eval(String input);
+    protected abstract String eval(String input);
 }

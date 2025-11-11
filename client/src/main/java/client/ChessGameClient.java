@@ -23,7 +23,7 @@ public class ChessGameClient extends Client {
 
     @Override
     public void run() {
-        System.out.println("THIS IS THE CHESS GAME CLIENT. YOU ARE A" + joinType.toString());
+        System.out.println("THIS IS THE CHESS GAME CLIENT. YOU ARE ON TEAM " + joinType.toString());
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ChessGameClient extends Client {
     }
 
     @Override
-    public String eval(String input) {
+    protected String eval(String input) {
         return "";
     }
 }

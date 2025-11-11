@@ -54,7 +54,7 @@ public class UIClient extends Client {
 
 
     @Override
-    public String eval(String input) {
+    protected String eval(String input) {
         try {
             String[] tokens = input.toLowerCase().split(" ");
             String cmd = (tokens.length > 0) ? tokens[0] : "help";

@@ -129,4 +129,21 @@ public class ServerFacadeTests {
                 ChessGame.TeamColor.WHITE, 1234
         )));
     }
+
+    @Test
+    public void newChessGameClientPositive() {
+        register();
+        Assertions.assertDoesNotThrow(() -> serverFacade.newChessGameClient(ChessGameClient.JoinType.BLACK, 1));
+    }
+
+    @Test
+    public void newChessGameClientNegative() {
+        // Not sure what to do here...
+    }
+//    register();
+//    Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.createGame(new CreateGameRequest(testGameName)));
+//    var gamesSet = Assertions.assertDoesNotThrow(() -> serverFacade.getCachedGamesSet());
+//    Assertions.assertTrue(gamesSet.games().isEmpty());
+//    gamesSet = Assertions.assertDoesNotThrow(() -> serverFacade.listGames());
+//    Assertions.assertEquals(1, gamesSet.games().size());
 }
