@@ -1,7 +1,6 @@
 package client;
 
-import model.AuthData;
-import model.UserData;
+import model.*;
 
 public class Handler {
 
@@ -23,6 +22,7 @@ public class Handler {
 
     private final String STRING = ".*";
     private final String POSITIVE_INTEGER = "/d+";
+    private final String PLAYER_COLOR = "b|w|black|white";
 
     public Handler(String url) {
         server = new ServerFacade(url);
@@ -38,7 +38,7 @@ public class Handler {
             );
         }
         for (int i = 0; i < size; i++) {
-            if (!args[i].matches(regexes[i])) {
+            if (!args[i].toUpperCase().matches(regexes[i])) {
                 throw new ClientException(
                         String.format("Invalid argument \"%s\"\n", args[i]),
                         expectedMsg
@@ -61,7 +61,9 @@ public class Handler {
 
     public String login(String... params) throws ClientException {
         validateArgs(params, "login <username> <password>\n", STRING, STRING);
-        return "login\n";
+        LoginRequest loginRequest = new LoginRequest(params[0], params[1]);
+        server.login(loginRequest);
+        return String.format("Login successful. Welcome, %s!\n", server.getUsername());
     }
 
     public String register(String... params) throws ClientException {
@@ -71,24 +73,49 @@ public class Handler {
         return String.format("Registration successful. Welcome, %s!\n", server.getUsername());
     }
 
-    public String logout(String... params) {
+    public String logout(String... params) throws ClientException {
+        validateArgs(params, "logout\n");
+        server.logout();
         return "Logout successful.";
     }
 
-    public String createGame(String... params) {
-        return "createGame\n";
-    }
+    public String listGame(String... params) throws ClientException {
+        validateArgs(params, "list\n");
+        GamesSet gamesSet = server.listGames();
 
-    public String listGame(String... params) {
-        return "listGame\n";
+        String result = "";
+
+        if (gamesSet.games().isEmpty()) {
+            result += "No games to display.\n";
+        } else {
+            result += String.format("%d game(s) found:\n", gamesSet.games().size());
+            for (final var game : gamesSet.simplyNumbered().games()) {
+                result += String.format(
+                        "%d. NAME: %s WHITE: %s BLACK: %s\n",
+                        game.gameID(),
+                        game.gameName(),
+                        game.whiteUsername(),
+                        game.blackUsername()
+                );
+            }
+        }
+
+        return result + "\n";
     }
 
     public String playGame(String... params) {
-        return "playGame\n";
+        return "CHESS PLAY!!!!!!! (type anything to quit)\n";
     }
 
     public String observeGame(String... params) {
         return "observeGame\n";
+    }
+
+    public String createGame(String... params) throws ClientException {
+        validateArgs(params, "create <name>\n", STRING);
+        CreateGameRequest createGameRequest = new CreateGameRequest(params[0]);
+        server.createGame(createGameRequest);
+        return "Game Created.\n";
     }
 
     public ServerFacade.AuthState getAuthState() {
