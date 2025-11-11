@@ -1,9 +1,17 @@
 package client;
 
+import chess.ChessGame;
+
 public class ChessGameClient extends Client {
 
-    public ChessGameClient(int gameID, String joinType) {
+    // Player
+    public ChessGameClient(int gameID, ChessGame.TeamColor teamColor) {
 
+    }
+
+    // Observer
+    public ChessGameClient(int gameID) {
+        this(gameID, null);
     }
 
     @Override

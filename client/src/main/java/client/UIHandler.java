@@ -1,5 +1,6 @@
 package client;
 
+import chess.ChessGame;
 import model.*;
 
 public class UIHandler extends Handler {
@@ -18,18 +19,17 @@ public class UIHandler extends Handler {
             quit                                    | Quit application
             """;
 
-    private final String PLAYER_COLOR = "b|w|black|white";
+    private final String PLAYER_COLOR = "B|W|BLACK|WHITE";
 
     public UIHandler(String url) {
         super(url);
     }
 
-    public String help(String... params) {
-        String helpString = switch (server.getAuthState()) {
+    public String help(String... _params) {
+        return switch (server.getAuthState()) {
             case AUTHENTICATED -> authHelp;
             case UNAUTHENTICATED -> unauthHelp;
         };
-        return helpString;
     }
 
     public String quit(String... params) {
@@ -82,14 +82,22 @@ public class UIHandler extends Handler {
 
     public String playGame(String... params) throws ClientException {
         validateArgs(params, "join <game id> <b|w>", POSITIVE_INTEGER, PLAYER_COLOR);
-        int gameID = Integer.valueOf(params[0]);
+        int gameID = Integer.parseInt(params[0]);
         String joinType = params[1];
-        var chessGameClient = new ChessGameClient(gameID, joinType);
+        ChessGame.TeamColor teamColor = switch (joinType.toUpperCase()) {
+            case "B", "BLACK" -> ChessGame.TeamColor.BLACK;
+            case "W", "WHITE" -> ChessGame.TeamColor.WHITE;
+            default -> null;
+        };
+        var chessGameClient = new ChessGameClient(gameID, teamColor);
         chessGameClient.run();
-        return "CHESS PLAY!!!!!!! (type anything to quit)\n";
+        return "Chess game ended.\n";
     }
 
     public String observeGame(String... params) throws ClientException {
+        validateArgs(params, "watch <game id>", POSITIVE_INTEGER);
+        int gameID = Integer.parseInt(params[0]);
+        var chessGameClient = new ChessGameClient(gameID);
         return "observeGame\n";
     }
 
