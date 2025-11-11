@@ -80,11 +80,12 @@ public class UIHandler extends Handler {
         return result + "\n";
     }
 
-    public String playGame(String... params) {
+    public String playGame(String... params) throws ClientException {
+        validateArgs(params, "join <game id> <b|w>", POSITIVE_INTEGER, PLAYER_COLOR);
         return "CHESS PLAY!!!!!!! (type anything to quit)\n";
     }
 
-    public String observeGame(String... params) {
+    public String observeGame(String... params) throws ClientException {
         return "observeGame\n";
     }
 
