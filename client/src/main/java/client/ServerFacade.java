@@ -94,7 +94,7 @@ public class ServerFacade {
                 .uri(URI.create(serverUrl + path))
                 .method(method, makeRequestBody(body));
         if (authState == AuthState.AUTHENTICATED) {
-            request.setHeader("authorization", authToken);
+            request.setHeader("authorization", authData.authToken());
         }
         if (body != null) {
             request.setHeader("Content-Type", "application/json");
