@@ -7,7 +7,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Set;
 
 public class ServerFacade {
 
@@ -16,7 +15,7 @@ public class ServerFacade {
     private AuthData authData;
 
     private AuthState authState;
-    private GamesSet gamesSet = null;
+    private GamesList gamesList = null;
 
     public enum AuthState {
         AUTHENTICATED,
@@ -63,11 +62,11 @@ public class ServerFacade {
         authState = AuthState.UNAUTHENTICATED;
     }
 
-    public GamesSet listGames() throws ClientException {
+    public GamesList listGames() throws ClientException {
         var request = buildRequest("GET", "/game", null);
         var response = sendRequest(request);
-        gamesSet = handleResponse(response, GamesSet.class);
-        return gamesSet;
+        gamesList = handleResponse(response, GamesList.class);
+        return gamesList;
     }
 
     public void createGame(CreateGameRequest createGameRequest) throws ClientException {
@@ -86,8 +85,8 @@ public class ServerFacade {
         return new ChessGameClient(joinType, authData, gameID);
     }
 
-    public GamesSet getCachedGamesSet() {
-        return gamesSet;
+    public GamesList getCachedGamesSet() {
+        return gamesList;
     }
 
     private HttpRequest buildRequest(String method, String path, Object body) {

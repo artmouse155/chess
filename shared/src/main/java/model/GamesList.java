@@ -5,14 +5,14 @@ import com.google.gson.Gson;
 import java.util.HashSet;
 import java.util.Set;
 
-public record GamesSet(Set<GameDataStripped> games) {
+public record GamesList(Set<GameDataStripped> games) {
 
     @Override
     public String toString() {
         return new Gson().toJson(this);
     }
 
-    public GamesSet simplyNumbered() {
+    public GamesList simplyNumbered() {
         var simplyNumberedGames = new HashSet<GameDataStripped>();
         int loop_index = 0;
         for (final var game : games) {
@@ -24,7 +24,7 @@ public record GamesSet(Set<GameDataStripped> games) {
             ));
             loop_index++;
         }
-        return new GamesSet(simplyNumberedGames);
+        return new GamesList(simplyNumberedGames);
     }
 
     public int gameIDAtIndex(int index) {

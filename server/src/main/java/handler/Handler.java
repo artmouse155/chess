@@ -61,7 +61,7 @@ public class Handler {
         return service.logout(authToken);
     }
 
-    public GamesSet handleGetGames() throws ResponseException {
+    public GamesList handleGetGames() throws ResponseException {
         return service.getGames();
     }
 

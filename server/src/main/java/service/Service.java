@@ -107,9 +107,9 @@ public class Service {
         }
     }
 
-    public GamesSet getGames() throws ResponseException {
+    public GamesList getGames() throws ResponseException {
         try {
-            return new GamesSet(dataAccess.getGameDataSet().stream().map(GameData::stripped).collect(Collectors.toSet()));
+            return new GamesList(dataAccess.getGameDataSet().stream().map(GameData::stripped).collect(Collectors.toSet()));
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }

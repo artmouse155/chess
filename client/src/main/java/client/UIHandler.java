@@ -58,15 +58,15 @@ public class UIHandler extends Handler {
 
     public String listGame(String... params) throws ClientException {
         validateArgs(params, "list\n");
-        GamesSet gamesSet = server.listGames();
+        GamesList gamesList = server.listGames();
 
         String result = "";
 
-        if (gamesSet.games().isEmpty()) {
+        if (gamesList.games().isEmpty()) {
             result += "No games to display.\n";
         } else {
-            result += String.format("%d game(s) found:\n", gamesSet.games().size());
-            for (final var game : gamesSet.simplyNumbered().games()) {
+            result += String.format("%d game(s) found:\n", gamesList.games().size());
+            for (final var game : gamesList.simplyNumbered().games()) {
                 result += String.format(
                         "%d. NAME: %s WHITE: %s BLACK: %s\n",
                         game.gameID(),
