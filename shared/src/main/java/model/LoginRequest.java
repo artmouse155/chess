@@ -2,7 +2,7 @@ package model;
 
 import com.google.gson.Gson;
 
-public record RegisterRequest(String username, String password) {
+public record LoginRequest(String username, String password) {
 
     @Override
     public String toString() {

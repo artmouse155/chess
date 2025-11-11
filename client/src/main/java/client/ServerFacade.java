@@ -51,8 +51,8 @@ public class ServerFacade {
         authState = AuthState.AUTHENTICATED;
     }
 
-    public void login(RegisterRequest registerRequest) throws ClientException {
-        var request = buildRequest("POST", "/session", registerRequest);
+    public void login(LoginRequest loginRequest) throws ClientException {
+        var request = buildRequest("POST", "/session", loginRequest);
         var response = sendRequest(request);
         AuthData authData = handleResponse(response, AuthData.class);
         username = authData.username();

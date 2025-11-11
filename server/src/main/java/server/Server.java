@@ -2,7 +2,6 @@ package server;
 
 import com.google.gson.Gson;
 
-import handler.exception.BadRequestException;
 import handler.Handler;
 import handler.exception.ResponseException;
 
@@ -10,8 +9,6 @@ import io.javalin.*;
 import io.javalin.http.Context;
 
 import model.*;
-
-import java.util.Map;
 
 
 public class Server {
@@ -71,7 +68,7 @@ public class Server {
 
     public void login(Context ctx) throws ResponseException {
         var serializer = new Gson();
-        var req = serializer.fromJson(ctx.body(), RegisterRequest.class);
+        var req = serializer.fromJson(ctx.body(), LoginRequest.class);
         var res = handler.handleLogin(req);
         ctx.result(res.toString());
     }

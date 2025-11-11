@@ -4,7 +4,7 @@ import chess.ChessGame;
 import handler.exception.ResponseException;
 import model.CreateGameRequest;
 import model.JoinGameRequest;
-import model.RegisterRequest;
+import model.LoginRequest;
 import model.UserData;
 import org.junit.jupiter.api.*;
 import server.Server;
@@ -13,14 +13,14 @@ import server.Server;
 public class ServerFacadeTests {
 
     private final UserData testUser = new UserData("clientName", "securePWD123", "mail@gmail.com");
-    private final RegisterRequest testRegisterRequest;
+    private final LoginRequest testLoginRequest;
     private final String testGameName = "testGame";
 
     private static Server server;
     private static ServerFacade serverFacade;
 
     public ServerFacadeTests() {
-        testRegisterRequest = new RegisterRequest(testUser.username(), testUser.password());
+        testLoginRequest = new LoginRequest(testUser.username(), testUser.password());
     }
 
     @BeforeAll
@@ -64,12 +64,12 @@ public class ServerFacadeTests {
     @Test
     public void loginPositive() {
         register();
-        Assertions.assertDoesNotThrow(() -> serverFacade.login(testRegisterRequest));
+        Assertions.assertDoesNotThrow(() -> serverFacade.login(testLoginRequest));
     }
 
     @Test
     public void loginNegative() {
-        Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.login(testRegisterRequest));
+        Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.login(testLoginRequest));
     }
 
     @Test
