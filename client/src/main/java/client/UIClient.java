@@ -56,14 +56,14 @@ public class UIClient extends Client {
     @Override
     protected String eval(String input) {
         try {
-            String[] tokens = input.toLowerCase().split(" ");
+            String[] tokens = input.toLowerCase().split(" +");
             String cmd;
             String[] params;
             if ((tokens.length > 0)) {
                 cmd = tokens[0];
                 params = Arrays.copyOfRange(tokens, 1, tokens.length);
             } else {
-                cmd = "help";
+                cmd = "";
                 params = new String[]{};
             }
             TerminalFunction terminalFunction = switch (UIHandler.getAuthState()) {
