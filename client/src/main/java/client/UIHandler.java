@@ -4,8 +4,6 @@ import model.*;
 
 public class UIHandler extends Handler {
 
-    private final ChessGameClient chessGameClient;
-
     private final String authHelp = """
             list                     | List current chess games
             join <game id> <b|w>     | Join a game as black or white
@@ -24,7 +22,6 @@ public class UIHandler extends Handler {
 
     public UIHandler(String url) {
         super(url);
-        chessGameClient = new ChessGameClient();
     }
 
     public String help(String... params) {
@@ -85,6 +82,10 @@ public class UIHandler extends Handler {
 
     public String playGame(String... params) throws ClientException {
         validateArgs(params, "join <game id> <b|w>", POSITIVE_INTEGER, PLAYER_COLOR);
+        int gameID = Integer.valueOf(params[0]);
+        String joinType = params[1];
+        var chessGameClient = new ChessGameClient(gameID, joinType);
+        chessGameClient.run();
         return "CHESS PLAY!!!!!!! (type anything to quit)\n";
     }
 

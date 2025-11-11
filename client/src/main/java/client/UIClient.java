@@ -3,7 +3,7 @@ package client;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class UIClient {
+public class UIClient extends Client {
 
     private final UIHandler UIHandler;
 
@@ -18,6 +18,7 @@ public class UIClient {
 
     }
 
+    @Override
     public void run() {
         System.out.println("Welcome to Chess.");
         System.out.print(UIHandler.help());
@@ -36,7 +37,8 @@ public class UIClient {
         }
     }
 
-    private void printPrompt() {
+    @Override
+    protected void printPrompt() {
 
         String prompt = switch (UIHandler.getAuthState()) {
             case AUTHENTICATED -> String.format("[%s] CS 240 > ", UIHandler.getUsername());
@@ -45,11 +47,13 @@ public class UIClient {
         System.out.print(prompt);
     }
 
-    private String formatError(ClientException ex) {
+    @Override
+    protected String formatError(ClientException ex) {
         return String.format("%s%s", ex.getMessage(), ex.getHelp());
     }
 
 
+    @Override
     public String eval(String input) {
         try {
             String[] tokens = input.toLowerCase().split(" ");
