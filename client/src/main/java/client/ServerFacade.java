@@ -17,7 +17,7 @@ public class ServerFacade {
 
     private AuthState authState;
     private String username;
-    private GamesSet gamesSet = new GamesSet(Set.of());
+    private GamesSet gamesSet = null;
 
     public enum AuthState {
         AUTHENTICATED,
@@ -88,6 +88,10 @@ public class ServerFacade {
 
     public ChessGameClient newChessGameClient(ChessGameClient.JoinType joinType, int gameID) {
         return new ChessGameClient(joinType, new AuthData(authToken, username), gameID);
+    }
+
+    public GamesSet getCachedGamesSet() {
+        return gamesSet;
     }
 
     private HttpRequest buildRequest(String method, String path, Object body) {

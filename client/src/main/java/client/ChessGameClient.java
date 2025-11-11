@@ -12,13 +12,18 @@ public class ChessGameClient extends Client {
 
     }
 
+    private final JoinType joinType;
+    private final int gameID;
+
     public ChessGameClient(JoinType joinType, AuthData authData, int gameID) {
+        this.joinType = joinType;
+        this.gameID = gameID;
 
     }
 
     @Override
     public void run() {
-
+        System.out.println("THIS IS THE CHESS GAME CLIENT. YOU ARE A" + joinType.toString());
     }
 
     @Override

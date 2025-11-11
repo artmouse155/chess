@@ -82,7 +82,8 @@ public class UIHandler extends Handler {
 
     public String playGame(String... params) throws ClientException {
         validateArgs(params, "join <game id> <b|w>", POSITIVE_INTEGER, PLAYER_COLOR);
-        int gameID = Integer.parseInt(params[0]);
+        int relativeGameID = Integer.parseInt(params[0]);
+        int gameID = getGameIDFromRelative(relativeGameID);
         ChessGame.TeamColor teamColor = switch (params[1].toUpperCase()) {
             case "B", "BLACK" -> ChessGame.TeamColor.BLACK;
             case "W", "WHITE" -> ChessGame.TeamColor.WHITE;
@@ -102,8 +103,8 @@ public class UIHandler extends Handler {
 
     public String observeGame(String... params) throws ClientException {
         validateArgs(params, "watch <game id>", POSITIVE_INTEGER);
-        int gameID = Integer.parseInt(params[0]);
-
+        int relativeGameID = Integer.parseInt(params[0]);
+        int gameID = getGameIDFromRelative(relativeGameID);
         var chessGameClient = server.newChessGameClient(ChessGameClient.JoinType.OBSERVER, gameID);
         chessGameClient.run();
 
@@ -115,5 +116,22 @@ public class UIHandler extends Handler {
         CreateGameRequest createGameRequest = new CreateGameRequest(params[0]);
         server.createGame(createGameRequest);
         return String.format("Game %s created. Use the \"list\" command to show a list of all games.\n", params[0]);
+    }
+
+    private int getGameIDFromRelative(int relativeGameID) throws ClientException {
+        var gamesSet = server.getCachedGamesSet();
+        if (gamesSet == null) {
+            throw new ClientException(
+                    "Use the \"list\" command to show a list of all games."
+            );
+        } else {
+            try {
+                return gamesSet.gameIDAtIndex(relativeGameID);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                throw new ClientException(
+                        "That number was not in the list."
+                );
+            }
+        }
     }
 }
