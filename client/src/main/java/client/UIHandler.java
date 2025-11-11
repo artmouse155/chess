@@ -2,7 +2,7 @@ package client;
 
 import model.*;
 
-public class Handler {
+public class UIHandler {
 
     private final ServerFacade server;
 
@@ -24,7 +24,7 @@ public class Handler {
     private final String POSITIVE_INTEGER = "/d+";
     private final String PLAYER_COLOR = "b|w|black|white";
 
-    public Handler(String url) {
+    public UIHandler(String url) {
         server = new ServerFacade(url);
     }
 

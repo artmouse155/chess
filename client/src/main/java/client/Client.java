@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Client {
 
-    private final Handler handler;
+    private final UIHandler UIHandler;
 
 
     interface TerminalFunction {
@@ -14,13 +14,13 @@ public class Client {
     }
 
     public Client(String serverUrl) {
-        handler = new Handler(serverUrl);
+        UIHandler = new UIHandler(serverUrl);
 
     }
 
     public void run() {
         System.out.println("Welcome to Chess.");
-        System.out.print(handler.help());
+        System.out.print(UIHandler.help());
 
         Scanner scanner = new Scanner(System.in);
         var result = "";
@@ -38,8 +38,8 @@ public class Client {
 
     private void printPrompt() {
 
-        String prompt = switch (handler.getAuthState()) {
-            case AUTHENTICATED -> String.format("[%s] CS 240 > ", handler.getUsername());
+        String prompt = switch (UIHandler.getAuthState()) {
+            case AUTHENTICATED -> String.format("[%s] CS 240 > ", UIHandler.getUsername());
             case UNAUTHENTICATED -> "CS 240 > ";
         };
         System.out.print(prompt);
@@ -55,20 +55,20 @@ public class Client {
             String[] tokens = input.toLowerCase().split(" ");
             String cmd = (tokens.length > 0) ? tokens[0] : "help";
             String[] params = Arrays.copyOfRange(tokens, 1, tokens.length);
-            TerminalFunction terminalFunction = switch (handler.getAuthState()) {
+            TerminalFunction terminalFunction = switch (UIHandler.getAuthState()) {
                 case AUTHENTICATED -> switch (cmd) {
-                    case "logout" -> handler::logout;
-                    case "create" -> handler::createGame;
-                    case "list" -> handler::listGame;
-                    case "play" -> handler::playGame;
-                    case "watch" -> handler::observeGame;
-                    default -> handler::help;
+                    case "logout" -> UIHandler::logout;
+                    case "create" -> UIHandler::createGame;
+                    case "list" -> UIHandler::listGame;
+                    case "play" -> UIHandler::playGame;
+                    case "watch" -> UIHandler::observeGame;
+                    default -> UIHandler::help;
                 };
                 case UNAUTHENTICATED -> switch (cmd) {
-                    case "login" -> handler::login;
-                    case "register" -> handler::register;
-                    case "quit" -> handler::quit;
-                    default -> handler::help;
+                    case "login" -> UIHandler::login;
+                    case "register" -> UIHandler::register;
+                    case "quit" -> UIHandler::quit;
+                    default -> UIHandler::help;
                 };
             };
 
