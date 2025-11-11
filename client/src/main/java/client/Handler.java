@@ -115,7 +115,7 @@ public class Handler {
         validateArgs(params, "create <name>\n", STRING);
         CreateGameRequest createGameRequest = new CreateGameRequest(params[0]);
         server.createGame(createGameRequest);
-        return "Game Created.\n";
+        return String.format("Game %s created. Use the \"list\" command to show a list of all games.\n", params[0]);
     }
 
     public ServerFacade.AuthState getAuthState() {
