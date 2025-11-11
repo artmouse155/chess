@@ -57,8 +57,15 @@ public class UIClient extends Client {
     protected String eval(String input) {
         try {
             String[] tokens = input.toLowerCase().split(" ");
-            String cmd = (tokens.length > 0) ? tokens[0] : "help";
-            String[] params = Arrays.copyOfRange(tokens, 1, tokens.length);
+            String cmd;
+            String[] params;
+            if ((tokens.length > 0)) {
+                cmd = tokens[0];
+                params = Arrays.copyOfRange(tokens, 1, tokens.length);
+            } else {
+                cmd = "help";
+                params = new String[]{};
+            }
             TerminalFunction terminalFunction = switch (UIHandler.getAuthState()) {
                 case AUTHENTICATED -> switch (cmd) {
                     case "logout" -> UIHandler::logout;
