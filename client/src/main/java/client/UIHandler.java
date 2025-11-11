@@ -83,13 +83,19 @@ public class UIHandler extends Handler {
     public String playGame(String... params) throws ClientException {
         validateArgs(params, "join <game id> <b|w>", POSITIVE_INTEGER, PLAYER_COLOR);
         int gameID = Integer.parseInt(params[0]);
-        String joinType = params[1];
-        ChessGame.TeamColor teamColor = switch (joinType.toUpperCase()) {
+        ChessGame.TeamColor teamColor = switch (params[1].toUpperCase()) {
             case "B", "BLACK" -> ChessGame.TeamColor.BLACK;
             case "W", "WHITE" -> ChessGame.TeamColor.WHITE;
-            default -> null;
+            default -> throw new ClientException("Unexpected value: " + params[1].toUpperCase());
         };
-        var chessGameClient = new ChessGameClient(gameID, teamColor);
+        server.joinGame(new JoinGameRequest(teamColor, gameID));
+
+        ChessGameClient.JoinType joinType = switch (teamColor) {
+            case WHITE -> ChessGameClient.JoinType.WHITE;
+            case BLACK -> ChessGameClient.JoinType.BLACK;
+        };
+
+        var chessGameClient = server.newChessGameClient(joinType, gameID);
         chessGameClient.run();
         return "Chess game ended.\n";
     }
@@ -97,7 +103,10 @@ public class UIHandler extends Handler {
     public String observeGame(String... params) throws ClientException {
         validateArgs(params, "watch <game id>", POSITIVE_INTEGER);
         int gameID = Integer.parseInt(params[0]);
-        var chessGameClient = new ChessGameClient(gameID);
+
+        var chessGameClient = server.newChessGameClient(ChessGameClient.JoinType.OBSERVER, gameID);
+        chessGameClient.run();
+
         return "observeGame\n";
     }
 

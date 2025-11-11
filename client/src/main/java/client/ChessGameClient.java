@@ -1,17 +1,19 @@
 package client;
 
 import chess.ChessGame;
+import model.AuthData;
 
 public class ChessGameClient extends Client {
 
-    // Player
-    public ChessGameClient(int gameID, ChessGame.TeamColor teamColor) {
+    public enum JoinType {
+        BLACK,
+        OBSERVER,
+        WHITE
 
     }
 
-    // Observer
-    public ChessGameClient(int gameID) {
-        this(gameID, null);
+    public ChessGameClient(JoinType joinType, AuthData authData, int gameID) {
+
     }
 
     @Override

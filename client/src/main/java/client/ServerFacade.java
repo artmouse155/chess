@@ -86,6 +86,10 @@ public class ServerFacade {
         handleResponse(response, EmptyResponse.class);
     }
 
+    public ChessGameClient newChessGameClient(ChessGameClient.JoinType joinType, int gameID) {
+        return new ChessGameClient(joinType, new AuthData(authToken, username), gameID);
+    }
+
     private HttpRequest buildRequest(String method, String path, Object body) {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + path))
