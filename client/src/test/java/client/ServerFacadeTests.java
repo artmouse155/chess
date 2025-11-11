@@ -137,7 +137,9 @@ public class ServerFacadeTests {
     }
 
     @Test
-    public void newChessGameClientNegative() {
+    public void newChessGameClientNegative() throws ClientException {
+        register();
+        serverFacade.logout();
         Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.newChessGameClient(ChessGameClient.JoinType.BLACK, 1));
     }
 //    register();

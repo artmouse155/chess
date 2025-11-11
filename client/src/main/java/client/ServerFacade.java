@@ -25,7 +25,7 @@ public class ServerFacade {
 
     public ServerFacade(String url) {
         serverUrl = url;
-        authData = new AuthData("", "");
+        authData = AuthData.empty();
         authState = AuthState.UNAUTHENTICATED;
     }
 
@@ -59,6 +59,7 @@ public class ServerFacade {
         var request = buildRequest("DELETE", "/session", null);
         var response = sendRequest(request);
         handleResponse(response, EmptyResponse.class);
+        authData = AuthData.empty();
         authState = AuthState.UNAUTHENTICATED;
     }
 

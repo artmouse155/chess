@@ -8,4 +8,8 @@ public record AuthData(String authToken, String username) {
     public String toString() {
         return new Gson().toJson(this);
     }
+
+    public static AuthData empty() {
+        return new AuthData("", "");
+    }
 }
