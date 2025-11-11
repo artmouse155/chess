@@ -81,7 +81,7 @@ public class ServerFacade {
         handleResponse(response, EmptyResponse.class);
     }
 
-    public ChessGameClient newChessGameClient(ChessGameClient.JoinType joinType, int gameID) {
+    public ChessGameClient newChessGameClient(ChessGameClient.JoinType joinType, int gameID) throws ClientException {
         return new ChessGameClient(joinType, authData, gameID);
     }
 

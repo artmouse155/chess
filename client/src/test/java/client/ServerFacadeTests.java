@@ -138,7 +138,7 @@ public class ServerFacadeTests {
 
     @Test
     public void newChessGameClientNegative() {
-        // Not sure what to do here...
+        Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.newChessGameClient(ChessGameClient.JoinType.BLACK, 1));
     }
 //    register();
 //    Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.createGame(new CreateGameRequest(testGameName)));
