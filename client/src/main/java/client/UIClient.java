@@ -3,7 +3,7 @@ package client;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Client {
+public class UIClient {
 
     private final UIHandler UIHandler;
 
@@ -13,7 +13,7 @@ public class Client {
         String evaluate(String... params) throws ClientException;
     }
 
-    public Client(String serverUrl) {
+    public UIClient(String serverUrl) {
         UIHandler = new UIHandler(serverUrl);
 
     }

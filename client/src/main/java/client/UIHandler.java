@@ -4,6 +4,8 @@ import model.*;
 
 public class UIHandler extends Handler {
 
+    private final ChessGameClient chessGameClient;
+
     private final String authHelp = """
             list                     | List current chess games
             join <game id> <b|w>     | Join a game as black or white
@@ -22,6 +24,7 @@ public class UIHandler extends Handler {
 
     public UIHandler(String url) {
         super(url);
+        chessGameClient = new ChessGameClient();
     }
 
     public String help(String... params) {
