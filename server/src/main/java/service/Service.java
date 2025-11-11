@@ -109,7 +109,13 @@ public class Service {
 
     public GamesList getGames() throws ResponseException {
         try {
-            return new GamesList(dataAccess.getGameDataSet().stream().map(GameData::stripped).collect(Collectors.toSet()));
+            return new GamesList(
+                    dataAccess
+                            .getGameDataSet()
+                            .stream()
+                            .map(GameData::stripped)
+                            .toList()
+            );
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }

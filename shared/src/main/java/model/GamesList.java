@@ -2,10 +2,11 @@ package model;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-public record GamesList(Set<GameDataStripped> games) {
+public record GamesList(List<GameDataStripped> games) {
 
     @Override
     public String toString() {
@@ -13,7 +14,7 @@ public record GamesList(Set<GameDataStripped> games) {
     }
 
     public GamesList simplyNumbered() {
-        var simplyNumberedGames = new HashSet<GameDataStripped>();
+        var simplyNumberedGames = new ArrayList<GameDataStripped>();
         int loop_index = 0;
         for (final var game : games) {
             simplyNumberedGames.add(new GameDataStripped(
