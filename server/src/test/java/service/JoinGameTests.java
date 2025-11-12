@@ -91,13 +91,6 @@ public class JoinGameTests extends EndpointTests {
         Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleJoinGame(authData, null, gameID));
     }
 
-//    @Test
-//    @Order(8)
-//    @DisplayName("Lowercase playerColor")
-//    public void lowercasePlayerColor() {
-//        Assertions.assertThrowsExactly(BadRequestException.class, () -> handler.handleJoinGame(authData, ChessGame.TeamColor.BLACK, gameID));
-//    }
-
     @Test
     @Order(9)
     @DisplayName("Incorrect gameID")

@@ -119,11 +119,6 @@ public class ServerFacade {
     private <T> T handleResponse(HttpResponse<String> response, Class<T> responseClass) throws ClientException {
         var status = response.statusCode();
         if (!isSuccessful(status)) {
-//            var body = response.body();
-//            if (body != null) {
-//                throw ClientException.parseHTTPError(body);
-//            }
-
             throw ClientException.parseHTTPError(status);
         }
 

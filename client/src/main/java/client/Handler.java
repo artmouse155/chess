@@ -4,9 +4,9 @@ public class Handler {
 
     protected final ServerFacade server;
 
-    protected final String STRING = ".*";
-    protected final String STRING_128 = ".{0,128}";
-    protected final String POSITIVE_INTEGER = "\\d+";
+    protected static final String STRING = ".*";
+    protected static final String STRING_128 = ".{0,128}";
+    protected static final String POSITIVE_INTEGER = "\\d+";
 
     public Handler(String url) {
         server = new ServerFacade(url);
@@ -34,5 +34,5 @@ public class Handler {
     public ServerFacade.AuthState getAuthState() {
         return server.getAuthState();
     }
-    
+
 }

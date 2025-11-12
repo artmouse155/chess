@@ -20,16 +20,16 @@ public class ChessGameClient extends Client {
 
     }
 
-    private final int TILE_PADDING_LENGTH = 1;
-    private final String TILE_PADDING = " ".repeat(TILE_PADDING_LENGTH);
-    private final String BORDER_BG_COLOR = SET_BG_COLOR_MAGENTA;
-    private final String BORDER_TEXT_COLOR = SET_TEXT_COLOR_BLACK;
+    private static final int TILE_PADDING_LENGTH = 1;
+    private static final String TILE_PADDING = " ".repeat(TILE_PADDING_LENGTH);
+    private static final String BORDER_BG_COLOR = SET_BG_COLOR_MAGENTA;
+    private static final String BORDER_TEXT_COLOR = SET_TEXT_COLOR_BLACK;
 
-    private final String WHITE_BG = SET_BG_COLOR_WHITE;
-    private final String BLACK_BG = SET_BG_COLOR_BLACK;
+    private static final String WHITE_BG = SET_BG_COLOR_WHITE;
+    private static final String BLACK_BG = SET_BG_COLOR_BLACK;
 
-    private final String WHITE_PIECE_COLOR = SET_TEXT_COLOR_RED;
-    private final String BLACK_PIECE_COLOR = SET_TEXT_COLOR_BLUE;
+    private static final String WHITE_PIECE_COLOR = SET_TEXT_COLOR_RED;
+    private static final String BLACK_PIECE_COLOR = SET_TEXT_COLOR_BLUE;
 
 
     private record Tile(String body, String bgColor, String textColor) {
@@ -57,7 +57,7 @@ public class ChessGameClient extends Client {
         this.joinType = joinType;
         this.gameID = gameID;
 
-        // TODO: Update with WebSocket code for phase six. This is a dummy function that pretends to call the server to see if you are authenticated.
+        // Update with WebSocket code for phase six. This is a dummy function that pretends to call the server to see if you are authenticated.
         if (Objects.equals(authToken, "")) {
             throw new ClientException("Bad Authentication");
         }

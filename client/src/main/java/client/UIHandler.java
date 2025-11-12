@@ -19,7 +19,7 @@ public class UIHandler extends Handler {
             quit                                    | Quit application
             """;
 
-    private final String PLAYER_COLOR = "B|W|BLACK|WHITE";
+    private static final String PLAYER_COLOR = "B|W|BLACK|WHITE";
 
     private String username = "";
 
@@ -27,7 +27,7 @@ public class UIHandler extends Handler {
         super(url);
     }
 
-    public String help(String... _params) {
+    public String help(String... params) {
         return switch (server.getAuthState()) {
             case AUTHENTICATED -> authHelp;
             case UNAUTHENTICATED -> unauthHelp;

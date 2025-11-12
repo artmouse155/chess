@@ -15,15 +15,15 @@ public record GamesList(List<GameDataStripped> games) {
 
     public GamesList simplyNumbered() {
         var simplyNumberedGames = new ArrayList<GameDataStripped>();
-        int loop_index = 1;
+        int loopIndex = 1;
         for (final var game : games) {
             simplyNumberedGames.add(new GameDataStripped(
-                    loop_index,
+                    loopIndex,
                     game.whiteUsername(),
                     game.blackUsername(),
                     game.gameName()
             ));
-            loop_index++;
+            loopIndex++;
         }
         return new GamesList(simplyNumberedGames);
     }

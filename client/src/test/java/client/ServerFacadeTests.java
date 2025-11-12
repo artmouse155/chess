@@ -142,10 +142,5 @@ public class ServerFacadeTests {
         serverFacade.logout();
         Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.newChessGameClient(ChessGameClient.JoinType.BLACK, 1));
     }
-//    register();
-//    Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.createGame(new CreateGameRequest(testGameName)));
-//    var gamesSet = Assertions.assertDoesNotThrow(() -> serverFacade.getCachedGamesSet());
-//    Assertions.assertTrue(gamesSet.games().isEmpty());
-//    gamesSet = Assertions.assertDoesNotThrow(() -> serverFacade.listGames());
-//    Assertions.assertEquals(1, gamesSet.games().size());
+
 }
