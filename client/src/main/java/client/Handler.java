@@ -5,6 +5,7 @@ public class Handler {
     protected final ServerFacade server;
 
     protected final String STRING = ".*";
+    protected final String STRING_128 = ".{0,128}";
     protected final String POSITIVE_INTEGER = "\\d+";
 
     public Handler(String url) {

@@ -37,14 +37,14 @@ public class UIHandler extends Handler {
     }
 
     public String login(String... params) throws ClientException {
-        validateArgs(params, "login <username> <password>\n", STRING, STRING);
+        validateArgs(params, "login <username> <password>\n", STRING_128, STRING_128);
         LoginRequest loginRequest = new LoginRequest(params[0], params[1]);
         server.login(loginRequest);
         return String.format("Login successful. Welcome, %s!\n", server.getUsername());
     }
 
     public String register(String... params) throws ClientException {
-        validateArgs(params, "register <email> <username> <password>\n", STRING, STRING, STRING);
+        validateArgs(params, "register <email> <username> <password>\n", STRING_128, STRING_128, STRING_128);
         UserData request = new UserData(params[1], params[2], params[0]);
         server.register(request);
         return String.format("Registration successful. Welcome, %s!\n", server.getUsername());
@@ -112,7 +112,7 @@ public class UIHandler extends Handler {
     }
 
     public String createGame(String... params) throws ClientException {
-        validateArgs(params, "create <name>\n", STRING);
+        validateArgs(params, "create <name>\n", STRING_128);
         CreateGameRequest createGameRequest = new CreateGameRequest(params[0]);
         server.createGame(createGameRequest);
         return String.format("Game %s created. Use the \"list\" command to show a list of all games.\n", params[0]);
