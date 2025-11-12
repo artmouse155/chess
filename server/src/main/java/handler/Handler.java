@@ -1,5 +1,6 @@
 package handler;
 
+import chess.ChessGame;
 import dataaccess.DataAccessException;
 import handler.exception.BadRequestException;
 import handler.exception.ResponseException;
@@ -72,11 +73,11 @@ public class Handler {
         return service.createGame(gameName);
     }
 
-    public EmptyResponse handleJoinGame(AuthData authData, String playerColor, int gameID) throws ResponseException {
+    public EmptyResponse handleJoinGame(AuthData authData, ChessGame.TeamColor playerColor, int gameID) throws ResponseException {
         final String username = authData.username();
 
         if (gameID < 0 ||
-                (!Objects.equals(playerColor, "WHITE") && !Objects.equals(playerColor, "BLACK")) ||
+                playerColor == null ||
                 username == null ||
                 username.isEmpty()
         ) {

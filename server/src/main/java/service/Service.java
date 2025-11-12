@@ -128,7 +128,7 @@ public class Service {
         }
     }
 
-    public EmptyResponse joinGame(AuthData authData, String playerColor, int gameID) throws ResponseException {
+    public EmptyResponse joinGame(AuthData authData, ChessGame.TeamColor playerColor, int gameID) throws ResponseException {
         try {
             if (!dataAccess.hasGame(gameID)) {
                 throw new BadRequestException("Game does not exist.");
@@ -144,12 +144,12 @@ public class Service {
 
             GameData game = dataAccess.getGame(gameID);
 
-            if (playerColor.equals("WHITE")) {
+            if (playerColor == ChessGame.TeamColor.WHITE) {
                 if (game.whiteUsername() != null) {
                     throw new AlreadyTakenException("The color white has already been taken.");
                 }
                 game = game.setWhiteUsername(username);
-            } else if (playerColor.equals("BLACK")) {
+            } else if (playerColor == ChessGame.TeamColor.BLACK) {
                 if (game.blackUsername() != null) {
                     throw new AlreadyTakenException("The color black has already been taken.");
                 }
