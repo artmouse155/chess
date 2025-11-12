@@ -66,7 +66,8 @@ public class ChessGameClient extends Client {
 
     @Override
     public void run() {
-        System.out.println("THIS IS THE CHESS GAME CLIENT. YOU ARE ON TEAM " + joinType.toString());
+        System.out.printf("Welcome! You are on team %s. Blue letters represent black pieces and red letters represent white pieces.%n",
+                joinType.toString());
 
         chessBoard = new ChessBoard();
         chessBoard.resetBoard();

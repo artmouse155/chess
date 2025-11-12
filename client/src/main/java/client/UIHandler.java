@@ -51,13 +51,13 @@ public class UIHandler extends Handler {
         UserData request = new UserData(params[1], params[2], params[0]);
         server.register(request);
         username = params[1];
-        return String.format("Registration successful. Welcome, %s!\n", username);
+        return String.format("Registration successful. Welcome, %s!%n%s", username, help());
     }
 
     public String logout(String... params) throws ClientException {
         validateArgs(params, "logout\n");
         server.logout();
-        return "Logout successful.\n";
+        return String.format("Logout successful.%n%s", help());
     }
 
     public String listGame(String... params) throws ClientException {
@@ -75,8 +75,8 @@ public class UIHandler extends Handler {
                         "%d. NAME: %s WHITE: %s BLACK: %s\n",
                         game.gameID(),
                         game.gameName(),
-                        game.whiteUsername(),
-                        game.blackUsername()
+                        game.whiteUsername() == null ? "<unoccupied>" : game.whiteUsername(),
+                        game.blackUsername() == null ? "<unoccupied>" : game.blackUsername()
                 );
             }
         }
@@ -119,7 +119,7 @@ public class UIHandler extends Handler {
         validateArgs(params, "create <name>\n", STRING_128);
         CreateGameRequest createGameRequest = new CreateGameRequest(params[0]);
         server.createGame(createGameRequest);
-        return String.format("Game %s created. Use the \"list\" command to show a list of all games.\n", params[0]);
+        return String.format("Game \"%s\" created.%n%s", params[0], listGame());
     }
 
     private int getGameIDFromRelative(int relativeGameID) throws ClientException {
