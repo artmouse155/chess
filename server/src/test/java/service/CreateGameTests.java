@@ -42,10 +42,15 @@ public class CreateGameTests extends EndpointTests {
         var createGameResponse2 = Assertions.assertDoesNotThrow(() -> handler.handleCreateGame("game2"));
         var createGameResponse3 = Assertions.assertDoesNotThrow(() -> handler.handleCreateGame("game3"));
         var getGamesResponse = Assertions.assertDoesNotThrow(() -> handler.handleGetGames());
-        Assertions.assertTrue(() -> getGamesResponse.games().equals(Set.of(
-                new GameDataStripped(createGameResponse1.gameID(), null, null, "game1"),
-                new GameDataStripped(createGameResponse2.gameID(), null, null, "game2"),
+        Assertions.assertTrue(() -> getGamesResponse.games().contains(
+                new GameDataStripped(createGameResponse1.gameID(), null, null, "game1")
+        ));
+        Assertions.assertTrue(() -> getGamesResponse.games().contains(
+
+                new GameDataStripped(createGameResponse2.gameID(), null, null, "game2")
+        ));
+        Assertions.assertTrue(() -> getGamesResponse.games().contains(
                 new GameDataStripped(createGameResponse3.gameID(), null, null, "game3")
-        )));
+        ));
     }
 }

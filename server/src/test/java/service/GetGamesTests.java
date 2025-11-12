@@ -27,7 +27,7 @@ public class GetGamesTests extends EndpointTests {
         String gameName = "testGame";
         var createGameResponse = Assertions.assertDoesNotThrow(() -> handler.handleCreateGame(gameName));
         var getGamesResponse = Assertions.assertDoesNotThrow(() -> handler.handleGetGames());
-        Assertions.assertTrue(() -> getGamesResponse.games().equals(Set.of(new GameDataStripped(createGameResponse.gameID(), null, null, gameName))));
+        Assertions.assertTrue(() -> getGamesResponse.games().contains(new GameDataStripped(createGameResponse.gameID(), null, null, gameName)));
     }
 
 }

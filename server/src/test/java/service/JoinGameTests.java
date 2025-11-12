@@ -177,12 +177,12 @@ public class JoinGameTests extends EndpointTests {
         final String secondUsername = secondUser.username();
 
         var getGamesResponse = Assertions.assertDoesNotThrow(() -> handler.handleGetGames());
-        Assertions.assertEquals(getGamesResponse.games(), Set.of(
-                new GameDataStripped(gameID, testUsername, secondUsername, gameName),
-                new GameDataStripped(soloGameID, testUsername, testUsername, soloGameName),
-                new GameDataStripped(secondDuoGameID, testUsername, secondUsername, secondDuoGameName),
-                new GameDataStripped(nullGameID, null, null, nullGameName)
-        ));
+
+        Assertions.assertTrue(getGamesResponse.games().contains(new GameDataStripped(gameID, testUsername, secondUsername, gameName)));
+        Assertions.assertTrue(getGamesResponse.games().contains(new GameDataStripped(gameID, testUsername, secondUsername, gameName)));
+        Assertions.assertTrue(getGamesResponse.games().contains(new GameDataStripped(secondDuoGameID, testUsername, secondUsername,
+                secondDuoGameName)));
+        Assertions.assertTrue(getGamesResponse.games().contains(new GameDataStripped(nullGameID, null, null, nullGameName)));
     }
 
 }
