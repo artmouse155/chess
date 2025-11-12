@@ -12,11 +12,9 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class Service {
 
-    private int gameCount = 0;
     private final DataAccess dataAccess;
 
     public Service(boolean doSQL) {
@@ -46,7 +44,6 @@ public class Service {
     public EmptyResponse deleteDB() throws ResponseException {
         try {
             dataAccess.deleteDB();
-            gameCount = 0;
             return new EmptyResponse();
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
@@ -123,9 +120,8 @@ public class Service {
 
     public CreateGameResponse createGame(String gameName) throws ResponseException {
         try {
-            int gameID = gameCount + 1;
+            int gameID = dataAccess.getNextGameID();
             dataAccess.addGame(new GameData(gameID, null, null, gameName, new ChessGame()));
-            gameCount++;
             return new CreateGameResponse(gameID);
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);

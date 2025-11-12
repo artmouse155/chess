@@ -40,4 +40,5 @@ public interface DataAccess {
 
     public void removeGame(int gameID) throws DataAccessException;
 
+    public int getNextGameID() throws DataAccessException;
 }

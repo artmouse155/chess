@@ -285,4 +285,13 @@ public class SQLDataAccess implements DataAccess {
         }
         executeUpdate("DELETE FROM game_data WHERE game_id=?", gameID);
     }
+
+    @Override
+    public int getNextGameID() throws DataAccessException {
+        var outputSet = getTableAsSet("SELECT * FROM game_data ORDER BY game_id DESC LIMIT 1", this::readGameData);
+        if (outputSet.isEmpty()) {
+            return 0;
+        }
+        return outputSet.stream().findFirst().get().gameID() + 1;
+    }
 }

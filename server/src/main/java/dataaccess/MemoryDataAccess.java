@@ -148,4 +148,9 @@ public class MemoryDataAccess implements DataAccess {
         gameDataSet.removeIf(gameData -> gameData.gameID() == gameID);
         debugPrint("Game Data Set Remove", gameDataSet);
     }
+
+    @Override
+    public int getNextGameID() {
+        return gameDataSet.size();
+    }
 }
