@@ -5,7 +5,7 @@ public class Handler {
     protected final ServerFacade server;
 
     protected final String STRING = ".*";
-    protected final String POSITIVE_INTEGER = "/d+";
+    protected final String POSITIVE_INTEGER = "\\d+";
 
     public Handler(String url) {
         server = new ServerFacade(url);
@@ -29,7 +29,7 @@ public class Handler {
             }
         }
     }
-    
+
     public ServerFacade.AuthState getAuthState() {
         return server.getAuthState();
     }
