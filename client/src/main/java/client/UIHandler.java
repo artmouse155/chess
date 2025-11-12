@@ -122,7 +122,7 @@ public class UIHandler extends Handler {
         var gamesSet = server.getCachedGamesSet();
         if (gamesSet == null) {
             throw new ClientException(
-                    "Use the \"list\" command to show a list of all games."
+                    "Use the \"list\" command to show a list of all games.\n"
             );
         } else {
             try {
