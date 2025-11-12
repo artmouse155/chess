@@ -2,6 +2,7 @@ package client;
 
 import chess.ChessBoard;
 import chess.ChessGame;
+import chess.ChessPosition;
 import model.AuthData;
 
 import java.util.ArrayList;
@@ -26,6 +27,10 @@ public class ChessGameClient extends Client {
 
     private final String WHITE_BG = SET_BG_COLOR_WHITE;
     private final String BLACK_BG = SET_BG_COLOR_BLACK;
+
+    private final String WHITE_PIECE_COLOR = SET_TEXT_COLOR_RED;
+    private final String BLACK_PIECE_COLOR = SET_TEXT_COLOR_BLUE;
+
 
     private record Tile(String body, String bgColor, String textColor) {
     }
@@ -72,20 +77,50 @@ public class ChessGameClient extends Client {
         printGrid.add(letters);
 
 
+        var bgColor = WHITE_BG;
 
-        for (int row = 1; row <= 8; row++)
-        {
+        for (int row = 1; row <= 8; row++) {
             var tileRow = new ArrayList<Tile>();
 
-            tileRow.add(new Tile(
-                    Integer.parseInt(row),
+            final var tileBorder = new Tile(
+                    String.valueOf(row),
+                    BORDER_BG_COLOR,
+                    BORDER_TEXT_COLOR
+            );
 
-            ));
+            tileRow.add(tileBorder);
 
-            for (int col = 1; col <= 8; col++)
-            {
+            for (int col = 1; col <= 8; col++) {
+
+                var piece = chessBoard.getPiece(new ChessPosition(row, col));
+
+                if (piece != null) {
+
+                    String pieceColor = switch (piece.getTeamColor()) {
+                        case WHITE -> WHITE_PIECE_COLOR;
+                        case BLACK -> BLACK_PIECE_COLOR;
+                    };
+
+                    tileRow.add(new Tile(
+                            piece.getPieceType().toString(),
+                            bgColor,
+                            pieceColor
+                    ));
+                } else {
+                    tileRow.add(new Tile(
+                            " ",
+                            bgColor,
+                            RESET_TEXT_COLOR
+                    ));
+                }
+                bgColor = (bgColor.equals(WHITE_BG)) ? BLACK_BG : WHITE_BG;
 
             }
+
+            bgColor = (bgColor.equals(WHITE_BG)) ? BLACK_BG : WHITE_BG;
+
+            tileRow.add(tileBorder);
+            printGrid.add(tileRow);
         }
 
         printGrid.add(letters);
