@@ -93,7 +93,11 @@ public class Server {
     public void joinGame(Context ctx) throws ResponseException {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.body(), JoinGameRequest.class);
-        var res = handler.handleJoinGame((AuthData) ctx.attribute("authData"), req.playerColor(), req.gameID());
+        AuthData authData = ctx.attribute("authData");
+        if (authData == null) {
+            authData = AuthData.empty();
+        }
+        var res = handler.handleJoinGame(authData, req.playerColor(), req.gameID());
         ctx.result(res.toString());
     }
 
