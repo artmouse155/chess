@@ -43,7 +43,7 @@ public class UIHandler extends Handler {
         LoginRequest loginRequest = new LoginRequest(params[0], params[1]);
         server.login(loginRequest);
         username = params[0];
-        return String.format("Login successful. Welcome, %s!\n", username);
+        return String.format("Login successful. Welcome, %s!%n%s", username, help());
     }
 
     public String register(String... params) throws ClientException {
