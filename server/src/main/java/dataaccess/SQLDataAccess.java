@@ -290,7 +290,7 @@ public class SQLDataAccess implements DataAccess {
     public int getNextGameID() throws DataAccessException {
         var outputSet = getTableAsSet("SELECT * FROM game_data ORDER BY game_id DESC LIMIT 1", this::readGameData);
         if (outputSet.isEmpty()) {
-            return 0;
+            return 1;
         }
         return outputSet.stream().findFirst().get().gameID() + 1;
     }
