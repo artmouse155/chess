@@ -57,7 +57,7 @@ public class UIHandler extends Handler {
     public String logout(String... params) throws ClientException {
         validateArgs(params, "logout\n");
         server.logout();
-        return "Logout successful.";
+        return "Logout successful.\n";
     }
 
     public String listGame(String... params) throws ClientException {
@@ -91,7 +91,7 @@ public class UIHandler extends Handler {
         ChessGame.TeamColor teamColor = switch (params[1].toUpperCase()) {
             case "B", "BLACK" -> ChessGame.TeamColor.BLACK;
             case "W", "WHITE" -> ChessGame.TeamColor.WHITE;
-            default -> throw new ClientException("Unexpected value: " + params[1].toUpperCase());
+            default -> throw new ClientException("Unexpected value: " + params[1].toUpperCase() + "\n");
         };
         server.joinGame(new JoinGameRequest(teamColor, gameID));
 
@@ -112,7 +112,7 @@ public class UIHandler extends Handler {
         var chessGameClient = server.newChessGameClient(ChessGameClient.JoinType.OBSERVER, gameID);
         chessGameClient.run();
 
-        return "observeGame\n";
+        return "Observation ended.\n";
     }
 
     public String createGame(String... params) throws ClientException {
@@ -131,9 +131,9 @@ public class UIHandler extends Handler {
         } else {
             try {
                 return gamesSet.gameIDAtIndex(relativeGameID - 1);
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 throw new ClientException(
-                        "That number was not in the list."
+                        "That number was not in the list.\n"
                 );
             }
         }

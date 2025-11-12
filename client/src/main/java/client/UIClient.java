@@ -3,9 +3,15 @@ package client;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import static ui.EscapeSequences.*;
+
 public class UIClient extends Client {
 
     private final UIHandler uiHandler;
+
+    private final String RESET_ALL = RESET_BG_COLOR + RESET_TEXT_COLOR + RESET_TEXT_BOLD_FAINT;
+    private final String APP_TITLE_FORMAT = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK;
+    private final String USERNAME_FORMAT = SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_WHITE;
 
 
     interface TerminalFunction {
@@ -41,8 +47,8 @@ public class UIClient extends Client {
     protected void printPrompt() {
 
         String prompt = switch (uiHandler.getAuthState()) {
-            case AUTHENTICATED -> String.format("[%s] CS 240 > ", uiHandler.getUsername());
-            case UNAUTHENTICATED -> "CS 240 > ";
+            case AUTHENTICATED -> String.format("%s ♕ 240 Chess ♕ %s %s %s> ", APP_TITLE_FORMAT, USERNAME_FORMAT, uiHandler.getUsername(), RESET_ALL);
+            case UNAUTHENTICATED -> String.format("%s ♕ 240 Chess ♕ %s> ", APP_TITLE_FORMAT, RESET_ALL);
         };
         System.out.print(prompt);
     }
