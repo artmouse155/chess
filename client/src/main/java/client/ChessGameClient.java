@@ -96,7 +96,10 @@ public class ChessGameClient extends Client {
 
             for (int col = 1; col <= 8; col++) {
 
-                var piece = chessBoard.getPiece(new ChessPosition(row, col));
+                // Changed draw direction, so we need to invert row and col
+                var piecePosition = new ChessPosition(9 - row, 9 - col);
+
+                var piece = chessBoard.getPiece(piecePosition);
 
                 if (piece != null) {
 
