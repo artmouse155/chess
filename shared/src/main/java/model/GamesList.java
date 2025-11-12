@@ -15,7 +15,7 @@ public record GamesList(List<GameDataStripped> games) {
 
     public GamesList simplyNumbered() {
         var simplyNumberedGames = new ArrayList<GameDataStripped>();
-        int loop_index = 0;
+        int loop_index = 1;
         for (final var game : games) {
             simplyNumberedGames.add(new GameDataStripped(
                     loop_index,
@@ -28,15 +28,9 @@ public record GamesList(List<GameDataStripped> games) {
         return new GamesList(simplyNumberedGames);
     }
 
+    // NOTE: ASSUMES INPUT IS 0-INDEXED
     public int gameIDAtIndex(int index) {
-        int loop_index = 0;
-        for (final var game : games) {
-            if (loop_index == index) {
-                return game.gameID();
-            }
-            loop_index++;
-        }
-        throw new ArrayIndexOutOfBoundsException();
+        return games.get(index).gameID();
     }
 
 }

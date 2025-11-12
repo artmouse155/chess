@@ -9,6 +9,7 @@ import handler.exception.*;
 import model.*;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -111,6 +112,7 @@ public class Service {
                             .getGameDataSet()
                             .stream()
                             .map(GameData::stripped)
+                            .sorted(Comparator.comparing(GameDataStripped::gameID))
                             .toList()
             );
         } catch (DataAccessException e) {

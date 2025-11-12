@@ -7,7 +7,7 @@ public class UIHandler extends Handler {
 
     private final String authHelp = """
             list                     | List current chess games
-            join <game id> <b|w>     | Join a game as black or white
+            play <game id> <b|w>     | Join a game as black or white
             watch <game id>          | Observe a game
             create <name>            | Create new chess game with specified name
             logout                   | Log out
@@ -81,7 +81,7 @@ public class UIHandler extends Handler {
     }
 
     public String playGame(String... params) throws ClientException {
-        validateArgs(params, "join <game id> <b|w>", POSITIVE_INTEGER, PLAYER_COLOR);
+        validateArgs(params, "play <game id> <b|w>", POSITIVE_INTEGER, PLAYER_COLOR);
         int relativeGameID = Integer.parseInt(params[0]);
         int gameID = getGameIDFromRelative(relativeGameID);
         ChessGame.TeamColor teamColor = switch (params[1].toUpperCase()) {
@@ -126,7 +126,7 @@ public class UIHandler extends Handler {
             );
         } else {
             try {
-                return gamesSet.gameIDAtIndex(relativeGameID);
+                return gamesSet.gameIDAtIndex(relativeGameID - 1);
             } catch (ArrayIndexOutOfBoundsException e) {
                 throw new ClientException(
                         "That number was not in the list."
