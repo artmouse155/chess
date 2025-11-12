@@ -38,8 +38,6 @@ public class ChessGameClient extends Client {
     private final JoinType joinType;
     private final int gameID;
 
-    private List<List<Tile>> printGrid = new ArrayList<List<Tile>>();
-
     private ChessBoard chessBoard;
 
     private final List<Tile> letters = List.of(
@@ -70,17 +68,23 @@ public class ChessGameClient extends Client {
     public void run() {
         System.out.println("THIS IS THE CHESS GAME CLIENT. YOU ARE ON TEAM " + joinType.toString());
 
-
         chessBoard = new ChessBoard();
         chessBoard.resetBoard();
 
-        printGrid.add(letters);
+        displayBoard(chessBoard, (joinType == JoinType.BLACK));
+    }
+
+    private void displayBoard(ChessBoard board, boolean reversed) {
+        List<List<Tile>> printGrid = new ArrayList<List<Tile>>();
+
+
+        printGrid.add(reversed ? letters.reversed() : letters);
 
 
         var bgColor = WHITE_BG;
 
         for (int row = 1; row <= 8; row++) {
-            var tileRow = new ArrayList<Tile>();
+            List<Tile> tileRow = new ArrayList<>();
 
             final var tileBorder = new Tile(
                     String.valueOf(row),
@@ -101,8 +105,17 @@ public class ChessGameClient extends Client {
                         case BLACK -> BLACK_PIECE_COLOR;
                     };
 
+                    String displayString = switch (piece.getPieceType()) {
+                        case KING -> "K";
+                        case QUEEN -> "Q";
+                        case BISHOP -> "B";
+                        case KNIGHT -> "N";
+                        case ROOK -> "R";
+                        case PAWN -> "P";
+                    };
+
                     tileRow.add(new Tile(
-                            piece.getPieceType().toString(),
+                            displayString,
                             bgColor,
                             pieceColor
                     ));
@@ -120,23 +133,32 @@ public class ChessGameClient extends Client {
             bgColor = (bgColor.equals(WHITE_BG)) ? BLACK_BG : WHITE_BG;
 
             tileRow.add(tileBorder);
+
+            if (reversed) {
+                tileRow = tileRow.reversed();
+            }
+
             printGrid.add(tileRow);
         }
 
-        printGrid.add(letters);
+        printGrid.add(reversed ? letters.reversed() : letters);
 
-        render();
+        if (reversed) {
+            printGrid = printGrid.reversed();
+        }
+
+        renderPrintGrid(printGrid);
     }
 
-    private void render() {
+    private void renderPrintGrid(List<List<Tile>> printGrid) {
         for (final var row : printGrid) {
             for (final var tile : row) {
                 System.out.printf("%s%s%s%s%s",
                         tile.bgColor,
-                        TILE_PADDING,
                         tile.textColor,
                         TILE_PADDING,
-                        tile.body);
+                        tile.body,
+                        TILE_PADDING);
             }
             System.out.printf("%s%s%n", RESET_BG_COLOR, RESET_TEXT_COLOR);
         }
