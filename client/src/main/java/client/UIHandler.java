@@ -21,6 +21,8 @@ public class UIHandler extends Handler {
 
     private final String PLAYER_COLOR = "B|W|BLACK|WHITE";
 
+    private String username = "";
+
     public UIHandler(String url) {
         super(url);
     }
@@ -40,14 +42,16 @@ public class UIHandler extends Handler {
         validateArgs(params, "login <username> <password>\n", STRING_128, STRING_128);
         LoginRequest loginRequest = new LoginRequest(params[0], params[1]);
         server.login(loginRequest);
-        return String.format("Login successful. Welcome, %s!\n", server.getUsername());
+        username = params[0];
+        return String.format("Login successful. Welcome, %s!\n", username);
     }
 
     public String register(String... params) throws ClientException {
         validateArgs(params, "register <email> <username> <password>\n", STRING_128, STRING_128, STRING_128);
         UserData request = new UserData(params[1], params[2], params[0]);
         server.register(request);
-        return String.format("Registration successful. Welcome, %s!\n", server.getUsername());
+        username = params[1];
+        return String.format("Registration successful. Welcome, %s!\n", username);
     }
 
     public String logout(String... params) throws ClientException {
@@ -134,4 +138,9 @@ public class UIHandler extends Handler {
             }
         }
     }
+
+    public String getUsername() {
+        return username;
+    }
+
 }

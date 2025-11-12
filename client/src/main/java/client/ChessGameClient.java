@@ -53,12 +53,12 @@ public class ChessGameClient extends Client {
             new Tile(" ", BORDER_BG_COLOR, BORDER_TEXT_COLOR)
     );
 
-    public ChessGameClient(JoinType joinType, AuthData authData, int gameID) throws ClientException {
+    public ChessGameClient(JoinType joinType, String authToken, int gameID) throws ClientException {
         this.joinType = joinType;
         this.gameID = gameID;
 
         // TODO: Update with WebSocket code for phase six. This is a dummy function that pretends to call the server to see if you are authenticated.
-        if (Objects.equals(authData.authToken(), "")) {
+        if (Objects.equals(authToken, "")) {
             throw new ClientException("Bad Authentication");
         }
 

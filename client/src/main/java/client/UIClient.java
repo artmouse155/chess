@@ -20,7 +20,7 @@ public class UIClient extends Client {
 
     @Override
     public void run() {
-        System.out.println("Welcome to Chess.");
+        System.out.println("Welcome to Chess!");
         System.out.print(uiHandler.help());
 
         Scanner scanner = new Scanner(System.in);

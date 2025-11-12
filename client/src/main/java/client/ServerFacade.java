@@ -12,7 +12,7 @@ public class ServerFacade {
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final String serverUrl;
-    private AuthData authData;
+    private String authToken;
 
     private AuthState authState;
     private GamesList gamesList = null;
@@ -24,7 +24,7 @@ public class ServerFacade {
 
     public ServerFacade(String url) {
         serverUrl = url;
-        authData = AuthData.empty();
+        authToken = "";
         authState = AuthState.UNAUTHENTICATED;
     }
 
@@ -36,21 +36,19 @@ public class ServerFacade {
         return authState;
     }
 
-    public String getUsername() {
-        return authData.username();
-    }
-
     public void register(UserData userData) throws ClientException {
         var request = buildRequest("POST", "/user", userData);
         var response = sendRequest(request);
-        authData = handleResponse(response, AuthData.class);
+        var authData = handleResponse(response, AuthData.class);
+        authToken = authData.authToken();
         authState = AuthState.AUTHENTICATED;
     }
 
     public void login(LoginRequest loginRequest) throws ClientException {
         var request = buildRequest("POST", "/session", loginRequest);
         var response = sendRequest(request);
-        authData = handleResponse(response, AuthData.class);
+        var authData = handleResponse(response, AuthData.class);
+        authToken = authData.authToken();
         authState = AuthState.AUTHENTICATED;
     }
 
@@ -58,7 +56,7 @@ public class ServerFacade {
         var request = buildRequest("DELETE", "/session", null);
         var response = sendRequest(request);
         handleResponse(response, EmptyResponse.class);
-        authData = AuthData.empty();
+        authToken = "";
         authState = AuthState.UNAUTHENTICATED;
     }
 
@@ -82,7 +80,7 @@ public class ServerFacade {
     }
 
     public ChessGameClient newChessGameClient(ChessGameClient.JoinType joinType, int gameID) throws ClientException {
-        return new ChessGameClient(joinType, authData, gameID);
+        return new ChessGameClient(joinType, authToken, gameID);
     }
 
     public GamesList getCachedGamesSet() {
@@ -94,7 +92,7 @@ public class ServerFacade {
                 .uri(URI.create(serverUrl + path))
                 .method(method, makeRequestBody(body));
         if (authState == AuthState.AUTHENTICATED) {
-            request.setHeader("authorization", authData.authToken());
+            request.setHeader("authorization", authToken);
         }
         if (body != null) {
             request.setHeader("Content-Type", "application/json");

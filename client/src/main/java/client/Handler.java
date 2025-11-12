@@ -34,10 +34,5 @@ public class Handler {
     public ServerFacade.AuthState getAuthState() {
         return server.getAuthState();
     }
-
-    public String getUsername() {
-        return server.getUsername();
-    }
-
-
+    
 }
