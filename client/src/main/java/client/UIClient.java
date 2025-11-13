@@ -79,12 +79,14 @@ public class UIClient extends Client {
                     case "list" -> uiHandler::listGame;
                     case "play" -> uiHandler::playGame;
                     case "watch" -> uiHandler::observeGame;
+                    case "help" -> uiHandler::help;
                     default -> uiHandler::help;
                 };
                 case UNAUTHENTICATED -> switch (cmd) {
                     case "login" -> uiHandler::login;
                     case "register" -> uiHandler::register;
                     case "quit" -> uiHandler::quit;
+                    case "help" -> uiHandler::help;
                     default -> uiHandler::help;
                 };
             };

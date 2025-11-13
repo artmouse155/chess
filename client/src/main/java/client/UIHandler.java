@@ -11,12 +11,14 @@ public class UIHandler extends Handler {
             watch <game id>          | Observe a game
             create <name>            | Create new chess game with specified name
             logout                   | Log out
+            help                     | See list of commands
             """;
 
     private final String unauthHelp = """
             login <username> <password>             | Log in existing user
             register <email> <username> <password>  | Create new user
             quit                                    | Quit application
+            help                                    | See list of commands
             """;
 
     private static final String PLAYER_COLOR = "B|W|BLACK|WHITE";
