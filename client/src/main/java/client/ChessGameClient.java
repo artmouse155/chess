@@ -88,7 +88,7 @@ public class ChessGameClient extends Client {
             List<Tile> tileRow = new ArrayList<>();
 
             final var tileBorder = new Tile(
-                    String.valueOf(row),
+                    String.valueOf(9 - row),
                     BORDER_BG_COLOR,
                     BORDER_TEXT_COLOR
             );
@@ -98,7 +98,7 @@ public class ChessGameClient extends Client {
             for (int col = 1; col <= 8; col++) {
 
                 // Changed draw direction, so we need to invert row and col
-                var piecePosition = new ChessPosition(9 - row, 9 - col);
+                var piecePosition = new ChessPosition(9 - row, col);
 
                 var piece = chessBoard.getPiece(piecePosition);
 
