@@ -31,6 +31,6 @@ public class ClientException extends Exception {
     }
 
     public String getHelp() {
-        return help;
+        return (help == "") ? "" : "Expected: " + help;
     }
 }

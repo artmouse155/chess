@@ -57,7 +57,7 @@ public class UIClient extends Client {
 
     @Override
     protected String formatError(ClientException ex) {
-        return String.format("%s%s%sExpected: %s", ERROR_FORMAT, ex.getMessage(), HELP_FORMAT, ex.getHelp());
+        return String.format("%s%s%s%s", ERROR_FORMAT, ex.getMessage(), HELP_FORMAT, ex.getHelp());
     }
 
 
