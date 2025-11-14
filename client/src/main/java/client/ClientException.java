@@ -24,7 +24,7 @@ public class ClientException extends Exception {
             case 400 -> "Bad request. Check your input formatting.\n";
             case 401 -> "Unauthorized\n";
             case 403 -> "Already taken.\n";
-            case 500 -> "The server encountered an unexpected error. Try again later.";
+            case 500 -> "The server encountered an unexpected error. Try again later.\n";
             default -> "An unexpected error occurred.\n";
         };
         return new ClientException(message);

@@ -12,6 +12,8 @@ public class UIClient extends Client {
     private static final String RESET_ALL = RESET_BG_COLOR + RESET_TEXT_COLOR + RESET_TEXT_BOLD_FAINT;
     private static final String APP_TITLE_FORMAT = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK;
     private static final String USERNAME_FORMAT = SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_WHITE;
+    private static final String ERROR_FORMAT = SET_TEXT_COLOR_RED;
+    private static final String HELP_FORMAT = SET_TEXT_COLOR_BLUE;
 
 
     interface TerminalFunction {
@@ -55,7 +57,7 @@ public class UIClient extends Client {
 
     @Override
     protected String formatError(ClientException ex) {
-        return String.format("%s%s", ex.getMessage(), ex.getHelp());
+        return String.format("%s%s%sExpected: %s", ERROR_FORMAT, ex.getMessage(), HELP_FORMAT, ex.getHelp());
     }
 
 
@@ -79,14 +81,14 @@ public class UIClient extends Client {
                     case "list" -> uiHandler::listGame;
                     case "play" -> uiHandler::playGame;
                     case "watch" -> uiHandler::observeGame;
-                    case "help" -> uiHandler::help;
+                    case "" -> (String... p) -> "";
                     default -> uiHandler::help;
                 };
                 case UNAUTHENTICATED -> switch (cmd) {
                     case "login" -> uiHandler::login;
                     case "register" -> uiHandler::register;
                     case "quit" -> uiHandler::quit;
-                    case "help" -> uiHandler::help;
+                    case "" -> (String... p) -> "";
                     default -> uiHandler::help;
                 };
             };

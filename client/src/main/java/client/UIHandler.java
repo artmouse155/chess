@@ -87,7 +87,7 @@ public class UIHandler extends Handler {
     }
 
     public String playGame(String... params) throws ClientException {
-        validateArgs(params, "play <game id> <b|w>", POSITIVE_INTEGER, PLAYER_COLOR);
+        validateArgs(params, "play <game id> <b|w>\n", POSITIVE_INTEGER, PLAYER_COLOR);
         int relativeGameID = Integer.parseInt(params[0]);
         int gameID = getGameIDFromRelative(relativeGameID);
         ChessGame.TeamColor teamColor = switch (params[1].toUpperCase()) {
@@ -108,7 +108,7 @@ public class UIHandler extends Handler {
     }
 
     public String observeGame(String... params) throws ClientException {
-        validateArgs(params, "watch <game id>", POSITIVE_INTEGER);
+        validateArgs(params, "watch <game id>\n", POSITIVE_INTEGER);
         int relativeGameID = Integer.parseInt(params[0]);
         int gameID = getGameIDFromRelative(relativeGameID);
         var chessGameClient = server.newChessGameClient(ChessGameClient.JoinType.OBSERVER, gameID);
