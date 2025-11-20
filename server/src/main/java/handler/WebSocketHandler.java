@@ -6,6 +6,8 @@ import handler.exception.InternalServerErrorException;
 import handler.exception.ResponseException;
 import model.AuthData;
 import service.WebSocketService;
+import websocket.messages.LoadGameMessage;
+import websocket.messages.NotificationMessage;
 import websocket.messages.ServerMessage;
 
 public class WebSocketHandler {
@@ -27,10 +29,10 @@ public class WebSocketHandler {
     public ServerMessage connect(String authtoken, int gameID) throws ResponseException {
         try {
             var chessGame = wsService.connect(authtoken, gameID);
+            return new LoadGameMessage(chessGame);
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e.getMessage());
         }
-        return new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME);
     }
 
     public ServerMessage makeMove(ChessMove move) throws ResponseException {
@@ -46,6 +48,6 @@ public class WebSocketHandler {
     }
 
     public ServerMessage echo(String message) throws ResponseException {
-        return new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION, message);
+        return new NotificationMessage(message);
     }
 }

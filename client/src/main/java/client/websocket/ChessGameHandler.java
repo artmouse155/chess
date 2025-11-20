@@ -1,12 +1,16 @@
 package client.websocket;
 
 import chess.ChessBoard;
+import chess.ChessGame;
 import client.ClientException;
 import client.Handler;
 import client.painter.BoardPainter;
 import com.google.gson.Gson;
 import model.AuthData;
 import websocket.commands.UserGameCommand;
+import websocket.messages.ErrorMessage;
+import websocket.messages.LoadGameMessage;
+import websocket.messages.NotificationMessage;
 import websocket.messages.ServerMessage;
 
 import java.util.function.Consumer;
@@ -99,14 +103,25 @@ public class ChessGameHandler extends Handler {
         return "Message sent\n";
     }
 
+    private String formatServerLoadGame(ChessGame chessGame) {
+        return String.format("%s", redraw());
+    }
+
+    private String formatServerError(String serverError) {
+        return String.format("Error: %s", serverError);
+    }
+
+    private String formatServerNotification(String serverNotification) {
+        return String.format("INFO: %s", serverNotification);
+    }
+
     public void formatWebSocketResponse(String message) {
         var serializer = new Gson();
         var res = serializer.fromJson(message, ServerMessage.class);
-        String body = res.getMessageBody();
         String output = switch (res.getServerMessageType()) {
-            case LOAD_GAME -> "Game loaded!";
-            case ERROR -> String.format("%s%s", "<RED> ", body);
-            case NOTIFICATION -> String.format("Notification: %s", body);
+            case LOAD_GAME -> formatServerLoadGame(serializer.fromJson(message, LoadGameMessage.class).getChessGame());
+            case ERROR -> formatServerError(serializer.fromJson(message, ErrorMessage.class).getErrorMessage());
+            case NOTIFICATION -> formatServerNotification(serializer.fromJson(message, NotificationMessage.class).getMessage());
         };
         onWebSocketMessage.accept(output);
     }
