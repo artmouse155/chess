@@ -40,4 +40,12 @@ public class WebSocketFacade extends Endpoint {
     // This method must be overridden, but we don't have to do anything with it
     public void onOpen(Session session, EndpointConfig endpointConfig) {
     }
+
+    public void close() throws ClientException {
+        try {
+            session.close();
+        } catch (IOException e) {
+            throw new ClientException(String.format("Websocket Error: %s", e.getMessage()));
+        }
+    }
 }

@@ -33,8 +33,9 @@ public class ChessGameHandler extends Handler {
         return "resign\n";
     }
 
-    public String leave(String... params) {
-        return "leave\n";
+    public String leave(String... params) throws ClientException {
+        webSocketFacade.close();
+        return "leave";
     }
 
     public String echo(String... params) throws ClientException {

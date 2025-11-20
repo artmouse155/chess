@@ -80,7 +80,7 @@ public class ChessGameClient extends Client {
             printPrompt();
             String line = scanner.nextLine();
             result = eval(line);
-            if (result.equals("quit")) {
+            if (result.equals("leave")) {
                 return;
             }
 
