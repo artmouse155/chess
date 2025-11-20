@@ -43,7 +43,7 @@ public class WebSocketFacade extends Endpoint {
     }
 
     public void sendCommand(UserGameCommand.CommandType type, String body) throws ClientException {
-        send(new UserGameCommand(type, authtoken, gameID).toString());
+        send(new UserGameCommand(type, authtoken, gameID, body).toString());
     }
 
     // This method must be overridden, but we don't have to do anything with it

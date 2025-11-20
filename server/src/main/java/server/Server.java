@@ -1,8 +1,11 @@
 package server;
 
+import chess.ChessMove;
+import chess.ChessPosition;
 import com.google.gson.Gson;
 
 import handler.Handler;
+import handler.WebSocketHandler;
 import handler.exception.ResponseException;
 
 import io.javalin.*;
@@ -10,12 +13,17 @@ import io.javalin.http.Context;
 
 import io.javalin.websocket.WsMessageContext;
 import model.*;
+import websocket.commands.UserGameCommand;
+import websocket.messages.ServerMessage;
+
+import java.util.function.Function;
 
 
 public class Server {
 
     private final Javalin server;
     private Handler handler;
+    private final WebSocketHandler wsHandler;
     private final String authKey = "authorization";
 
     public Server() {
@@ -43,6 +51,7 @@ public class Server {
         server.exception(ResponseException.class, this::exceptionHandler);
 
         handler = new Handler(true);
+        wsHandler = new WebSocketHandler();
     }
 
     public Server(boolean doSql) {
@@ -112,7 +121,22 @@ public class Server {
 
     public void webSocketMessage(WsMessageContext ctx) throws ResponseException {
         var serializer = new Gson();
-        ctx.send("WebSocket response:" + ctx.message());
+        var req = serializer.fromJson(ctx.message(), UserGameCommand.class);
+        String authtoken = req.getAuthToken();
+        int gameID = req.getGameID();
+
+        var authData = wsHandler.handleAuth(authtoken, gameID);
+        String username = authData.username();
+        String body = req.getCommandBody();
+
+        ServerMessage serverMessage = switch (req.getCommandType()) {
+            case CONNECT -> wsHandler.connect(username, gameID);
+            case MAKE_MOVE -> wsHandler.makeMove(new ChessMove(new ChessPosition(0, 0), new ChessPosition(0, 0)));
+            case LEAVE -> wsHandler.leave(username, gameID);
+            case RESIGN -> wsHandler.resign(username, gameID);
+            case ECHO -> wsHandler.echo(body);
+        };
+        ctx.send(serverMessage.toString());
     }
 
     private void exceptionHandler(ResponseException ex, Context ctx) {

@@ -1,8 +1,10 @@
 package client;
 
 import client.websocket.WebSocketFacade;
+import com.google.gson.Gson;
 import model.AuthData;
 import websocket.commands.UserGameCommand;
+import websocket.messages.ServerMessage;
 
 import java.util.function.Consumer;
 
@@ -55,10 +57,6 @@ public class ChessGameHandler extends Handler {
 
     @Override
     public String help(String... params) {
-        return "Observer help\n";
-    }
-
-    public String playerHelp(String... params) {
         return switch (joinType) {
             case BLACK, WHITE -> playerHelp;
             case OBSERVER -> observerHelp;
@@ -93,7 +91,15 @@ public class ChessGameHandler extends Handler {
     }
 
     public void formatWebSocketResponse(String message) {
-        onWebSocketMessage.accept(message);
+        var serializer = new Gson();
+        var res = serializer.fromJson(message, ServerMessage.class);
+        String body = res.getMessageBody();
+        String output = switch (res.getServerMessageType()) {
+            case LOAD_GAME -> "Game loaded!";
+            case ERROR -> String.format("%s%s", "<RED> ", body);
+            case NOTIFICATION -> String.format("Notification: %s", body);
+        };
+        onWebSocketMessage.accept(output);
     }
 
 }
