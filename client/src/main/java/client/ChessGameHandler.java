@@ -3,13 +3,14 @@ package client;
 import client.websocket.WsEchoClient;
 
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class ChessGameHandler extends Handler {
 
     private final WsEchoClient wsEchoClient;
 
-    public ChessGameHandler(String url, String authToken) throws Exception {
-        wsEchoClient = new WsEchoClient(url, authToken);
+    public ChessGameHandler(String url, String authToken, Consumer<String> onWebSocketMessage) throws Exception {
+        wsEchoClient = new WsEchoClient(url, authToken, onWebSocketMessage);
     }
 
     @Override

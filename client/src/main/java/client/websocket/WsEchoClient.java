@@ -10,18 +10,21 @@ import jakarta.websocket.WebSocketContainer;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.function.Consumer;
 
 public class WsEchoClient extends Endpoint {
     public Session session;
 
-    public WsEchoClient(String url, String authtoken) throws Exception {
+    public WsEchoClient(String url, String authtoken, Consumer<String> onMessage) throws Exception {
         URI uri = new URI(url);
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         session = container.connectToServer(this, uri);
 
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
-            public void onMessage(String message) {
-                System.out.println(message);
+
+            @Override
+            public void onMessage(String s) {
+                onMessage.accept(s);
             }
         });
     }

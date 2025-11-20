@@ -1,10 +1,7 @@
 package client;
 
 import chess.ChessBoard;
-import chess.ChessGame;
 import chess.ChessPosition;
-import client.websocket.WsEchoClient;
-import model.AuthData;
 
 import java.util.*;
 
@@ -56,7 +53,7 @@ public class ChessGameClient extends Client {
     public ChessGameClient(JoinType joinType, String authToken, int gameID) throws Exception {
         this.joinType = joinType;
         this.gameID = gameID;
-        chessGameHandler = new ChessGameHandler(String.format("ws://localhost:8080/unauthGame/%d", gameID), authToken);
+        chessGameHandler = new ChessGameHandler(String.format("ws://localhost:8080/unauthGame/%d", gameID), authToken, this::onWebSocketMessage);
 
         // TODO: Update with WebSocket code for phase six. This is a dummy function that pretends to call the server to see if you are authenticated.
         if (Objects.equals(authToken, "")) {
@@ -188,7 +185,7 @@ public class ChessGameClient extends Client {
     protected void printPrompt() {
         System.out.print("Chess Game > ");
     }
-    
+
     @Override
     protected String eval(String input) {
         try {
@@ -217,5 +214,10 @@ public class ChessGameClient extends Client {
         } catch (ClientException ex) {
             return formatError(ex);
         }
+    }
+
+    private void onWebSocketMessage(String message) {
+        System.out.printf("%n%s%n", message);
+        printPrompt();
     }
 }
