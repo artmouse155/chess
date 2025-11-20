@@ -31,7 +31,7 @@ public class Server {
         server.get("game", this::listGames);
         server.post("game", this::createGame);
         server.put("game", this::joinGame);
-        server.ws("unauthGame", ws -> {
+        server.ws("unauthGame/{gameID}", ws -> {
             ws.onConnect(ctx -> {
                 ctx.enableAutomaticPings();
                 System.out.println("Websocket connected");
@@ -112,7 +112,7 @@ public class Server {
 
     public void webSocketMessage(WsMessageContext ctx) throws ResponseException {
         var serializer = new Gson();
-        ctx.send("WebSocket response:" + ctx.message());
+        ctx.send("WebSocket response:" + ctx.message() + ctx.pathParam("gameID"));
     }
 
     private void exceptionHandler(ResponseException ex, Context ctx) {
