@@ -1,5 +1,6 @@
 package client;
 
+import client.websocket.ChessGameClient;
 import com.google.gson.Gson;
 import model.*;
 

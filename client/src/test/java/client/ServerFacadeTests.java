@@ -1,6 +1,7 @@
 package client;
 
 import chess.ChessGame;
+import client.websocket.ChessGameClient;
 import handler.exception.ResponseException;
 import model.*;
 import org.junit.jupiter.api.*;

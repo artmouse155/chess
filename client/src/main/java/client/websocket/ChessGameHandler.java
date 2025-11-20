@@ -1,6 +1,7 @@
-package client;
+package client.websocket;
 
-import client.websocket.WebSocketFacade;
+import client.ClientException;
+import client.Handler;
 import com.google.gson.Gson;
 import model.AuthData;
 import websocket.commands.UserGameCommand;

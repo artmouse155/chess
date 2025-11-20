@@ -1,6 +1,7 @@
 package client;
 
 import chess.ChessGame;
+import client.websocket.ChessGameClient;
 import model.*;
 
 public class UIHandler extends Handler {

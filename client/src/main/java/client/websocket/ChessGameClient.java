@@ -1,7 +1,10 @@
-package client;
+package client.websocket;
 
 import chess.ChessBoard;
 import chess.ChessPosition;
+import client.Client;
+import client.ClientException;
+import client.Handler;
 import model.AuthData;
 
 import java.util.*;
