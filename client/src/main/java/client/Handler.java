@@ -1,6 +1,6 @@
 package client;
 
-public class Handler {
+public abstract class Handler {
 
 
     protected static final String STRING = ".*";
@@ -30,5 +30,7 @@ public class Handler {
             }
         }
     }
+
+    public abstract String help(String... params);
 
 }

@@ -1,5 +1,6 @@
 package client.websocket;
 
+import client.ClientException;
 import jakarta.websocket.ContainerProvider;
 import jakarta.websocket.Endpoint;
 import jakarta.websocket.EndpointConfig;
@@ -21,13 +22,16 @@ public class WsEchoClient extends Endpoint {
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
             public void onMessage(String message) {
                 System.out.println(message);
-                System.out.println("\nEnter another message you want to echo:");
             }
         });
     }
 
-    public void send(String message) throws IOException {
-        session.getBasicRemote().sendText(message);
+    public void send(String message) throws ClientException {
+        try {
+            session.getBasicRemote().sendText(message);
+        } catch (IOException e) {
+            throw new ClientException(String.format("Websocket Error: %s", e.getMessage()));
+        }
     }
 
     // This method must be overridden, but we don't have to do anything with it

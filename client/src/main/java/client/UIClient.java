@@ -12,8 +12,6 @@ public class UIClient extends Client {
     private static final String RESET_ALL = RESET_BG_COLOR + RESET_TEXT_COLOR + RESET_TEXT_BOLD_FAINT;
     private static final String APP_TITLE_FORMAT = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK;
     private static final String USERNAME_FORMAT = SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_WHITE;
-    private static final String ERROR_FORMAT = SET_TEXT_COLOR_RED;
-    private static final String HELP_FORMAT = SET_TEXT_COLOR_BLUE;
 
     public UIClient(String serverUrl) {
         uiHandler = new UIHandler(serverUrl);
@@ -47,11 +45,6 @@ public class UIClient extends Client {
             case UNAUTHENTICATED -> String.format("%s ♕ 240 Chess ♕ %s> ", APP_TITLE_FORMAT, RESET_ALL);
         };
         System.out.print(prompt);
-    }
-
-    @Override
-    protected String formatError(ClientException ex) {
-        return String.format("%s%s%s%s", ERROR_FORMAT, ex.getMessage(), HELP_FORMAT, ex.getHelp());
     }
 
 

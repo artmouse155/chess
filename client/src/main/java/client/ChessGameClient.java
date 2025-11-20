@@ -6,10 +6,7 @@ import chess.ChessPosition;
 import client.websocket.WsEchoClient;
 import model.AuthData;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 import static ui.EscapeSequences.*;
 
@@ -60,7 +57,8 @@ public class ChessGameClient extends Client {
         this.joinType = joinType;
         this.gameID = gameID;
         chessGameHandler = new ChessGameHandler(String.format("ws://localhost:8080/unauthGame/%d", gameID), authToken);
-        // Update with WebSocket code for phase six. This is a dummy function that pretends to call the server to see if you are authenticated.
+
+        // TODO: Update with WebSocket code for phase six. This is a dummy function that pretends to call the server to see if you are authenticated.
         if (Objects.equals(authToken, "")) {
             throw new ClientException("Bad Authentication");
         }
@@ -76,6 +74,21 @@ public class ChessGameClient extends Client {
         chessBoard.resetBoard();
 
         displayBoard(chessBoard, (joinType == JoinType.BLACK));
+
+        System.out.print(chessGameHandler.help());
+
+        Scanner scanner = new Scanner(System.in);
+        var result = "";
+        while (true) {
+            printPrompt();
+            String line = scanner.nextLine();
+            result = eval(line);
+            if (result.equals("quit")) {
+                return;
+            }
+
+            System.out.print(result);
+        }
     }
 
     private void displayBoard(ChessBoard board, boolean reversed) {
@@ -173,16 +186,36 @@ public class ChessGameClient extends Client {
 
     @Override
     protected void printPrompt() {
-
+        System.out.print("Chess Game > ");
     }
-
-    @Override
-    protected String formatError(ClientException ex) {
-        return "";
-    }
-
+    
     @Override
     protected String eval(String input) {
-        return "";
+        try {
+            String[] tokens = input.split(" +");
+            String cmd;
+            String[] params;
+            if ((tokens.length > 0)) {
+                cmd = tokens[0].toLowerCase();
+                params = Arrays.copyOfRange(tokens, 1, tokens.length);
+            } else {
+                cmd = "";
+                params = new String[]{};
+            }
+            Handler.TerminalFunction terminalFunction =
+                    switch (cmd) {
+                        case "m" -> chessGameHandler::makeMove;
+                        case "h" -> chessGameHandler::highlight;
+                        case "redraw" -> chessGameHandler::redraw;
+                        case "resign" -> chessGameHandler::resign;
+                        case "leave" -> chessGameHandler::leave;
+                        case "echo" -> chessGameHandler::echo;
+                        case "" -> (String... p) -> "";
+                        default -> chessGameHandler::help;
+                    };
+            return terminalFunction.evaluate(params);
+        } catch (ClientException ex) {
+            return formatError(ex);
+        }
     }
 }
