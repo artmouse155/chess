@@ -3,11 +3,13 @@ package client;
 import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessPosition;
+import client.websocket.WsEchoClient;
 import model.AuthData;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
 
@@ -56,6 +58,17 @@ public class ChessGameClient extends Client {
     public ChessGameClient(JoinType joinType, String authToken, int gameID) throws ClientException {
         this.joinType = joinType;
         this.gameID = gameID;
+
+        try {
+            var wsClient = new WsEchoClient();
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter a message you want to echo:");
+            while (true) {
+                wsClient.send(scanner.nextLine());
+            }
+        } catch (Exception e) {
+            System.out.printf("Websocket failed. Error:%s%n", e.getMessage());
+        }
 
         // Update with WebSocket code for phase six. This is a dummy function that pretends to call the server to see if you are authenticated.
         if (Objects.equals(authToken, "")) {
