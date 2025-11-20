@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.function.Consumer;
 
-public class WsEchoClient extends Endpoint {
+public class WebSocketFacade extends Endpoint {
     public Session session;
 
-    public WsEchoClient(String url, String authtoken, Consumer<String> onMessage) throws Exception {
+    public WebSocketFacade(String url, String authtoken, Consumer<String> onMessage) throws Exception {
         URI uri = new URI(url);
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         session = container.connectToServer(this, uri);

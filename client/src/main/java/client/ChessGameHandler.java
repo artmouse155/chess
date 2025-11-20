@@ -1,16 +1,15 @@
 package client;
 
-import client.websocket.WsEchoClient;
+import client.websocket.WebSocketFacade;
 
-import java.util.Scanner;
 import java.util.function.Consumer;
 
 public class ChessGameHandler extends Handler {
 
-    private final WsEchoClient wsEchoClient;
+    private final WebSocketFacade webSocketFacade;
 
     public ChessGameHandler(String url, String authToken, Consumer<String> onWebSocketMessage) throws Exception {
-        wsEchoClient = new WsEchoClient(url, authToken, onWebSocketMessage);
+        webSocketFacade = new WebSocketFacade(url, authToken, onWebSocketMessage);
     }
 
     @Override
@@ -40,7 +39,7 @@ public class ChessGameHandler extends Handler {
 
     public String echo(String... params) throws ClientException {
         validateArgs(params, "echo <msg>\n", STRING);
-        wsEchoClient.send(params[0]);
+        webSocketFacade.send(params[0]);
         return "Message sent\n";
     }
 }
