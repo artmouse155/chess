@@ -31,7 +31,7 @@ public class ChessGameClient extends Client {
 
 
     public ChessGameClient(JoinType joinType, String gameName, AuthData authData, int gameID) throws Exception {
-        chessGameHandler = new ChessGameHandler("ws://localhost:8080/unauthGame", joinType, gameName, authData, gameID,
+        chessGameHandler = new ChessGameHandler("ws://localhost:8080/ws", joinType, gameName, authData, gameID,
                 this::onWebSocketMessage);
     }
 
@@ -52,7 +52,7 @@ public class ChessGameClient extends Client {
                 chessGameHandler.getUserName(),
                 joinMessage
         );
-        
+
         System.out.print(chessGameHandler.help());
 
         Scanner scanner = new Scanner(System.in);

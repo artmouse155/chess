@@ -39,7 +39,8 @@ public class Server {
         server.get("game", this::listGames);
         server.post("game", this::createGame);
         server.put("game", this::joinGame);
-        server.ws("unauthGame", ws -> {
+
+        server.ws("ws", ws -> {
             ws.onConnect(ctx -> {
                 ctx.enableAutomaticPings();
                 System.out.println("Websocket connected");
