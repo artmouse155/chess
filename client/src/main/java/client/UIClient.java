@@ -15,12 +15,6 @@ public class UIClient extends Client {
     private static final String ERROR_FORMAT = SET_TEXT_COLOR_RED;
     private static final String HELP_FORMAT = SET_TEXT_COLOR_BLUE;
 
-
-    interface TerminalFunction {
-
-        String evaluate(String... params) throws ClientException;
-    }
-
     public UIClient(String serverUrl) {
         uiHandler = new UIHandler(serverUrl);
 
@@ -74,7 +68,7 @@ public class UIClient extends Client {
                 cmd = "";
                 params = new String[]{};
             }
-            TerminalFunction terminalFunction = switch (uiHandler.getAuthState()) {
+            Handler.TerminalFunction terminalFunction = switch (uiHandler.getAuthState()) {
                 case AUTHENTICATED -> switch (cmd) {
                     case "logout" -> uiHandler::logout;
                     case "create" -> uiHandler::createGame;

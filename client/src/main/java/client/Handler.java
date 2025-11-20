@@ -2,14 +2,14 @@ package client;
 
 public class Handler {
 
-    protected final ServerFacade server;
 
     protected static final String STRING = ".*";
     protected static final String STRING_128 = ".{0,128}";
     protected static final String POSITIVE_INTEGER = "\\d+";
 
-    public Handler(String url) {
-        server = new ServerFacade(url);
+    public interface TerminalFunction {
+
+        String evaluate(String... params) throws ClientException;
     }
 
     protected void validateArgs(String[] args, String expectedMsg, String... regexes) throws ClientException {
@@ -29,10 +29,6 @@ public class Handler {
                 );
             }
         }
-    }
-
-    public ServerFacade.AuthState getAuthState() {
-        return server.getAuthState();
     }
 
 }

@@ -59,7 +59,6 @@ public class ChessGameClient extends Client {
     public ChessGameClient(JoinType joinType, String authToken, int gameID) throws Exception {
         this.joinType = joinType;
         this.gameID = gameID;
-
         chessGameHandler = new ChessGameHandler(String.format("ws://localhost:8080/unauthGame/%d", gameID), authToken);
         // Update with WebSocket code for phase six. This is a dummy function that pretends to call the server to see if you are authenticated.
         if (Objects.equals(authToken, "")) {

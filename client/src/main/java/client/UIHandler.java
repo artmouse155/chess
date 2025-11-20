@@ -5,6 +5,8 @@ import model.*;
 
 public class UIHandler extends Handler {
 
+    protected final ServerFacade server;
+
     private final String authHelp = """
             list                     | List current chess games
             play <game id> <b|w>     | Join a game as black or white
@@ -26,7 +28,7 @@ public class UIHandler extends Handler {
     private String username = "";
 
     public UIHandler(String url) {
-        super(url);
+        server = new ServerFacade(url);
     }
 
     public String help(String... params) {
@@ -143,6 +145,10 @@ public class UIHandler extends Handler {
 
     public String getUsername() {
         return username;
+    }
+
+    public ServerFacade.AuthState getAuthState() {
+        return server.getAuthState();
     }
 
 }
