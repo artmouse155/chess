@@ -1,6 +1,7 @@
 package client;
 
 import client.websocket.WebSocketFacade;
+import websocket.commands.UserGameCommand;
 
 import java.util.function.Consumer;
 
@@ -28,10 +29,10 @@ public class ChessGameHandler extends Handler {
 
     private final ChessGameClient.JoinType joinType;
 
-    public ChessGameHandler(String url, ChessGameClient.JoinType joinType, String authToken, Consumer<String> onWebSocketMessage) throws Exception {
+    public ChessGameHandler(String url, ChessGameClient.JoinType joinType, String authToken, int gameID, Consumer<String> onWebSocketMessage) throws Exception {
         this.joinType = joinType;
         this.onWebSocketMessage = onWebSocketMessage;
-        webSocketFacade = new WebSocketFacade(url, authToken, this::formatWebSocketResponse);
+        webSocketFacade = new WebSocketFacade(url, authToken, gameID, this::formatWebSocketResponse);
     }
 
     public ChessGameClient.JoinType getJoinType() {
@@ -73,6 +74,7 @@ public class ChessGameHandler extends Handler {
 
     public String echo(String... params) throws ClientException {
         validateArgs(params, "echo <msg>\n", STRING);
+        webSocketFacade.sendCommand(UserGameCommand.CommandType.ECHO);
         webSocketFacade.send(params[0]);
         return "Message sent\n";
     }
@@ -80,4 +82,5 @@ public class ChessGameHandler extends Handler {
     public void formatWebSocketResponse(String message) {
         onWebSocketMessage.accept(message);
     }
+
 }
