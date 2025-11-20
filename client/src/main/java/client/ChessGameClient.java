@@ -2,6 +2,7 @@ package client;
 
 import chess.ChessBoard;
 import chess.ChessPosition;
+import model.AuthData;
 
 import java.util.*;
 
@@ -31,7 +32,6 @@ public class ChessGameClient extends Client {
     private record Tile(String body, String bgColor, String textColor) {
     }
 
-    private final String gameName;
     private final ChessGameHandler chessGameHandler;
 
     private ChessBoard chessBoard;
@@ -49,15 +49,9 @@ public class ChessGameClient extends Client {
             new Tile(" ", BORDER_BG_COLOR, BORDER_TEXT_COLOR)
     );
 
-    public ChessGameClient(JoinType joinType, String gameName, String authToken, int gameID) throws Exception {
-        chessGameHandler = new ChessGameHandler("ws://localhost:8080/unauthGame", joinType, authToken, gameID,
+    public ChessGameClient(JoinType joinType, String gameName, AuthData authData, int gameID) throws Exception {
+        chessGameHandler = new ChessGameHandler("ws://localhost:8080/unauthGame", joinType, gameName, authData, gameID,
                 this::onWebSocketMessage);
-
-        // TODO: Update with WebSocket code for phase six. This is a dummy function that pretends to call the server to see if you are authenticated.
-        if (Objects.equals(authToken, "")) {
-            throw new ClientException("Bad Authentication");
-        }
-
     }
 
     @Override
@@ -182,6 +176,12 @@ public class ChessGameClient extends Client {
     @Override
     protected void printPrompt() {
         System.out.print("Chess Game > ");
+        String prompt = switch (chessGameHandler.getJoinType()) {
+            case WHITE, BLACK ->
+                    String.format("%s ♕ 240 Chess ♕ %s %s %s> ", APP_TITLE_FORMAT, USERNAME_FORMAT, chessGameHandler.getGameName(), RESET_ALL);
+            case OBSERVER -> String.format("%s ♕ 240 Chess ♕ %s> ", APP_TITLE_FORMAT, RESET_ALL);
+        };
+        System.out.print(prompt);
     }
 
     @Override

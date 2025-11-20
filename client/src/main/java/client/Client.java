@@ -9,6 +9,8 @@ public abstract class Client {
     protected static final String RESET_ALL = RESET_BG_COLOR + RESET_TEXT_COLOR + RESET_TEXT_BOLD_FAINT;
     private static final String ERROR_FORMAT = SET_TEXT_COLOR_RED;
     private static final String HELP_FORMAT = SET_TEXT_COLOR_BLUE;
+    protected static final String APP_TITLE_FORMAT = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK;
+    protected static final String USERNAME_FORMAT = SET_BG_COLOR_LIGHT_GREY + SET_TEXT_COLOR_WHITE;
 
 
     public abstract void run();

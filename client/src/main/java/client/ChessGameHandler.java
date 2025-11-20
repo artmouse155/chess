@@ -1,6 +1,7 @@
 package client;
 
 import client.websocket.WebSocketFacade;
+import model.AuthData;
 import websocket.commands.UserGameCommand;
 
 import java.util.function.Consumer;
@@ -28,15 +29,28 @@ public class ChessGameHandler extends Handler {
             """;
 
     private final ChessGameClient.JoinType joinType;
+    private final String gameName;
+    private final String username;
 
-    public ChessGameHandler(String url, ChessGameClient.JoinType joinType, String authToken, int gameID, Consumer<String> onWebSocketMessage) throws Exception {
+    public ChessGameHandler(String url, ChessGameClient.JoinType joinType, String gameName, AuthData authData, int gameID,
+                            Consumer<String> onWebSocketMessage) throws Exception {
         this.joinType = joinType;
+        this.gameName = gameName;
+        this.username = authData.username();
         this.onWebSocketMessage = onWebSocketMessage;
-        webSocketFacade = new WebSocketFacade(url, authToken, gameID, this::formatWebSocketResponse);
+        webSocketFacade = new WebSocketFacade(url, authData.authToken(), gameID, this::formatWebSocketResponse);
     }
 
     public ChessGameClient.JoinType getJoinType() {
         return joinType;
+    }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public String getUserName() {
+        return username;
     }
 
     @Override

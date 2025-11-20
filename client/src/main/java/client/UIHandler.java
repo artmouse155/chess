@@ -106,7 +106,7 @@ public class UIHandler extends Handler {
             case BLACK -> ChessGameClient.JoinType.BLACK;
         };
 
-        var chessGameClient = server.newChessGameClient(gameName, joinType, gameID);
+        var chessGameClient = server.newChessGameClient(username, gameName, joinType, gameID);
         chessGameClient.run();
         return "Chess game ended.\n";
     }
@@ -117,7 +117,7 @@ public class UIHandler extends Handler {
         var game = getGameFromRelative(relativeGameID);
         String gameName = game.gameName();
         int gameID = game.gameID();
-        var chessGameClient = server.newChessGameClient(gameName, ChessGameClient.JoinType.OBSERVER, gameID);
+        var chessGameClient = server.newChessGameClient(username, gameName, ChessGameClient.JoinType.OBSERVER, gameID);
         chessGameClient.run();
 
         return "Observation ended.\n";
