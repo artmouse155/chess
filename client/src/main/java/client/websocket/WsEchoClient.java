@@ -9,13 +9,12 @@ import jakarta.websocket.WebSocketContainer;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Scanner;
 
 public class WsEchoClient extends Endpoint {
     public Session session;
 
-    public WsEchoClient() throws Exception {
-        URI uri = new URI("ws://localhost:8080/ws");
+    public WsEchoClient(String url, String authtoken) throws Exception {
+        URI uri = new URI(url);
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         session = container.connectToServer(this, uri);
 

@@ -8,6 +8,7 @@ import handler.exception.ResponseException;
 import io.javalin.*;
 import io.javalin.http.Context;
 
+import io.javalin.websocket.WsMessageContext;
 import model.*;
 
 
@@ -30,15 +31,12 @@ public class Server {
         server.get("game", this::listGames);
         server.post("game", this::createGame);
         server.put("game", this::joinGame);
-
-        // Test code for WebSocket
-        server.get("/echo/{msg}", ctx -> ctx.result("HTTP response: " + ctx.pathParam("msg")));
-        server.ws("/ws", ws -> {
+        server.ws("unauthGame", ws -> {
             ws.onConnect(ctx -> {
                 ctx.enableAutomaticPings();
                 System.out.println("Websocket connected");
             });
-            ws.onMessage(ctx -> ctx.send("WebSocket response:" + ctx.message()));
+            ws.onMessage(this::webSocketMessage);
             ws.onClose(_ -> System.out.println("Websocket closed"));
         });
 
@@ -110,6 +108,11 @@ public class Server {
         }
         var res = handler.handleJoinGame(authData, req.playerColor(), req.gameID());
         ctx.result(res.toString());
+    }
+
+    public void webSocketMessage(WsMessageContext ctx) throws ResponseException {
+        var serializer = new Gson();
+        ctx.send("WebSocket response:" + ctx.message());
     }
 
     private void exceptionHandler(ResponseException ex, Context ctx) {

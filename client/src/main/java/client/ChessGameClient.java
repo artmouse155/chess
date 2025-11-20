@@ -60,7 +60,7 @@ public class ChessGameClient extends Client {
         this.gameID = gameID;
 
         try {
-            var wsClient = new WsEchoClient();
+            var wsClient = new WsEchoClient(String.format("ws://localhost:8080/unauthGame"), authToken);
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter a message you want to echo:");
             while (true) {
