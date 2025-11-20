@@ -14,9 +14,9 @@ import java.net.URI;
 import java.util.function.Consumer;
 
 public class WebSocketFacade extends Endpoint {
-    public Session session;
-    private String authtoken;
-    private int gameID;
+    public final Session session;
+    private final String authtoken;
+    private final int gameID;
 
     public WebSocketFacade(String url, String authtoken, int gameID, Consumer<String> onMessage) throws Exception {
         URI uri = new URI(url);
