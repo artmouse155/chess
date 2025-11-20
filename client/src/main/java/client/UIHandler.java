@@ -91,7 +91,9 @@ public class UIHandler extends Handler {
     public String playGame(String... params) throws ClientException {
         validateArgs(params, "play <game id> <b|w>\n", POSITIVE_INTEGER, PLAYER_COLOR);
         int relativeGameID = Integer.parseInt(params[0]);
-        int gameID = getGameIDFromRelative(relativeGameID);
+        var game = getGameFromRelative(relativeGameID);
+        String gameName = game.gameName();
+        int gameID = game.gameID();
         ChessGame.TeamColor teamColor = switch (params[1].toUpperCase()) {
             case "B", "BLACK" -> ChessGame.TeamColor.BLACK;
             case "W", "WHITE" -> ChessGame.TeamColor.WHITE;
@@ -104,7 +106,7 @@ public class UIHandler extends Handler {
             case BLACK -> ChessGameClient.JoinType.BLACK;
         };
 
-        var chessGameClient = server.newChessGameClient(joinType, gameID);
+        var chessGameClient = server.newChessGameClient(gameName, joinType, gameID);
         chessGameClient.run();
         return "Chess game ended.\n";
     }
@@ -112,8 +114,10 @@ public class UIHandler extends Handler {
     public String observeGame(String... params) throws ClientException {
         validateArgs(params, "watch <game id>\n", POSITIVE_INTEGER);
         int relativeGameID = Integer.parseInt(params[0]);
-        int gameID = getGameIDFromRelative(relativeGameID);
-        var chessGameClient = server.newChessGameClient(ChessGameClient.JoinType.OBSERVER, gameID);
+        var game = getGameFromRelative(relativeGameID);
+        String gameName = game.gameName();
+        int gameID = game.gameID();
+        var chessGameClient = server.newChessGameClient(gameName, ChessGameClient.JoinType.OBSERVER, gameID);
         chessGameClient.run();
 
         return "Observation ended.\n";
@@ -126,7 +130,7 @@ public class UIHandler extends Handler {
         return String.format("Game \"%s\" created.%n%s", params[0], listGame());
     }
 
-    private int getGameIDFromRelative(int relativeGameID) throws ClientException {
+    private GameDataStripped getGameFromRelative(int relativeGameID) throws ClientException {
         var gamesSet = server.getCachedGamesSet();
         if (gamesSet == null) {
             throw new ClientException(
@@ -134,7 +138,7 @@ public class UIHandler extends Handler {
             );
         } else {
             try {
-                return gamesSet.gameIDAtIndex(relativeGameID - 1);
+                return gamesSet.gameAtIndex(relativeGameID - 1);
             } catch (IndexOutOfBoundsException e) {
                 throw new ClientException(
                         "That number was not in the list.\n"

@@ -29,8 +29,8 @@ public record GamesList(List<GameDataStripped> games) {
     }
 
     // NOTE: ASSUMES INPUT IS 0-INDEXED
-    public int gameIDAtIndex(int index) {
-        return games.get(index).gameID();
+    public GameDataStripped gameAtIndex(int index) {
+        return games.get(index);
     }
 
 }

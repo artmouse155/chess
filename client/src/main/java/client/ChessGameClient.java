@@ -31,7 +31,7 @@ public class ChessGameClient extends Client {
     private record Tile(String body, String bgColor, String textColor) {
     }
 
-    private final int gameID;
+    private final String gameName;
     private final ChessGameHandler chessGameHandler;
 
     private ChessBoard chessBoard;
@@ -49,8 +49,7 @@ public class ChessGameClient extends Client {
             new Tile(" ", BORDER_BG_COLOR, BORDER_TEXT_COLOR)
     );
 
-    public ChessGameClient(JoinType joinType, String authToken, int gameID) throws Exception {
-        this.gameID = gameID;
+    public ChessGameClient(JoinType joinType, String gameName, String authToken, int gameID) throws Exception {
         chessGameHandler = new ChessGameHandler("ws://localhost:8080/unauthGame", joinType, authToken, gameID,
                 this::onWebSocketMessage);
 

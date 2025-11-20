@@ -133,14 +133,14 @@ public class ServerFacadeTests {
     @Test
     public void newChessGameClientPositive() {
         register();
-        Assertions.assertDoesNotThrow(() -> serverFacade.newChessGameClient(ChessGameClient.JoinType.BLACK, 1));
+        Assertions.assertDoesNotThrow(() -> serverFacade.newChessGameClient("Game Name", ChessGameClient.JoinType.BLACK, 1));
     }
 
     @Test
     public void newChessGameClientNegative() throws ClientException {
         register();
         serverFacade.logout();
-        Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.newChessGameClient(ChessGameClient.JoinType.BLACK, 1));
+        Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.newChessGameClient("Game Name", ChessGameClient.JoinType.BLACK, 1));
     }
 
 }

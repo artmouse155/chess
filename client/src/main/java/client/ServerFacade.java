@@ -79,9 +79,9 @@ public class ServerFacade {
         handleResponse(response, EmptyResponse.class);
     }
 
-    public ChessGameClient newChessGameClient(ChessGameClient.JoinType joinType, int gameID) throws ClientException {
+    public ChessGameClient newChessGameClient(String gameName, ChessGameClient.JoinType joinType, int gameID) throws ClientException {
         try {
-            return new ChessGameClient(joinType, authToken, gameID);
+            return new ChessGameClient(joinType, gameName, authToken, gameID);
         } catch (Exception e) {
             throw new ClientException(String.format("Websocket failed. Error:%s%n", e.getMessage()));
         }
