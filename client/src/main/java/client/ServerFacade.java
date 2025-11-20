@@ -80,7 +80,11 @@ public class ServerFacade {
     }
 
     public ChessGameClient newChessGameClient(ChessGameClient.JoinType joinType, int gameID) throws ClientException {
-        return new ChessGameClient(joinType, authToken, gameID);
+        try {
+            return new ChessGameClient(joinType, authToken, gameID);
+        } catch (Exception e) {
+            throw new ClientException(String.format("Websocket failed. Error:%s%n", e.getMessage()));
+        }
     }
 
     public GamesList getCachedGamesSet() {

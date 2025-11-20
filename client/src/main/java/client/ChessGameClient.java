@@ -39,6 +39,7 @@ public class ChessGameClient extends Client {
 
     private final JoinType joinType;
     private final int gameID;
+    private final ChessGameHandler chessGameHandler;
 
     private ChessBoard chessBoard;
 
@@ -55,21 +56,11 @@ public class ChessGameClient extends Client {
             new Tile(" ", BORDER_BG_COLOR, BORDER_TEXT_COLOR)
     );
 
-    public ChessGameClient(JoinType joinType, String authToken, int gameID) throws ClientException {
+    public ChessGameClient(JoinType joinType, String authToken, int gameID) throws Exception {
         this.joinType = joinType;
         this.gameID = gameID;
 
-        try {
-            var wsClient = new WsEchoClient(String.format("ws://localhost:8080/unauthGame/%d", gameID), authToken);
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter a message you want to echo:");
-            while (true) {
-                wsClient.send(scanner.nextLine());
-            }
-        } catch (Exception e) {
-            System.out.printf("Websocket failed. Error:%s%n", e.getMessage());
-        }
-
+        chessGameHandler = new ChessGameHandler(String.format("ws://localhost:8080/unauthGame/%d", gameID), authToken);
         // Update with WebSocket code for phase six. This is a dummy function that pretends to call the server to see if you are authenticated.
         if (Objects.equals(authToken, "")) {
             throw new ClientException("Bad Authentication");
