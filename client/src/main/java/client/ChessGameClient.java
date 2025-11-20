@@ -31,7 +31,6 @@ public class ChessGameClient extends Client {
     private record Tile(String body, String bgColor, String textColor) {
     }
 
-    private final JoinType joinType;
     private final int gameID;
     private final ChessGameHandler chessGameHandler;
 
@@ -51,9 +50,9 @@ public class ChessGameClient extends Client {
     );
 
     public ChessGameClient(JoinType joinType, String authToken, int gameID) throws Exception {
-        this.joinType = joinType;
         this.gameID = gameID;
-        chessGameHandler = new ChessGameHandler(String.format("ws://localhost:8080/unauthGame/%d", gameID), authToken, this::onWebSocketMessage);
+        chessGameHandler = new ChessGameHandler(String.format("ws://localhost:8080/unauthGame/%d", gameID), joinType, authToken,
+                this::onWebSocketMessage);
 
         // TODO: Update with WebSocket code for phase six. This is a dummy function that pretends to call the server to see if you are authenticated.
         if (Objects.equals(authToken, "")) {
@@ -65,12 +64,12 @@ public class ChessGameClient extends Client {
     @Override
     public void run() {
         System.out.printf("Welcome! You are on team %s. Blue letters represent black pieces and red letters represent white pieces.%n",
-                joinType.toString());
+                chessGameHandler.getJoinType().toString());
 
         chessBoard = new ChessBoard();
         chessBoard.resetBoard();
 
-        displayBoard(chessBoard, (joinType == JoinType.BLACK));
+        displayBoard(chessBoard, (chessGameHandler.getJoinType() == JoinType.BLACK));
 
         System.out.print(chessGameHandler.help());
 
@@ -199,17 +198,26 @@ public class ChessGameClient extends Client {
                 cmd = "";
                 params = new String[]{};
             }
-            Handler.TerminalFunction terminalFunction =
-                    switch (cmd) {
-                        case "m" -> chessGameHandler::makeMove;
-                        case "h" -> chessGameHandler::highlight;
-                        case "redraw" -> chessGameHandler::redraw;
-                        case "resign" -> chessGameHandler::resign;
-                        case "leave" -> chessGameHandler::leave;
-                        case "echo" -> chessGameHandler::echo;
-                        case "" -> (String... p) -> "";
-                        default -> chessGameHandler::help;
-                    };
+            Handler.TerminalFunction terminalFunction = switch (chessGameHandler.getJoinType()) {
+                case OBSERVER -> switch (cmd) {
+                    case "redraw" -> chessGameHandler::redraw;
+                    case "leave" -> chessGameHandler::leave;
+                    case "echo" -> chessGameHandler::echo;
+                    case "" -> (String... p) -> "";
+                    default -> chessGameHandler::help;
+                };
+                case BLACK, WHITE -> switch (cmd) {
+                    case "m" -> chessGameHandler::makeMove;
+                    case "h" -> chessGameHandler::highlight;
+                    case "redraw" -> chessGameHandler::redraw;
+                    case "resign" -> chessGameHandler::resign;
+                    case "leave" -> chessGameHandler::leave;
+                    case "echo" -> chessGameHandler::echo;
+                    case "" -> (String... p) -> "";
+                    default -> chessGameHandler::help;
+                };
+
+            };
             return terminalFunction.evaluate(params);
         } catch (ClientException ex) {
             return formatError(ex);

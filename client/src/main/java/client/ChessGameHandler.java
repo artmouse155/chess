@@ -8,13 +8,44 @@ public class ChessGameHandler extends Handler {
 
     private final WebSocketFacade webSocketFacade;
 
-    public ChessGameHandler(String url, String authToken, Consumer<String> onWebSocketMessage) throws Exception {
+    private final String playerHelp = """
+            m <move>        | Make a move
+            h <location>    | Highlight available moves
+            redraw          | Redraw the game board
+            resign          | Resign game
+            leave           | Leave game
+            echo <message>  | Echo a message to test that WebSocket works
+            help            | See list of commands
+            """;
+
+    private final String observerHelp = """
+            redraw          | Redraw the game board
+            leave           | Leave game
+            echo <message>  | Echo a message to test that WebSocket works
+            help            | See list of commands
+            """;
+
+    private final ChessGameClient.JoinType joinType;
+
+    public ChessGameHandler(String url, ChessGameClient.JoinType joinType, String authToken, Consumer<String> onWebSocketMessage) throws Exception {
+        this.joinType = joinType;
         webSocketFacade = new WebSocketFacade(url, authToken, onWebSocketMessage);
+    }
+
+    public ChessGameClient.JoinType getJoinType() {
+        return joinType;
     }
 
     @Override
     public String help(String... params) {
-        return "WS HELP\n";
+        return "Observer help\n";
+    }
+
+    public String playerHelp(String... params) {
+        return switch (joinType) {
+            case BLACK, WHITE -> playerHelp;
+            case OBSERVER -> observerHelp;
+        };
     }
 
     public String makeMove(String... params) {
