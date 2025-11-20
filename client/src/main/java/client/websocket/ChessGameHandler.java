@@ -1,7 +1,9 @@
 package client.websocket;
 
+import chess.ChessBoard;
 import client.ClientException;
 import client.Handler;
+import client.painter.BoardPainter;
 import com.google.gson.Gson;
 import model.AuthData;
 import websocket.commands.UserGameCommand;
@@ -73,7 +75,13 @@ public class ChessGameHandler extends Handler {
     }
 
     public String redraw(String... params) {
-        return "redraw\n";
+
+        var chessBoard = new ChessBoard();
+        chessBoard.resetBoard();
+
+        BoardPainter.displayBoard(chessBoard, (joinType == ChessGameClient.JoinType.BLACK));
+
+        return "Board redrawn.\n";
     }
 
     public String resign(String... params) {
