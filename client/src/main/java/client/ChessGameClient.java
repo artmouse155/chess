@@ -28,6 +28,10 @@ public class ChessGameClient extends Client {
     private static final String WHITE_PIECE_COLOR = SET_TEXT_COLOR_RED;
     private static final String BLACK_PIECE_COLOR = SET_TEXT_COLOR_BLUE;
 
+    private static final String OBSERVER_GAME_NAME_FORMAT = SET_BG_COLOR_YELLOW + SET_TEXT_COLOR_BLACK;
+    private static final String WHITE_GAME_NAME_FORMAT = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK;
+    private static final String BLACK_GAME_NAME_FORMAT = SET_BG_COLOR_BLACK + SET_TEXT_COLOR_WHITE;
+
 
     private record Tile(String body, String bgColor, String textColor) {
     }
@@ -56,8 +60,21 @@ public class ChessGameClient extends Client {
 
     @Override
     public void run() {
-        System.out.printf("Welcome! You are on team %s. Blue letters represent black pieces and red letters represent white pieces.%n",
-                chessGameHandler.getJoinType().toString());
+        String joinMessage = switch (chessGameHandler.getJoinType()) {
+            case BLACK -> "You are playing with the black pieces.";
+            case OBSERVER -> "You are observing this game.";
+            case WHITE -> "You are playing with the white pieces.";
+        };
+
+        System.out.printf("""
+                        Join game "%s" successful. Welcome, %s!
+                        %s
+                        Blue letters represent black pieces and red letters represent white pieces.
+                        """,
+                chessGameHandler.getGameName(),
+                chessGameHandler.getUserName(),
+                joinMessage
+        );
 
         chessBoard = new ChessBoard();
         chessBoard.resetBoard();
@@ -175,13 +192,14 @@ public class ChessGameClient extends Client {
 
     @Override
     protected void printPrompt() {
-        System.out.print("Chess Game > ");
-        String prompt = switch (chessGameHandler.getJoinType()) {
-            case WHITE, BLACK ->
-                    String.format("%s ♕ 240 Chess ♕ %s %s %s> ", APP_TITLE_FORMAT, USERNAME_FORMAT, chessGameHandler.getGameName(), RESET_ALL);
-            case OBSERVER -> String.format("%s ♕ 240 Chess ♕ %s> ", APP_TITLE_FORMAT, RESET_ALL);
+        String gameNameFormat = switch (chessGameHandler.getJoinType()) {
+            case WHITE -> WHITE_GAME_NAME_FORMAT;
+            case BLACK -> BLACK_GAME_NAME_FORMAT;
+            case OBSERVER -> OBSERVER_GAME_NAME_FORMAT;
+
         };
-        System.out.print(prompt);
+        System.out.printf("%s ♕ 240 Chess ♕ %s %s %s %s %s> ", APP_TITLE_FORMAT, gameNameFormat, chessGameHandler.getGameName(),
+                USERNAME_FORMAT, chessGameHandler.getUserName(), RESET_ALL);
     }
 
     @Override
@@ -224,7 +242,7 @@ public class ChessGameClient extends Client {
     }
 
     private void onWebSocketMessage(String message) {
-        System.out.printf("%n%s%n", message);
+        System.out.printf("\r%s%n", message);
         printPrompt();
     }
 }
