@@ -109,7 +109,8 @@ public class UIHandler extends Handler {
 
         var chessGameClient = server.newChessGameClient(username, gameName, joinType, gameID);
         chessGameClient.run();
-        return "Chess game ended.\n";
+
+        return String.format("Chess game ended.%n%s", help());
     }
 
     public String observeGame(String... params) throws ClientException {
@@ -118,10 +119,11 @@ public class UIHandler extends Handler {
         var game = getGameFromRelative(relativeGameID);
         String gameName = game.gameName();
         int gameID = game.gameID();
+        
         var chessGameClient = server.newChessGameClient(username, gameName, ChessGameClient.JoinType.OBSERVER, gameID);
         chessGameClient.run();
 
-        return "Observation ended.\n";
+        return String.format("Observation ended.%n%s", help());
     }
 
     public String createGame(String... params) throws ClientException {
