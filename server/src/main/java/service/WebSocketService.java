@@ -26,7 +26,7 @@ import static model.GameConnectionPool.BroadcastType.*;
 public class WebSocketService {
 
     private final DataAccess dataAccess;
-    private Map<Integer, GameConnectionPool> gameConnectionPoolMap = new HashMap<>();
+    private final Map<Integer, GameConnectionPool> gameConnectionPoolMap = new HashMap<>();
 
 
     public WebSocketService() throws DataAccessException {
@@ -54,7 +54,7 @@ public class WebSocketService {
         }
         var gameData = dataAccess.getGame(gameID);
         var pool = gameConnectionPoolMap.get(gameID);
-        String connectMessage = "";
+        String connectMessage;
         if (gameData.whiteUsername().equals(username) && pool.whiteUsername() == null) {
             pool.setWhitePlayer(new GameParticipant(session, username));
             connectMessage = String.format("%s joined as white player", username);
@@ -118,12 +118,15 @@ public class WebSocketService {
         if (!gameConnectionPoolMap.containsKey(gameID)) {
             throw new BadRequestException("Invalid Game ID.");
         }
+        var gameData = dataAccess.getGame(gameID);
         var pool = gameConnectionPoolMap.get(gameID);
 
         if (username.equals(pool.whiteUsername())) {
             pool.removeWhitePlayer();
+            gameData.setWhiteUsername(null);
         } else if (username.equals(pool.blackUsername())) {
             pool.removeBlackPlayer();
+            gameData.setBlackUsername(null);
         } else {
             pool.removeObserver(username);
         }
@@ -137,7 +140,7 @@ public class WebSocketService {
         }
         var pool = gameConnectionPoolMap.get(gameID);
 
-        pool.sendMessage(new NotificationMessage(String.format("%s res", username)), ALL, username);
+        pool.sendMessage(new NotificationMessage(String.format("%s resigned.", username)), ALL, username);
     }
 
     public void echo(String message) throws IOException {
