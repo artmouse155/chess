@@ -107,7 +107,7 @@ public class WebSocketService {
                 }
             }
 
-            String movePiece = gameData.game().getBoard().getPiece(move.getStartPosition()).toString().toLowerCase();
+            String movePiece = gameData.game().getBoard().getPiece(move.getStartPosition()).getPieceType().toString().toLowerCase();
 
             gameData.game().makeMove(move);
             dataAccess.updateGame(gameID, gameData);
