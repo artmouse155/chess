@@ -1,5 +1,6 @@
 package client.websocket;
 
+import chess.ChessMove;
 import client.ClientException;
 import jakarta.websocket.ContainerProvider;
 import jakarta.websocket.Endpoint;
@@ -8,6 +9,7 @@ import jakarta.websocket.MessageHandler;
 import jakarta.websocket.Session;
 import jakarta.websocket.WebSocketContainer;
 import websocket.commands.EchoCommand;
+import websocket.commands.MakeMoveCommand;
 import websocket.commands.UserGameCommand;
 
 import java.io.IOException;
@@ -61,5 +63,13 @@ public class WebSocketFacade extends Endpoint {
         } catch (IOException e) {
             throw new ClientException(String.format("Websocket Error: %s", e.getMessage()));
         }
+    }
+
+    public void resign() throws ClientException {
+        sendCommand(UserGameCommand.CommandType.RESIGN);
+    }
+
+    public void makeMove(ChessMove move) throws ClientException {
+        send(new MakeMoveCommand(authToken, gameID, move).toString());
     }
 }

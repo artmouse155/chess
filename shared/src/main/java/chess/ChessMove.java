@@ -10,6 +10,10 @@ import java.util.Objects;
  */
 public class ChessMove {
 
+    public static ChessMove fromString(String source, String destination) {
+        return new ChessMove(ChessPosition.fromString(source), ChessPosition.fromString(destination));
+    }
+
     public enum SpecialMove {
         EN_PASSANT,
         CASTLE
@@ -20,8 +24,7 @@ public class ChessMove {
     private final ChessPiece.PieceType promotionPiece;
     private final SpecialMove specialMove;
 
-    public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece, SpecialMove specialMove)
-    {
+    public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece, SpecialMove specialMove) {
         this.startPosition = startPosition;
         this.endPosition = endPosition;
         this.promotionPiece = promotionPiece;
@@ -49,10 +52,8 @@ public class ChessMove {
             return false;
         }
         ChessMove chessMove = (ChessMove) o;
-        if (Objects.equals(startPosition, chessMove.startPosition))
-        {
-            if (Objects.equals(endPosition, chessMove.endPosition))
-            {
+        if (Objects.equals(startPosition, chessMove.startPosition)) {
+            if (Objects.equals(endPosition, chessMove.endPosition)) {
                 return promotionPiece == chessMove.promotionPiece;
             }
         }
@@ -78,7 +79,9 @@ public class ChessMove {
         return endPosition;
     }
 
-    public SpecialMove getSpecialMove() { return specialMove; }
+    public SpecialMove getSpecialMove() {
+        return specialMove;
+    }
 
     /**
      * Gets the type of piece to promote a pawn to if pawn promotion is part of this

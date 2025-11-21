@@ -2,6 +2,8 @@ package client.websocket;
 
 import chess.ChessBoard;
 import chess.ChessGame;
+import chess.ChessMove;
+import chess.ChessPosition;
 import client.ClientException;
 import client.Handler;
 import client.painter.BoardPainter;
@@ -13,22 +15,27 @@ import websocket.messages.LoadGameMessage;
 import websocket.messages.NotificationMessage;
 import websocket.messages.ServerMessage;
 
+import java.util.Collection;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class ChessGameHandler extends Handler {
 
+    private static final String CHESS_POSITION = "[a-h][1-8]";
+
     private final WebSocketFacade webSocketFacade;
     private final Consumer<String> onWebSocketMessage;
     private ChessGame chessGame;
+    private ChessPosition highlightPosition;
 
     private final String playerHelp = """
-            m <move>        | Make a move
-            h <location>    | Highlight available moves
-            redraw          | Redraw the game board
-            resign          | Resign game
-            leave           | Leave game
-            echo <message>  | Echo a message to test that WebSocket works
-            help            | See list of commands
+            m <source> <destination>  | Make a move
+            h <position>              | Highlight available moves
+            redraw                    | Redraw the game board
+            resign                    | Resign game
+            leave                     | Leave game
+            echo <message>            | Echo a message to test that WebSocket works
+            help                      | See list of commands
             """;
 
     private final String observerHelp = """
@@ -73,12 +80,17 @@ public class ChessGameHandler extends Handler {
         };
     }
 
-    public String makeMove(String... params) {
-        return "makeMove\n";
+
+    public String makeMove(String... params) throws ClientException {
+        validateArgs(params, "m <source> <destination>\n", CHESS_POSITION, CHESS_POSITION);
+        webSocketFacade.makeMove(ChessMove.fromString(params[0], params[1]));
+        return "";
     }
 
-    public String highlight(String... params) {
-        return "highlight\n";
+    public String highlight(String... params) throws ClientException {
+        validateArgs(params, "h <position>\n", CHESS_POSITION);
+        highlightPosition = ChessPosition.fromString(params[0]);
+        return redraw();
     }
 
     public String redraw(String... params) {
@@ -87,18 +99,26 @@ public class ChessGameHandler extends Handler {
             return "Please wait.\n";
         }
 
+        Collection<ChessMove> validMoves = (highlightPosition == null) ? Set.of() : chessGame.validMoves(highlightPosition);
 
         return String.format("%sBoard drawn.\n",
-                BoardPainter.displayBoard(chessGame.getBoard(), (joinType == ChessGameClient.JoinType.BLACK)));
+                BoardPainter.displayBoard(
+                        chessGame.getBoard(),
+                        (joinType == ChessGameClient.JoinType.BLACK),
+                        highlightPosition,
+                        validMoves
+                )
+        );
     }
 
-    public String resign(String... params) {
-        return "resign\n";
+    public String resign(String... params) throws ClientException {
+        webSocketFacade.resign();
+        return "";
     }
 
     public String leave(String... params) throws ClientException {
         webSocketFacade.close();
-        return "leave";
+        return "";
     }
 
     public String echo(String... params) throws ClientException {

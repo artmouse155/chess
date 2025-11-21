@@ -29,8 +29,6 @@ public class WebSocketService {
     private record ConnectionID(String username, int gameID) {
     }
 
-    ;
-
     private final DataAccess dataAccess;
     private final Map<Integer, GameConnectionPool> gameConnectionPoolMap = new HashMap<>();
     private final Map<Session, ConnectionID> connections = new HashMap<>();
@@ -61,12 +59,14 @@ public class WebSocketService {
             gameConnectionPoolMap.put(gameID, new GameConnectionPool());
         }
         var gameData = dataAccess.getGame(gameID);
+        String whiteUsername = gameData.whiteUsername();
+        String blackUsername = gameData.blackUsername();
         var pool = gameConnectionPoolMap.get(gameID);
         String connectMessage;
-        if (gameData.whiteUsername().equals(username) && pool.whiteUsername() == null) {
+        if (whiteUsername != null && whiteUsername.equals(username) && pool.whiteUsername() == null) {
             pool.setWhitePlayer(new GameParticipant(session, username));
             connectMessage = String.format("%s joined as white player", username);
-        } else if (gameData.blackUsername().equals(username) && pool.blackUsername() == null) {
+        } else if (blackUsername != null && blackUsername.equals(username) && pool.blackUsername() == null) {
             pool.setBlackPlayer(new GameParticipant(session, username));
             connectMessage = String.format("%s joined as black player", username);
         } else {

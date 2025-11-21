@@ -18,6 +18,26 @@ public class ChessPosition {
         this.col = col;
     }
 
+    private static int letterToInt(char letter) {
+        return switch (letter) {
+            case 'a' -> 1;
+            case 'b' -> 2;
+            case 'c' -> 3;
+            case 'd' -> 4;
+            case 'e' -> 5;
+            case 'f' -> 6;
+            case 'g' -> 7;
+            case 'h' -> 8;
+            default -> 0;
+        };
+    }
+
+    public static ChessPosition fromString(String s) {
+        int row = letterToInt(s.charAt(0));
+        int col = Integer.parseInt(s.substring(1));
+        return new ChessPosition(row, col);
+    }
+
     /**
      * @return which row this position is in
      * 1 codes for the bottom row

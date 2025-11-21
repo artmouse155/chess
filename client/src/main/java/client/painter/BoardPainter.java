@@ -1,16 +1,15 @@
 package client.painter;
 
 import chess.ChessBoard;
+import chess.ChessMove;
 import chess.ChessPosition;
-import client.websocket.ChessGameClient;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import static ui.EscapeSequences.*;
-import static ui.EscapeSequences.SET_BG_COLOR_BLACK;
-import static ui.EscapeSequences.SET_TEXT_COLOR_BLUE;
-import static ui.EscapeSequences.SET_TEXT_COLOR_RED;
 
 public class BoardPainter {
 
@@ -21,6 +20,10 @@ public class BoardPainter {
 
     private static final String WHITE_BG = SET_BG_COLOR_WHITE;
     private static final String BLACK_BG = SET_BG_COLOR_BLACK;
+
+    private static final String START_HIGHLIGHT_BG = SET_BG_COLOR_YELLOW;
+    private static final String WHITE_HIGHLIGHT_BG = SET_BG_COLOR_GREEN;
+    private static final String BLACK_HIGHLIGHT_BG = SET_BG_COLOR_DARK_GREEN;
 
     private static final String WHITE_PIECE_COLOR = SET_TEXT_COLOR_RED;
     private static final String BLACK_PIECE_COLOR = SET_TEXT_COLOR_BLUE;
@@ -41,11 +44,17 @@ public class BoardPainter {
             new Tile(" ", BORDER_BG_COLOR, BORDER_TEXT_COLOR)
     );
 
-    public static String displayBoard(ChessBoard board, boolean reversed) {
-        List<List<Tile>> printGrid = new ArrayList<List<Tile>>();
-
+    public static String displayBoard(ChessBoard board, boolean reversed, ChessPosition startPosition, Collection<ChessMove> chessMoves) {
+        List<List<Tile>> printGrid = new ArrayList<>();
 
         printGrid.add(reversed ? LETTERS.reversed() : LETTERS);
+
+        Collection<ChessPosition> chessDestinations = new HashSet<>();
+        if (chessMoves != null) {
+            for (final var move : chessMoves) {
+                chessDestinations.add(move.getEndPosition());
+            }
+        }
 
 
         var bgColor = WHITE_BG;
@@ -68,12 +77,26 @@ public class BoardPainter {
 
                 var piece = board.getPiece(piecePosition);
 
+                String bgColorPossibleHighlight = bgColor;
+
+                if (piecePosition.equals(startPosition)) {
+                    bgColorPossibleHighlight = START_HIGHLIGHT_BG;
+
+                } else if (chessDestinations.contains(piecePosition)) {
+                    bgColorPossibleHighlight = switch (bgColor) {
+                        case WHITE_BG -> WHITE_HIGHLIGHT_BG;
+                        case BLACK_BG -> BLACK_HIGHLIGHT_BG;
+                        default -> "";
+                    };
+                }
+
                 if (piece != null) {
 
                     String pieceColor = switch (piece.getTeamColor()) {
                         case WHITE -> WHITE_PIECE_COLOR;
                         case BLACK -> BLACK_PIECE_COLOR;
                     };
+
 
                     String displayString = switch (piece.getPieceType()) {
                         case KING -> "K";
@@ -86,13 +109,13 @@ public class BoardPainter {
 
                     tileRow.add(new Tile(
                             displayString,
-                            bgColor,
+                            bgColorPossibleHighlight,
                             pieceColor
                     ));
                 } else {
                     tileRow.add(new Tile(
                             " ",
-                            bgColor,
+                            bgColorPossibleHighlight,
                             RESET_TEXT_COLOR
                     ));
                 }
