@@ -13,7 +13,7 @@ public class ResignREPL extends REPL {
 
     @Override
     protected String getIntroMessage() {
-        return "Resigning a game means that you don't get to play it anymore, which is sad. Are you sure you want to quit?";
+        return "Resigning a game means that you don't get to play it anymore, which is sad. Are you sure you want to quit?\n";
     }
 
     @Override

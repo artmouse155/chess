@@ -146,7 +146,8 @@ public class ChessGameHandler extends Handler {
     }
 
     private String formatServerNotification(String serverNotification) {
-        return String.format("%s\uD83D\uDEC8%s %s", SET_BG_COLOR_WHITE, RESET_BG_COLOR, serverNotification);
+        return String.format("%s%s \uD83D\uDEC8 %s%s %s", SET_BG_COLOR_WHITE, SET_TEXT_COLOR_BLUE, RESET_TEXT_COLOR, RESET_BG_COLOR,
+                serverNotification);
     }
 
     public void formatWebSocketResponse(String message) {

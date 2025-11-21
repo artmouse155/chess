@@ -88,7 +88,7 @@ public class WebSocketService {
         var gameData = dataAccess.getGame(gameID);
 
         if (gameData.gameState() == GameData.GameState.RESIGNED) {
-            throw new BadRequestException("Game has been resigned.");
+            throw new BadRequestException("Game has been resigned. No more moves can be made.");
         }
 
         var pool = gameConnectionPoolMap.get(gameID);
