@@ -2,7 +2,6 @@ package client.repl;
 
 import client.Handler;
 import client.websocket.ChessGameHandler;
-import model.AuthData;
 
 import java.util.*;
 
@@ -32,8 +31,8 @@ public class ChessGameREPL extends REPL {
     private final ChessGameHandler chessGameHandler;
 
 
-    public ChessGameREPL(String url, JoinType joinType, String gameName, AuthData authData, int gameID) throws Exception {
-        chessGameHandler = new ChessGameHandler(url, joinType, gameName, authData, gameID,
+    public ChessGameREPL(String url, JoinType joinType, String gameName, String username, String authToken, int gameID) throws Exception {
+        chessGameHandler = new ChessGameHandler(url, joinType, gameName, username, authToken, gameID,
                 this::onWebSocketMessage);
     }
 

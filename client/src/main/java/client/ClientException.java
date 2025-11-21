@@ -1,10 +1,5 @@
 package client;
 
-import com.google.gson.Gson;
-import model.UserData;
-
-import java.util.Map;
-
 public class ClientException extends Exception {
 
     private final String help;

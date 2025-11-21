@@ -11,7 +11,6 @@ import client.repl.ChessGameREPL;
 import client.repl.PromoteREPL;
 import client.repl.ResignREPL;
 import com.google.gson.Gson;
-import model.AuthData;
 import websocket.commands.UserGameCommand;
 import websocket.messages.ErrorMessage;
 import websocket.messages.LoadGameMessage;
@@ -55,13 +54,13 @@ public class ChessGameHandler extends Handler {
     private final String gameName;
     private final String username;
 
-    public ChessGameHandler(String url, ChessGameREPL.JoinType joinType, String gameName, AuthData authData, int gameID,
+    public ChessGameHandler(String url, ChessGameREPL.JoinType joinType, String gameName, String authToken, String username, int gameID,
                             Consumer<String> onWebSocketMessage) throws Exception {
         this.joinType = joinType;
         this.gameName = gameName;
-        this.username = authData.username();
+        this.username = username;
         this.onWebSocketMessage = onWebSocketMessage;
-        webSocketFacade = new WebSocketFacade(url, authData.authToken(), gameID, this::formatWebSocketResponse);
+        webSocketFacade = new WebSocketFacade(url, authToken, gameID, this::formatWebSocketResponse);
 
         webSocketFacade.sendCommand(UserGameCommand.CommandType.CONNECT);
     }

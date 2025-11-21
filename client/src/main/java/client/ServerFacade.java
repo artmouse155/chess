@@ -88,7 +88,7 @@ public class ServerFacade {
         }
 
         try {
-            return new ChessGameREPL(wsUrl + "/ws", joinType, gameName, new AuthData(authToken, username), gameID);
+            return new ChessGameREPL(wsUrl + "/ws", joinType, gameName, authToken, username, gameID);
         } catch (Exception e) {
             throw new ClientException(String.format("Websocket failed. Error: %s%n", e.getMessage()));
         }
