@@ -1,7 +1,7 @@
 package client;
 
 import chess.ChessGame;
-import client.websocket.ChessGameClient;
+import client.websocket.ChessGameREPL;
 import model.*;
 
 public class UIHandler extends Handler {
@@ -102,9 +102,9 @@ public class UIHandler extends Handler {
         };
         server.joinGame(new JoinGameRequest(teamColor, gameID));
 
-        ChessGameClient.JoinType joinType = switch (teamColor) {
-            case WHITE -> ChessGameClient.JoinType.WHITE;
-            case BLACK -> ChessGameClient.JoinType.BLACK;
+        ChessGameREPL.JoinType joinType = switch (teamColor) {
+            case WHITE -> ChessGameREPL.JoinType.WHITE;
+            case BLACK -> ChessGameREPL.JoinType.BLACK;
         };
 
         var chessGameClient = server.newChessGameClient(username, gameName, joinType, gameID);
@@ -120,7 +120,7 @@ public class UIHandler extends Handler {
         String gameName = game.gameName();
         int gameID = game.gameID();
 
-        var chessGameClient = server.newChessGameClient(username, gameName, ChessGameClient.JoinType.OBSERVER, gameID);
+        var chessGameClient = server.newChessGameClient(username, gameName, ChessGameREPL.JoinType.OBSERVER, gameID);
         chessGameClient.run();
 
         return String.format("Observation ended.%n%s", help());
