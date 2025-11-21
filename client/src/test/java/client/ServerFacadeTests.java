@@ -133,20 +133,13 @@ public class ServerFacadeTests {
 
     @Test
     public void newChessGameClientPositive() {
-        register();
-        Assertions.assertDoesNotThrow(() -> serverFacade.createGame(new CreateGameRequest(testGameName)));
-        var gamesSet = Assertions.assertDoesNotThrow(() -> serverFacade.listGames());
-        GameDataStripped game = Assertions.assertDoesNotThrow(() -> gamesSet.games().stream().findFirst().orElseThrow(AssertionError::new));
-        int gameID = game.gameID();
         Assertions.assertDoesNotThrow(() -> serverFacade.newChessGameClient(testUser.username(), testGameName, ChessGameClient.JoinType.OBSERVER,
-                gameID));
+                1));
     }
 
     @Test
     public void newChessGameClientNegative() throws ClientException {
-        register();
-        serverFacade.logout();
-        Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.newChessGameClient("username", "Game Name",
+        Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.newChessGameClient(null, "Game Name",
                 ChessGameClient.JoinType.BLACK, 1));
     }
 

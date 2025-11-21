@@ -28,8 +28,8 @@ public class ChessGameClient extends Client {
     private final ChessGameHandler chessGameHandler;
 
 
-    public ChessGameClient(JoinType joinType, String gameName, AuthData authData, int gameID) throws Exception {
-        chessGameHandler = new ChessGameHandler("ws://localhost:8080/ws", joinType, gameName, authData, gameID,
+    public ChessGameClient(String url, JoinType joinType, String gameName, AuthData authData, int gameID) throws Exception {
+        chessGameHandler = new ChessGameHandler(url, joinType, gameName, authData, gameID,
                 this::onWebSocketMessage);
     }
 
