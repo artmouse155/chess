@@ -34,9 +34,9 @@ public class WebSocketHandler {
         }
     }
 
-    public void makeMove(String username, ChessMove move) throws ResponseException {
+    public void makeMove(String username, int gameID, ChessMove move) throws ResponseException {
         try {
-            wsService.makeMove(username, move);
+            wsService.makeMove(username, gameID, move);
         } catch (DataAccessException | IOException e) {
             throw new InternalServerErrorException(e.getMessage());
         }

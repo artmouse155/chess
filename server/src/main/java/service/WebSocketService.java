@@ -2,6 +2,7 @@ package service;
 
 import chess.ChessGame;
 import chess.ChessMove;
+import chess.InvalidMoveException;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import dataaccess.SQLDataAccess;
@@ -20,8 +21,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static model.GameConnectionPool.BroadcastType.ONLY_OTHERS;
-import static model.GameConnectionPool.BroadcastType.ONLY_SELF;
+import static model.GameConnectionPool.BroadcastType.*;
 
 public class WebSocketService {
 
@@ -70,7 +70,34 @@ public class WebSocketService {
         pool.sendMessage(new NotificationMessage(connectMessage), ONLY_OTHERS, username);
     }
 
-    public void makeMove(String username, ChessMove move) {
+    public void makeMove(String username, int gameID, ChessMove move) throws DataAccessException, IOException, ResponseException {
+        if (!dataAccess.hasGame(gameID)) {
+            throw new BadRequestException("Invalid Game ID.");
+        }
+        var gameData = dataAccess.getGame(gameID);
+        var pool = gameConnectionPoolMap.get(gameID);
+        try {
+            gameData.game().makeMove(move);
+            dataAccess.updateGame(gameID, gameData);
+
+            pool.sendMessage(new LoadGameMessage(gameData.game()), ALL, username);
+            pool.sendMessage(new NotificationMessage(move.toString()), ONLY_OTHERS, username);
+
+            var game = gameData.game();
+            var teamTurn = game.getTeamTurn();
+            String currentUsername = (teamTurn == ChessGame.TeamColor.WHITE) ? gameData.whiteUsername() : gameData.blackUsername();
+
+            if (game.isInCheck(teamTurn)) {
+                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in check", currentUsername, teamTurn)), ALL, username);
+            } else if (game.isInCheckmate(teamTurn)) {
+                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in checkmate", currentUsername, teamTurn)), ALL, username);
+            } else if (game.isInStalemate(teamTurn)) {
+                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in stalemate", currentUsername, teamTurn)), ALL, username);
+            }
+
+        } catch (InvalidMoveException e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     public void leave(String username, int gameID) {
@@ -80,5 +107,6 @@ public class WebSocketService {
     }
 
     public void echo(String message) {
+
     }
 }

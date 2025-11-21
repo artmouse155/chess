@@ -135,7 +135,7 @@ public class Server {
 
             switch (req.getCommandType()) {
                 case CONNECT -> wsHandler.connect(ctx.session, username, gameID);
-                case MAKE_MOVE -> wsHandler.makeMove(username, new ChessMove(new ChessPosition(0, 0), new ChessPosition(0, 0)));
+                case MAKE_MOVE -> wsHandler.makeMove(username, gameID, new ChessMove(new ChessPosition(0, 0), new ChessPosition(0, 0)));
                 case LEAVE -> wsHandler.leave(username, gameID);
                 case RESIGN -> wsHandler.resign(username, gameID);
                 case ECHO -> wsHandler.echo(body);
