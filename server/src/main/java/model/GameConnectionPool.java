@@ -23,7 +23,7 @@ public class GameConnectionPool {
     }
 
     public String blackUsername() {
-        return (blackPlayer == null) ? null : whitePlayer.username();
+        return (blackPlayer == null) ? null : blackPlayer.username();
     }
 
     public void setWhitePlayer(GameParticipant participant) {
