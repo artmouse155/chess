@@ -2,6 +2,7 @@ package service;
 
 import chess.ChessGame;
 import chess.ChessMove;
+import chess.ChessPiece;
 import chess.InvalidMoveException;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
@@ -106,11 +107,35 @@ public class WebSocketService {
                 }
             }
 
+            String movePiece = gameData.game().getBoard().getPiece(move.getStartPosition()).toString().toLowerCase();
+
             gameData.game().makeMove(move);
             dataAccess.updateGame(gameID, gameData);
 
             pool.sendMessage(new LoadGameMessage(gameData.game()), ALL, username);
-            pool.sendMessage(new NotificationMessage(move.toString()), ONLY_OTHERS, username);
+
+            String moveMessage;
+            if (move.getSpecialMove() == ChessMove.SpecialMove.CASTLE) {
+                moveMessage = String.format("%s castled", username);
+            } else {
+                if (move.getPromotionPiece() != null) {
+                    String promotionPiece = move.getPromotionPiece().toString().toLowerCase();
+                    moveMessage = String.format("%s moved pawn at %s to %s and promoted it to a %s",
+                            username,
+                            move.getStartPosition().toCartesian(),
+                            move.getEndPosition().toCartesian(),
+                            promotionPiece
+                    );
+                } else {
+                    moveMessage = String.format("%s moved %s from %s to %s",
+                            username,
+                            movePiece,
+                            move.getStartPosition().toCartesian(),
+                            move.getEndPosition().toCartesian());
+                }
+            }
+
+            pool.sendMessage(new NotificationMessage(moveMessage), ONLY_OTHERS, username);
 
             var game = gameData.game();
             teamTurn = game.getTeamTurn();
