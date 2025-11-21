@@ -1,6 +1,5 @@
 package client.websocket;
 
-import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessMove;
 import chess.ChessPosition;
@@ -18,6 +17,8 @@ import websocket.messages.ServerMessage;
 import java.util.Collection;
 import java.util.Set;
 import java.util.function.Consumer;
+
+import static ui.EscapeSequences.*;
 
 public class ChessGameHandler extends Handler {
 
@@ -113,6 +114,7 @@ public class ChessGameHandler extends Handler {
     }
 
     public String resign(String... params) throws ClientException {
+        
         webSocketFacade.resign();
         return "";
     }
@@ -134,11 +136,11 @@ public class ChessGameHandler extends Handler {
     }
 
     private String formatServerError(String serverError) {
-        return String.format("Error: %s", serverError);
+        return String.format("%sError:%s %s", SET_TEXT_COLOR_RED, RESET_TEXT_COLOR, serverError);
     }
 
     private String formatServerNotification(String serverNotification) {
-        return String.format("INFO: %s", serverNotification);
+        return String.format("%s\uD83D\uDEC8%s %s", SET_BG_COLOR_WHITE, RESET_BG_COLOR, serverNotification);
     }
 
     public void formatWebSocketResponse(String message) {

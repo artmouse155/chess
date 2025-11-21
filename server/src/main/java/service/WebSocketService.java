@@ -94,17 +94,21 @@ public class WebSocketService {
         var pool = gameConnectionPoolMap.get(gameID);
         try {
             var teamTurn = gameData.game().getTeamTurn();
-            switch (teamTurn) {
-                case WHITE -> {
-                    if (!username.equals(gameData.whiteUsername())) {
-                        throw new UnauthorizedException("Not authorized to make that move.");
+            if (username.equals(gameData.whiteUsername()) || username.equals(gameData.blackUsername())) {
+                switch (teamTurn) {
+                    case WHITE -> {
+                        if (!username.equals(gameData.whiteUsername())) {
+                            throw new UnauthorizedException("You cannot move when it is not your turn.");
+                        }
+                    }
+                    case BLACK -> {
+                        if (!username.equals(gameData.blackUsername())) {
+                            throw new UnauthorizedException("You cannot move when it is not your turn.");
+                        }
                     }
                 }
-                case BLACK -> {
-                    if (!username.equals(gameData.blackUsername())) {
-                        throw new UnauthorizedException("Not authorized to make that move.");
-                    }
-                }
+            } else {
+                throw new UnauthorizedException("Only players can make moves.");
             }
 
             String movePiece = gameData.game().getBoard().getPiece(move.getStartPosition()).getPieceType().toString().toLowerCase();
