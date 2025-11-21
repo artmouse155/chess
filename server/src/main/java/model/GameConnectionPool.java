@@ -9,12 +9,21 @@ public class GameConnectionPool {
 
     public enum BroadcastType {
         ALL,
-        ONLY_OTHERS
+        ONLY_OTHERS,
+        ONLY_SELF
     }
 
     private GameParticipant whitePlayer = null;
     private GameParticipant blackPlayer = null;
     private Set<GameParticipant> observers = new HashSet<>();
+
+    public String whiteUsername() {
+        return whitePlayer.username();
+    }
+
+    public String blackUsername() {
+        return blackPlayer.username();
+    }
 
     public void setWhitePlayer(GameParticipant participant) {
         whitePlayer = participant;
@@ -40,9 +49,17 @@ public class GameConnectionPool {
         observers.removeIf(participant -> (participant == null || participant.username().equals(participantUsername)));
     }
 
+    public boolean isEmpty() {
+        return (whitePlayer == null && blackPlayer == null && observers.isEmpty());
+    }
+
     public void sendMessage(ServerMessage message, BroadcastType type, String senderUsername) {
 
-        if (whitePlayer != null && ((type == BroadcastType.ALL) || !whitePlayer.username().equals(senderUsername))) {
+        if (
+                whitePlayer != null &&
+                        (
+                                (type == BroadcastType.ALL) ||
+                                        !whitePlayer.username().equals(senderUsername))) {
             whitePlayer.sendMessage(message);
         }
 
