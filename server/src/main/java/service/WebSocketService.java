@@ -129,10 +129,10 @@ public class WebSocketService {
 
         if (username.equals(pool.whiteUsername())) {
             pool.removeWhitePlayer();
-            gameData.setWhiteUsername(null);
+            dataAccess.updateGame(gameID, gameData.setWhiteUsername(null));
         } else if (username.equals(pool.blackUsername())) {
             pool.removeBlackPlayer();
-            gameData.setBlackUsername(null);
+            dataAccess.updateGame(gameID, gameData.setBlackUsername(null));
         } else {
             pool.removeObserver(username);
         }
