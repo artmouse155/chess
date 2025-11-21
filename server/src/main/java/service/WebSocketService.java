@@ -12,6 +12,7 @@ import handler.exception.ResponseException;
 import handler.exception.UnauthorizedException;
 import model.AuthData;
 import model.GameConnectionPool;
+import model.GameData;
 import model.GameParticipant;
 import org.eclipse.jetty.websocket.api.Session;
 import websocket.messages.LoadGameMessage;
@@ -134,11 +135,20 @@ public class WebSocketService {
         pool.sendMessage(new NotificationMessage(String.format("%s left the game", username)), ONLY_OTHERS, username);
     }
 
-    public void resign(String username, int gameID) throws DataAccessException, IOException, BadRequestException {
+    public void resign(String username, int gameID) throws DataAccessException, IOException, ResponseException {
         if (!gameConnectionPoolMap.containsKey(gameID)) {
             throw new BadRequestException("Invalid Game ID.");
         }
+        var gameData = dataAccess.getGame(gameID);
         var pool = gameConnectionPoolMap.get(gameID);
+        if (!(username.equals(pool.whiteUsername()) || username.equals(pool.blackUsername()))) {
+            throw new UnauthorizedException("Not authorized to resign.");
+        }
+
+        if (gameData.gameState() == GameData.GameState.RESIGNED) {
+            throw new BadRequestException("Game already resigned.");
+        }
+
 
         pool.sendMessage(new NotificationMessage(String.format("%s resigned.", username)), ALL, username);
     }

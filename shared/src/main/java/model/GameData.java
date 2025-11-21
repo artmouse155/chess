@@ -5,9 +5,9 @@ import com.google.gson.Gson;
 
 public record GameData(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game, GameState gameState) {
 
-    enum GameState {
+    public enum GameState {
         ACTIVE,
-        RESIGN
+        RESIGNED
     }
 
     public GameData(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) {
@@ -20,6 +20,10 @@ public record GameData(int gameID, String whiteUsername, String blackUsername, S
 
     public GameData setBlackUsername(String blackUsername) {
         return new GameData(gameID, whiteUsername, blackUsername, gameName, game, gameState);
+    }
+
+    public GameData resign() {
+        return new GameData(gameID, whiteUsername, blackUsername, gameName, game, GameState.RESIGNED);
     }
 
     public GameDataStripped stripped() {
