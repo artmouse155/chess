@@ -32,7 +32,7 @@ public class ServerFacade {
     }
 
     public ServerFacade(int port) {
-        this(String.format("http://localhost:%d", port), String.format("http://localhost:%d", port));
+        this(String.format("http://localhost:%d", port), String.format("ws://localhost:%d", port));
     }
 
     public AuthState getAuthState() {
