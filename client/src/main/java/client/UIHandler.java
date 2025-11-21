@@ -28,8 +28,8 @@ public class UIHandler extends Handler {
 
     private String username = "";
 
-    public UIHandler(String url) {
-        server = new ServerFacade(url);
+    public UIHandler(String url, String wsUrl) {
+        server = new ServerFacade(url, wsUrl);
     }
 
     public String help(String... params) {
@@ -119,7 +119,7 @@ public class UIHandler extends Handler {
         var game = getGameFromRelative(relativeGameID);
         String gameName = game.gameName();
         int gameID = game.gameID();
-        
+
         var chessGameClient = server.newChessGameClient(username, gameName, ChessGameClient.JoinType.OBSERVER, gameID);
         chessGameClient.run();
 

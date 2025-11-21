@@ -13,27 +13,26 @@ public class ServerFacade {
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final String serverUrl;
+    private final String wsUrl;
     private String authToken;
 
     private AuthState authState;
     private GamesList gamesList = null;
-
-    private int port = 0;
 
     public enum AuthState {
         AUTHENTICATED,
         UNAUTHENTICATED
     }
 
-    public ServerFacade(String url) {
+    public ServerFacade(String url, String wsUrl) {
         serverUrl = url;
+        this.wsUrl = wsUrl;
         authToken = "";
         authState = AuthState.UNAUTHENTICATED;
     }
 
     public ServerFacade(int port) {
-        this(String.format("http://localhost:%d", port));
-        this.port = port;
+        this(String.format("http://localhost:%d", port), String.format("http://localhost:%d", port));
     }
 
     public AuthState getAuthState() {
@@ -89,8 +88,7 @@ public class ServerFacade {
         }
 
         try {
-            String url = String.format("ws://localhost:%d/ws", port);
-            return new ChessGameClient(url, joinType, gameName, new AuthData(authToken, username), gameID);
+            return new ChessGameClient(wsUrl + "/ws", joinType, gameName, new AuthData(authToken, username), gameID);
         } catch (Exception e) {
             throw new ClientException(String.format("Websocket failed. Error: %s%n", e.getMessage()));
         }

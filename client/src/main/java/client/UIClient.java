@@ -3,14 +3,12 @@ package client;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import static ui.EscapeSequences.*;
-
 public class UIClient extends Client {
 
     private final UIHandler uiHandler;
 
-    public UIClient(String serverUrl) {
-        uiHandler = new UIHandler(serverUrl);
+    public UIClient(String serverUrl, String wsUrl) {
+        uiHandler = new UIHandler(serverUrl, wsUrl);
 
     }
 
