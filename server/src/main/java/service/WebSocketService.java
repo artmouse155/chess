@@ -95,17 +95,10 @@ public class WebSocketService {
         try {
             var teamTurn = gameData.game().getTeamTurn();
             if (username.equals(gameData.whiteUsername()) || username.equals(gameData.blackUsername())) {
-                switch (teamTurn) {
-                    case WHITE -> {
-                        if (!username.equals(gameData.whiteUsername())) {
-                            throw new UnauthorizedException("You cannot move when it is not your turn.");
-                        }
-                    }
-                    case BLACK -> {
-                        if (!username.equals(gameData.blackUsername())) {
-                            throw new UnauthorizedException("You cannot move when it is not your turn.");
-                        }
-                    }
+                if (teamTurn == ChessGame.TeamColor.WHITE && !username.equals(gameData.whiteUsername())) {
+                    throw new UnauthorizedException("You cannot move when it is not your turn.");
+                } else if (teamTurn == ChessGame.TeamColor.BLACK && !username.equals(gameData.blackUsername())) {
+                    throw new UnauthorizedException("You cannot move when it is not your turn.");
                 }
             } else {
                 throw new UnauthorizedException("Only players can make moves.");
