@@ -77,6 +77,20 @@ public class WebSocketService {
         var gameData = dataAccess.getGame(gameID);
         var pool = gameConnectionPoolMap.get(gameID);
         try {
+            var teamTurn = gameData.game().getTeamTurn();
+            switch (teamTurn) {
+                case WHITE -> {
+                    if (!username.equals(gameData.whiteUsername())) {
+                        throw new UnauthorizedException("Not authorized to make that move.");
+                    }
+                }
+                case BLACK -> {
+                    if (!username.equals(gameData.blackUsername())) {
+                        throw new UnauthorizedException("Not authorized to make that move.");
+                    }
+                }
+            }
+
             gameData.game().makeMove(move);
             dataAccess.updateGame(gameID, gameData);
 
@@ -84,7 +98,7 @@ public class WebSocketService {
             pool.sendMessage(new NotificationMessage(move.toString()), ONLY_OTHERS, username);
 
             var game = gameData.game();
-            var teamTurn = game.getTeamTurn();
+            teamTurn = game.getTeamTurn();
             String currentUsername = (teamTurn == ChessGame.TeamColor.WHITE) ? gameData.whiteUsername() : gameData.blackUsername();
 
             if (game.isInCheck(teamTurn)) {
