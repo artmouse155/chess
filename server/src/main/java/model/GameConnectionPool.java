@@ -53,22 +53,26 @@ public class GameConnectionPool {
         return (whitePlayer == null && blackPlayer == null && observers.isEmpty());
     }
 
+    private boolean canSend(BroadcastType type, String senderUsername, GameParticipant reciever) {
+        return (reciever != null) && switch (type) {
+            case ALL -> true;
+            case ONLY_OTHERS -> !reciever.username().equals(senderUsername);
+            case ONLY_SELF -> reciever.username().equals(senderUsername);
+        };
+    }
+
     public void sendMessage(ServerMessage message, BroadcastType type, String senderUsername) {
 
-        if (
-                whitePlayer != null &&
-                        (
-                                (type == BroadcastType.ALL) ||
-                                        !whitePlayer.username().equals(senderUsername))) {
+        if (canSend(type, senderUsername, whitePlayer)) {
             whitePlayer.sendMessage(message);
         }
 
-        if (blackPlayer != null && ((type == BroadcastType.ALL) || !blackPlayer.username().equals(senderUsername))) {
+        if (canSend(type, senderUsername, blackPlayer)) {
             blackPlayer.sendMessage(message);
         }
 
         for (final var participant : observers) {
-            if (participant != null && ((type == BroadcastType.ALL) || !participant.username().equals(senderUsername))) {
+            if (canSend(type, senderUsername, participant)) {
                 participant.sendMessage(message);
             }
         }
