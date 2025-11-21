@@ -41,7 +41,7 @@ public class BoardPainter {
             new Tile(" ", BORDER_BG_COLOR, BORDER_TEXT_COLOR)
     );
 
-    public static void displayBoard(ChessBoard board, boolean reversed) {
+    public static String displayBoard(ChessBoard board, boolean reversed) {
         List<List<Tile>> printGrid = new ArrayList<List<Tile>>();
 
 
@@ -117,21 +117,23 @@ public class BoardPainter {
             printGrid = printGrid.reversed();
         }
 
-        renderPrintGrid(printGrid);
+        return renderPrintGrid(printGrid);
     }
 
-    private static void renderPrintGrid(List<List<Tile>> printGrid) {
+    private static String renderPrintGrid(List<List<Tile>> printGrid) {
+        String output = "";
         for (final var row : printGrid) {
             for (final var tile : row) {
-                System.out.printf("%s%s%s%s%s",
+                output += String.format("%s%s%s%s%s",
                         tile.bgColor,
                         tile.textColor,
                         TILE_PADDING,
                         tile.body,
                         TILE_PADDING);
             }
-            System.out.printf("%s%s%n", RESET_BG_COLOR, RESET_TEXT_COLOR);
+            output += String.format("%s%s%n", RESET_BG_COLOR, RESET_TEXT_COLOR);
         }
+        return output;
     }
 
 

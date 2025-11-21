@@ -19,6 +19,7 @@ public class ChessGameHandler extends Handler {
 
     private final WebSocketFacade webSocketFacade;
     private final Consumer<String> onWebSocketMessage;
+    private ChessGame chessGame;
 
     private final String playerHelp = """
             m <move>        | Make a move
@@ -48,6 +49,8 @@ public class ChessGameHandler extends Handler {
         this.username = authData.username();
         this.onWebSocketMessage = onWebSocketMessage;
         webSocketFacade = new WebSocketFacade(url, authData.authToken(), gameID, this::formatWebSocketResponse);
+
+        webSocketFacade.sendCommand(UserGameCommand.CommandType.CONNECT);
     }
 
     public ChessGameClient.JoinType getJoinType() {
@@ -80,12 +83,13 @@ public class ChessGameHandler extends Handler {
 
     public String redraw(String... params) {
 
-        var chessBoard = new ChessBoard();
-        chessBoard.resetBoard();
+        if (chessGame == null) {
+            return "Please wait.\n";
+        }
 
-        BoardPainter.displayBoard(chessBoard, (joinType == ChessGameClient.JoinType.BLACK));
 
-        return "Board redrawn.\n";
+        return String.format("%sBoard drawn.\n",
+                BoardPainter.displayBoard(chessGame.getBoard(), (joinType == ChessGameClient.JoinType.BLACK)));
     }
 
     public String resign(String... params) {
@@ -104,6 +108,7 @@ public class ChessGameHandler extends Handler {
     }
 
     private String formatServerLoadGame(ChessGame chessGame) {
+        this.chessGame = chessGame;
         return String.format("%s", redraw());
     }
 

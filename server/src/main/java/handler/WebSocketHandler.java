@@ -26,9 +26,9 @@ public class WebSocketHandler {
         return new AuthData(authtoken, "web_socket_handler_username");
     }
 
-    public ServerMessage connect(String authtoken, int gameID) throws ResponseException {
+    public ServerMessage connect(String username, int gameID) throws ResponseException {
         try {
-            var chessGame = wsService.connect(authtoken, gameID);
+            var chessGame = wsService.connect(username, gameID);
             return new LoadGameMessage(chessGame);
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e.getMessage());

@@ -9,11 +9,12 @@ public class WebSocketService {
 
     private final DataAccess dataAccess;
 
+
     public WebSocketService() throws DataAccessException {
         dataAccess = new SQLDataAccess();
     }
 
-    public ChessGame connect(String authtoken, int gameID) throws DataAccessException {
+    public ChessGame connect(String username, int gameID) throws DataAccessException {
         return dataAccess.getGame(gameID).game();
     }
 }

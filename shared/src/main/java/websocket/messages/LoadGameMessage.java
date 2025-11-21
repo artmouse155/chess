@@ -4,14 +4,14 @@ import chess.ChessGame;
 
 public class LoadGameMessage extends ServerMessage {
 
-    private final ChessGame chessGame;
+    private final ChessGame game;
 
     public LoadGameMessage(ChessGame chessGame) {
         super(ServerMessageType.LOAD_GAME);
-        this.chessGame = chessGame;
+        this.game = chessGame;
     }
 
     public ChessGame getChessGame() {
-        return chessGame;
+        return game;
     }
 }
