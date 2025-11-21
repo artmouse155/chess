@@ -26,9 +26,14 @@ import static model.GameConnectionPool.BroadcastType.*;
 
 public class WebSocketService {
 
+    private record ConnectionID(String username, int gameID) {
+    }
+
+    ;
+
     private final DataAccess dataAccess;
     private final Map<Integer, GameConnectionPool> gameConnectionPoolMap = new HashMap<>();
-
+    private final Map<Session, ConnectionID> connections = new HashMap<>();
 
     public WebSocketService() throws DataAccessException {
         dataAccess = new SQLDataAccess();
@@ -49,6 +54,8 @@ public class WebSocketService {
     }
 
     public void connect(Session session, String username, int gameID) throws DataAccessException, IOException {
+
+        connections.put(session, new ConnectionID(username, gameID));
 
         if (!gameConnectionPoolMap.containsKey(gameID)) {
             gameConnectionPoolMap.put(gameID, new GameConnectionPool());
@@ -162,6 +169,13 @@ public class WebSocketService {
     public void echo(String message) throws IOException {
         for (final var pool : gameConnectionPoolMap.values()) {
             pool.sendMessage(new NotificationMessage(String.format("Echo: %s", message)), ALL, null);
+        }
+    }
+
+    public void disconnect(Session session) throws BadRequestException, IOException, DataAccessException {
+        if (connections.containsKey(session)) {
+            var connectionID = connections.get(session);
+            leave(connectionID.username(), connectionID.gameID());
         }
     }
 }

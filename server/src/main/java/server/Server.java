@@ -1,7 +1,5 @@
 package server;
 
-import chess.ChessMove;
-import chess.ChessPosition;
 import com.google.gson.Gson;
 
 import handler.Handler;
@@ -11,16 +9,13 @@ import handler.exception.ResponseException;
 import io.javalin.*;
 import io.javalin.http.Context;
 
+import io.javalin.websocket.WsCloseContext;
 import io.javalin.websocket.WsMessageContext;
 import model.*;
-import org.eclipse.jetty.websocket.api.Session;
 import websocket.commands.EchoCommand;
 import websocket.commands.MakeMoveCommand;
 import websocket.commands.UserGameCommand;
 import websocket.messages.ErrorMessage;
-import websocket.messages.ServerMessage;
-
-import java.util.function.Function;
 
 
 public class Server {
@@ -50,7 +45,7 @@ public class Server {
                 System.out.println("Websocket connected");
             });
             ws.onMessage(this::webSocketMessage);
-            ws.onClose(_ -> System.out.println("Websocket closed"));
+            ws.onClose(this::webSocketClose);
         });
 
         server.exception(ResponseException.class, this::exceptionHandler);
@@ -124,7 +119,7 @@ public class Server {
         ctx.result(res.toString());
     }
 
-    public void webSocketMessage(WsMessageContext ctx) throws ResponseException {
+    public void webSocketMessage(WsMessageContext ctx) {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.message(), UserGameCommand.class);
         String authToken = req.getAuthToken();
@@ -144,6 +139,10 @@ public class Server {
         } catch (ResponseException e) {
             ctx.send(new ErrorMessage(e.getMessage()).toString());
         }
+    }
+
+    public void webSocketClose(WsCloseContext ctx) throws ResponseException {
+        wsHandler.disconnect(ctx.session);
     }
 
     private void exceptionHandler(ResponseException ex, Context ctx) {

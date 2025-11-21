@@ -5,6 +5,7 @@ import dataaccess.DataAccessException;
 import handler.exception.InternalServerErrorException;
 import handler.exception.ResponseException;
 import model.AuthData;
+import org.eclipse.jetty.util.IO;
 import org.eclipse.jetty.websocket.api.Session;
 import service.WebSocketService;
 
@@ -62,6 +63,14 @@ public class WebSocketHandler {
         try {
             wsService.echo(message);
         } catch (IOException e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
+    }
+
+    public void disconnect(Session session) throws ResponseException {
+        try {
+            wsService.disconnect(session);
+        } catch (DataAccessException | IOException e) {
             throw new InternalServerErrorException(e.getMessage());
         }
     }

@@ -16,7 +16,7 @@ public class GameConnectionPool {
 
     private GameParticipant whitePlayer = null;
     private GameParticipant blackPlayer = null;
-    private Set<GameParticipant> observers = new HashSet<>();
+    private final Set<GameParticipant> observers = new HashSet<>();
 
     public String whiteUsername() {
         return (whitePlayer == null) ? null : whitePlayer.username();
@@ -54,17 +54,16 @@ public class GameConnectionPool {
         return (whitePlayer == null && blackPlayer == null && observers.isEmpty());
     }
 
-    private boolean canSend(BroadcastType type, String senderUsername, GameParticipant reciever) {
-        return (reciever != null) && switch (type) {
+    private boolean canSend(BroadcastType type, String senderUsername, GameParticipant receiver) {
+        return (receiver != null) && switch (type) {
             case ALL -> true;
-            case ONLY_OTHERS -> !reciever.username().equals(senderUsername);
-            case ONLY_SELF -> reciever.username().equals(senderUsername);
+            case ONLY_OTHERS -> !receiver.username().equals(senderUsername);
+            case ONLY_SELF -> receiver.username().equals(senderUsername);
         };
     }
 
     public void sendMessage(ServerMessage message, BroadcastType type, String senderUsername) throws IOException {
 
-        flushInactive();
 
         if (canSend(type, senderUsername, whitePlayer)) {
             whitePlayer.sendMessage(message);
@@ -81,19 +80,4 @@ public class GameConnectionPool {
         }
     }
 
-    private void flushInactive() {
-        if (whitePlayer != null) {
-            if (whitePlayer.isClosed()) {
-                removeWhitePlayer();
-            }
-        }
-
-        if (blackPlayer != null) {
-            if (blackPlayer.isClosed()) {
-                removeBlackPlayer();
-            }
-        }
-
-        observers.removeIf(participant -> participant != null && participant.isClosed());
-    }
 }
