@@ -14,6 +14,8 @@ import io.javalin.http.Context;
 import io.javalin.websocket.WsMessageContext;
 import model.*;
 import org.eclipse.jetty.websocket.api.Session;
+import websocket.commands.EchoCommand;
+import websocket.commands.MakeMoveCommand;
 import websocket.commands.UserGameCommand;
 import websocket.messages.ErrorMessage;
 import websocket.messages.ServerMessage;
@@ -125,20 +127,19 @@ public class Server {
     public void webSocketMessage(WsMessageContext ctx) throws ResponseException {
         var serializer = new Gson();
         var req = serializer.fromJson(ctx.message(), UserGameCommand.class);
-        String authtoken = req.getAuthToken();
+        String authToken = req.getAuthToken();
         int gameID = req.getGameID();
 
         try {
-            var authData = wsHandler.handleAuth(authtoken, gameID);
+            var authData = wsHandler.handleAuth(authToken, gameID);
             String username = authData.username();
-            String body = req.getCommandBody();
 
             switch (req.getCommandType()) {
                 case CONNECT -> wsHandler.connect(ctx.session, username, gameID);
-                case MAKE_MOVE -> wsHandler.makeMove(username, gameID, new ChessMove(new ChessPosition(0, 0), new ChessPosition(0, 0)));
+                case MAKE_MOVE -> wsHandler.makeMove(username, gameID, serializer.fromJson(ctx.message(), MakeMoveCommand.class).getMove());
                 case LEAVE -> wsHandler.leave(username, gameID);
                 case RESIGN -> wsHandler.resign(username, gameID);
-                case ECHO -> wsHandler.echo(body);
+                case ECHO -> wsHandler.echo(serializer.fromJson(ctx.message(), EchoCommand.class).getEcho());
             }
         } catch (ResponseException e) {
             ctx.send(new ErrorMessage(e.getMessage()).toString());

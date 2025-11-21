@@ -4,8 +4,8 @@ public class EchoCommand extends UserGameCommand {
 
     private final String echo;
 
-    public EchoCommand(UserGameCommand.CommandType commandType, String authToken, Integer gameID, String echo) {
-        super(commandType, authToken, gameID);
+    public EchoCommand(String authToken, Integer gameID, String echo) {
+        super(CommandType.ECHO, authToken, gameID);
         this.echo = echo;
     }
 

@@ -106,9 +106,9 @@ public class WebSocketService {
         }
         var pool = gameConnectionPoolMap.get(gameID);
 
-        if (pool.whiteUsername().equals(username)) {
+        if (username.equals(pool.whiteUsername())) {
             pool.removeWhitePlayer();
-        } else if (pool.whiteUsername().equals(username)) {
+        } else if (username.equals(pool.blackUsername())) {
             pool.removeBlackPlayer();
         } else {
             pool.removeObserver(username);
