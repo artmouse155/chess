@@ -1,4 +1,7 @@
-package client;
+package client.repl;
+
+import client.Handler;
+import client.UIHandler;
 
 import java.util.Collection;
 import java.util.Set;

@@ -6,6 +6,7 @@ import chess.ChessPosition;
 import client.ClientException;
 import client.Handler;
 import client.painter.BoardPainter;
+import client.repl.ChessGameREPL;
 import com.google.gson.Gson;
 import model.AuthData;
 import websocket.commands.UserGameCommand;

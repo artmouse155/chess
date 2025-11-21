@@ -1,4 +1,7 @@
-package client;
+package client.repl;
+
+import client.ClientException;
+import client.Handler;
 
 import java.util.Arrays;
 import java.util.Collection;

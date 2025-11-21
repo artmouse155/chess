@@ -1,4 +1,4 @@
-import client.UIREPL;
+import client.repl.UIREPL;
 
 public class Main {
     public static void main(String[] args) {

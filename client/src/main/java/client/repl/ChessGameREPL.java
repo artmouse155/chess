@@ -1,7 +1,7 @@
-package client.websocket;
+package client.repl;
 
-import client.REPL;
 import client.Handler;
+import client.websocket.ChessGameHandler;
 import model.AuthData;
 
 import java.util.*;
