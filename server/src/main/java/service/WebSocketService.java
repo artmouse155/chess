@@ -71,7 +71,7 @@ public class WebSocketService {
     }
 
     public void makeMove(String username, int gameID, ChessMove move) throws DataAccessException, IOException, ResponseException {
-        if (!dataAccess.hasGame(gameID)) {
+        if (!gameConnectionPoolMap.containsKey(gameID)) {
             throw new BadRequestException("Invalid Game ID.");
         }
         var gameData = dataAccess.getGame(gameID);
@@ -100,13 +100,35 @@ public class WebSocketService {
         }
     }
 
-    public void leave(String username, int gameID) {
+    public void leave(String username, int gameID) throws DataAccessException, IOException, BadRequestException {
+        if (!gameConnectionPoolMap.containsKey(gameID)) {
+            throw new BadRequestException("Invalid Game ID.");
+        }
+        var pool = gameConnectionPoolMap.get(gameID);
+
+        if (pool.whiteUsername().equals(username)) {
+            pool.removeWhitePlayer();
+        } else if (pool.whiteUsername().equals(username)) {
+            pool.removeBlackPlayer();
+        } else {
+            pool.removeObserver(username);
+        }
+
+        pool.sendMessage(new NotificationMessage(String.format("%s left the game", username)), ONLY_OTHERS, username);
     }
 
-    public void resign(String username, int gameID) {
+    public void resign(String username, int gameID) throws DataAccessException, IOException, BadRequestException {
+        if (!gameConnectionPoolMap.containsKey(gameID)) {
+            throw new BadRequestException("Invalid Game ID.");
+        }
+        var pool = gameConnectionPoolMap.get(gameID);
+
+        pool.sendMessage(new NotificationMessage(String.format("%s res", username)), ALL, username);
     }
 
-    public void echo(String message) {
-
+    public void echo(String message) throws IOException {
+        for (final var pool : gameConnectionPoolMap.values()) {
+            pool.sendMessage(new NotificationMessage(String.format("Echo: %s", message)), ALL, null);
+        }
     }
 }
