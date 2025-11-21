@@ -1,4 +1,4 @@
-import client.UIClient;
+import client.UIREPL;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,7 +9,7 @@ public class Main {
         }
 
         try {
-            new UIClient(serverUrl, wsUrl).run();
+            new UIREPL(serverUrl, wsUrl).run();
 
         } catch (Throwable ex) {
             System.out.printf("Unable to start server: %s%n", ex.getMessage());

@@ -1,7 +1,6 @@
 package client.websocket;
 
-import client.Client;
-import client.ClientException;
+import client.REPL;
 import client.Handler;
 import model.AuthData;
 
@@ -9,7 +8,7 @@ import java.util.*;
 
 import static ui.EscapeSequences.*;
 
-public class ChessGameClient extends Client {
+public class ChessGameREPL extends REPL {
 
     public enum JoinType {
         BLACK,
@@ -33,7 +32,7 @@ public class ChessGameClient extends Client {
     private final ChessGameHandler chessGameHandler;
 
 
-    public ChessGameClient(String url, JoinType joinType, String gameName, AuthData authData, int gameID) throws Exception {
+    public ChessGameREPL(String url, JoinType joinType, String gameName, AuthData authData, int gameID) throws Exception {
         chessGameHandler = new ChessGameHandler(url, joinType, gameName, authData, gameID,
                 this::onWebSocketMessage);
     }

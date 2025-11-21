@@ -8,7 +8,7 @@ import static ui.EscapeSequences.*;
 import static ui.EscapeSequences.RESET_TEXT_BOLD_FAINT;
 import static ui.EscapeSequences.RESET_TEXT_COLOR;
 
-public abstract class Client {
+public abstract class REPL {
 
     protected static final String RESET_ALL = RESET_BG_COLOR + RESET_TEXT_COLOR + RESET_TEXT_BOLD_FAINT;
     private static final String ERROR_FORMAT = SET_TEXT_COLOR_RED;

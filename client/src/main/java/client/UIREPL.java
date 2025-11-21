@@ -3,13 +3,13 @@ package client;
 import java.util.Collection;
 import java.util.Set;
 
-public class UIClient extends Client {
+public class UIREPL extends REPL {
 
     private final UIHandler uiHandler;
 
     private static final Collection<String> TERMINAL_STRINGS = Set.of("quit");
 
-    public UIClient(String serverUrl, String wsUrl) {
+    public UIREPL(String serverUrl, String wsUrl) {
         uiHandler = new UIHandler(serverUrl, wsUrl);
 
     }

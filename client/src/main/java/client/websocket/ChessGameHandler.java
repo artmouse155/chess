@@ -47,11 +47,11 @@ public class ChessGameHandler extends Handler {
             help            | See list of commands
             """;
 
-    private final ChessGameClient.JoinType joinType;
+    private final ChessGameREPL.JoinType joinType;
     private final String gameName;
     private final String username;
 
-    public ChessGameHandler(String url, ChessGameClient.JoinType joinType, String gameName, AuthData authData, int gameID,
+    public ChessGameHandler(String url, ChessGameREPL.JoinType joinType, String gameName, AuthData authData, int gameID,
                             Consumer<String> onWebSocketMessage) throws Exception {
         this.joinType = joinType;
         this.gameName = gameName;
@@ -62,7 +62,7 @@ public class ChessGameHandler extends Handler {
         webSocketFacade.sendCommand(UserGameCommand.CommandType.CONNECT);
     }
 
-    public ChessGameClient.JoinType getJoinType() {
+    public ChessGameREPL.JoinType getJoinType() {
         return joinType;
     }
 
@@ -106,7 +106,7 @@ public class ChessGameHandler extends Handler {
         return String.format("%sBoard drawn.\n",
                 BoardPainter.displayBoard(
                         chessGame.getBoard(),
-                        (joinType == ChessGameClient.JoinType.BLACK),
+                        (joinType == ChessGameREPL.JoinType.BLACK),
                         highlightPosition,
                         validMoves
                 )
@@ -114,7 +114,7 @@ public class ChessGameHandler extends Handler {
     }
 
     public String resign(String... params) throws ClientException {
-        
+
         webSocketFacade.resign();
         return "";
     }

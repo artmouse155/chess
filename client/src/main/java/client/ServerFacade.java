@@ -1,6 +1,6 @@
 package client;
 
-import client.websocket.ChessGameClient;
+import client.websocket.ChessGameREPL;
 import com.google.gson.Gson;
 import model.*;
 
@@ -82,13 +82,13 @@ public class ServerFacade {
         handleResponse(response, EmptyResponse.class);
     }
 
-    public ChessGameClient newChessGameClient(String username, String gameName, ChessGameClient.JoinType joinType, int gameID) throws ClientException {
+    public ChessGameREPL newChessGameClient(String username, String gameName, ChessGameREPL.JoinType joinType, int gameID) throws ClientException {
         if (username == null || gameName == null || joinType == null || gameID < 1) {
             throw new ClientException("Error: Invalid request.");
         }
 
         try {
-            return new ChessGameClient(wsUrl + "/ws", joinType, gameName, new AuthData(authToken, username), gameID);
+            return new ChessGameREPL(wsUrl + "/ws", joinType, gameName, new AuthData(authToken, username), gameID);
         } catch (Exception e) {
             throw new ClientException(String.format("Websocket failed. Error: %s%n", e.getMessage()));
         }

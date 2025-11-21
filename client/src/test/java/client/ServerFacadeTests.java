@@ -1,7 +1,7 @@
 package client;
 
 import chess.ChessGame;
-import client.websocket.ChessGameClient;
+import client.websocket.ChessGameREPL;
 import handler.exception.ResponseException;
 import model.*;
 import org.junit.jupiter.api.*;
@@ -133,14 +133,14 @@ public class ServerFacadeTests {
 
     @Test
     public void newChessGameClientPositive() {
-        Assertions.assertDoesNotThrow(() -> serverFacade.newChessGameClient(testUser.username(), testGameName, ChessGameClient.JoinType.OBSERVER,
+        Assertions.assertDoesNotThrow(() -> serverFacade.newChessGameClient(testUser.username(), testGameName, ChessGameREPL.JoinType.OBSERVER,
                 1));
     }
 
     @Test
     public void newChessGameClientNegative() throws ClientException {
         Assertions.assertThrowsExactly(ClientException.class, () -> serverFacade.newChessGameClient(null, "Game Name",
-                ChessGameClient.JoinType.BLACK, 1));
+                ChessGameREPL.JoinType.BLACK, 1));
     }
 
 }
