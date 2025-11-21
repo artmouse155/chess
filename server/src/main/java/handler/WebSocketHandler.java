@@ -34,15 +34,35 @@ public class WebSocketHandler {
         }
     }
 
-    public void makeMove(ChessMove move) throws ResponseException {
+    public void makeMove(String username, ChessMove move) throws ResponseException {
+        try {
+            wsService.makeMove(username, move);
+        } catch (DataAccessException | IOException e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
 
     public void leave(String username, int gameID) throws ResponseException {
+        try {
+            wsService.leave(username, gameID);
+        } catch (DataAccessException | IOException e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
 
     public void resign(String username, int gameID) throws ResponseException {
+        try {
+            wsService.resign(username, gameID);
+        } catch (DataAccessException | IOException e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
 
     public void echo(String message) throws ResponseException {
+        try {
+            wsService.echo(message);
+        } catch (IOException e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
 }

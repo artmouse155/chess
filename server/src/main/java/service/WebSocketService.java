@@ -1,6 +1,7 @@
 package service;
 
 import chess.ChessGame;
+import chess.ChessMove;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import dataaccess.SQLDataAccess;
@@ -67,5 +68,17 @@ public class WebSocketService {
 
         pool.sendMessage(new LoadGameMessage(gameData.game()), ONLY_SELF, username);
         pool.sendMessage(new NotificationMessage(connectMessage), ONLY_OTHERS, username);
+    }
+
+    public void makeMove(String username, ChessMove move) {
+    }
+
+    public void leave(String username, int gameID) {
+    }
+
+    public void resign(String username, int gameID) {
+    }
+
+    public void echo(String message) {
     }
 }
