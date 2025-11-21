@@ -7,6 +7,7 @@ import client.ClientException;
 import client.Handler;
 import client.painter.BoardPainter;
 import client.repl.ChessGameREPL;
+import client.repl.ResignREPL;
 import com.google.gson.Gson;
 import model.AuthData;
 import websocket.commands.UserGameCommand;
@@ -115,9 +116,13 @@ public class ChessGameHandler extends Handler {
     }
 
     public String resign(String... params) throws ClientException {
-
-        webSocketFacade.resign();
-        return "";
+        boolean doResign = (new ResignREPL().run()).equals("y");
+        if (doResign) {
+            webSocketFacade.resign();
+            return "";
+        } else {
+            return "Resign aborted.\n";
+        }
     }
 
     public String leave(String... params) throws ClientException {
