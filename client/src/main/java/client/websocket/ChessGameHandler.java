@@ -2,11 +2,13 @@ package client.websocket;
 
 import chess.ChessGame;
 import chess.ChessMove;
+import chess.ChessPiece;
 import chess.ChessPosition;
 import client.ClientException;
 import client.Handler;
 import client.painter.BoardPainter;
 import client.repl.ChessGameREPL;
+import client.repl.PromoteREPL;
 import client.repl.ResignREPL;
 import com.google.gson.Gson;
 import model.AuthData;
@@ -87,7 +89,37 @@ public class ChessGameHandler extends Handler {
 
     public String makeMove(String... params) throws ClientException {
         validateArgs(params, "m <source> <destination>\n", CHESS_POSITION, CHESS_POSITION);
-        webSocketFacade.makeMove(ChessMove.fromString(params[0], params[1]));
+        var move = ChessMove.fromString(params[0], params[1]);
+        var piece = chessGame.getBoard().getPiece(move.getStartPosition());
+        if (piece != null && piece.getPieceType() == ChessPiece.PieceType.PAWN && piece.pieceMoves(
+                chessGame.getBoard(), move.getStartPosition()
+        ).contains(
+                new ChessMove(
+                        move.getStartPosition(),
+                        move.getEndPosition(),
+                        ChessPiece.PieceType.QUEEN
+                ))) {
+
+            String result = (new PromoteREPL().run());
+            switch (result) {
+                case "q" -> {
+                    move = new ChessMove(move.getStartPosition(), move.getEndPosition(), ChessPiece.PieceType.QUEEN);
+                }
+                case "b" -> {
+                    move = new ChessMove(move.getStartPosition(), move.getEndPosition(), ChessPiece.PieceType.BISHOP);
+                }
+                case "k" -> {
+                    move = new ChessMove(move.getStartPosition(), move.getEndPosition(), ChessPiece.PieceType.KNIGHT);
+                }
+                case "r" -> {
+                    move = new ChessMove(move.getStartPosition(), move.getEndPosition(), ChessPiece.PieceType.ROOK);
+                }
+                case "c" -> {
+                    return "Promotion aborted.\n";
+                }
+            }
+        }
+        webSocketFacade.makeMove(move);
         return "";
     }
 
