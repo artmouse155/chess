@@ -28,15 +28,12 @@ public class UIREPL extends REPL {
     }
 
     @Override
-    protected void printPrompt() {
-
-        String prompt = switch (uiHandler.getAuthState()) {
+    protected String getPrompt() {
+        return switch (uiHandler.getAuthState()) {
             case AUTHENTICATED -> String.format("%s ♕ 240 Chess ♕ %s %s %s> ", APP_TITLE_FORMAT, USERNAME_FORMAT, uiHandler.getUsername(), RESET_ALL);
             case UNAUTHENTICATED -> String.format("%s ♕ 240 Chess ♕ %s> ", APP_TITLE_FORMAT, RESET_ALL);
         };
-        System.out.print(prompt);
     }
-
 
     @Override
     protected Handler.TerminalFunction getTerminalCommand(String cmd) {

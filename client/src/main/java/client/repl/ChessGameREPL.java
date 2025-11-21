@@ -58,14 +58,14 @@ public class ChessGameREPL extends REPL {
     }
 
     @Override
-    protected void printPrompt() {
+    protected String getPrompt() {
         String gameNameFormat = switch (chessGameHandler.getJoinType()) {
             case WHITE -> WHITE_GAME_NAME_FORMAT;
             case BLACK -> BLACK_GAME_NAME_FORMAT;
             case OBSERVER -> OBSERVER_GAME_NAME_FORMAT;
 
         };
-        System.out.printf("%s ♕ 240 Chess ♕ %s %s %s %s %s> ", APP_TITLE_FORMAT, gameNameFormat, chessGameHandler.getGameName(),
+        return String.format("%s ♕ 240 Chess ♕ %s %s %s %s %s> ", APP_TITLE_FORMAT, gameNameFormat, chessGameHandler.getGameName(),
                 USERNAME_FORMAT, chessGameHandler.getUserName(), RESET_ALL);
     }
 
@@ -94,7 +94,6 @@ public class ChessGameREPL extends REPL {
     }
 
     private void onWebSocketMessage(String message) {
-        System.out.printf("\r%s%n", message);
-        printPrompt();
+        System.out.printf("\r%s%n%s", message, getPrompt());
     }
 }

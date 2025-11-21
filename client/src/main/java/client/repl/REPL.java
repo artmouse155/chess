@@ -37,17 +37,15 @@ public abstract class REPL {
         }
     }
 
-    protected abstract Collection<String> getTerminalStrings();
-
-    protected abstract String getIntroMessage();
-
-    protected String formatError(ClientException ex) {
+    private String formatError(ClientException ex) {
         return String.format("%s%s%s%s", ERROR_FORMAT, ex.getMessage(), HELP_FORMAT, ex.getHelp());
     }
 
-    protected abstract void printPrompt();
+    private void printPrompt() {
+        System.out.print(getPrompt());
+    }
 
-    protected String eval(String input) {
+    private String eval(String input) {
         try {
             String[] tokens = input.split(" +");
             String cmd;
@@ -64,6 +62,12 @@ public abstract class REPL {
             return formatError(ex);
         }
     }
+
+    protected abstract Collection<String> getTerminalStrings();
+
+    protected abstract String getIntroMessage();
+
+    protected abstract String getPrompt();
 
     protected abstract Handler.TerminalFunction getTerminalCommand(String cmd);
 }
