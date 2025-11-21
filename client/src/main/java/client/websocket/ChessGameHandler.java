@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 
 public class ChessGameHandler extends Handler {
 
-    private static final String CHESS_POSITION = "[a-h][1-8]";
+    private static final String CHESS_POSITION = "[A-H][1-8]";
 
     private final WebSocketFacade webSocketFacade;
     private final Consumer<String> onWebSocketMessage;
@@ -39,6 +39,7 @@ public class ChessGameHandler extends Handler {
             """;
 
     private final String observerHelp = """
+            h <position>    | Highlight available moves
             redraw          | Redraw the game board
             leave           | Leave game
             echo <message>  | Echo a message to test that WebSocket works

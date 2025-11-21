@@ -33,8 +33,8 @@ public class ChessPosition {
     }
 
     public static ChessPosition fromString(String s) {
-        int row = letterToInt(s.charAt(0));
-        int col = Integer.parseInt(s.substring(1));
+        int col = letterToInt(s.charAt(0));
+        int row = Integer.parseInt(s.substring(1));
         return new ChessPosition(row, col);
     }
 

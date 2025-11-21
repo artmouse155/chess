@@ -94,6 +94,7 @@ public class ChessGameClient extends Client {
             }
             Handler.TerminalFunction terminalFunction = switch (chessGameHandler.getJoinType()) {
                 case OBSERVER -> switch (cmd) {
+                    case "h" -> chessGameHandler::highlight;
                     case "redraw" -> chessGameHandler::redraw;
                     case "leave" -> chessGameHandler::leave;
                     case "echo" -> chessGameHandler::echo;
