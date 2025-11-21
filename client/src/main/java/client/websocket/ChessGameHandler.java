@@ -103,7 +103,7 @@ public class ChessGameHandler extends Handler {
 
     public String echo(String... params) throws ClientException {
         validateArgs(params, "echo <msg>\n", STRING);
-        webSocketFacade.sendCommand(UserGameCommand.CommandType.ECHO, params[0]);
+        webSocketFacade.sendEcho(params[0]);
         return "Message sent\n";
     }
 

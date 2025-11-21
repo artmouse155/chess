@@ -7,6 +7,7 @@ import jakarta.websocket.EndpointConfig;
 import jakarta.websocket.MessageHandler;
 import jakarta.websocket.Session;
 import jakarta.websocket.WebSocketContainer;
+import websocket.commands.EchoCommand;
 import websocket.commands.UserGameCommand;
 
 import java.io.IOException;
@@ -15,12 +16,12 @@ import java.util.function.Consumer;
 
 public class WebSocketFacade extends Endpoint {
     public final Session session;
-    private final String authtoken;
+    private final String authToken;
     private final int gameID;
 
-    public WebSocketFacade(String url, String authtoken, int gameID, Consumer<String> onMessage) throws Exception {
+    public WebSocketFacade(String url, String authToken, int gameID, Consumer<String> onMessage) throws Exception {
         URI uri = new URI(url);
-        this.authtoken = authtoken;
+        this.authToken = authToken;
         this.gameID = gameID;
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         session = container.connectToServer(this, uri);
@@ -42,12 +43,12 @@ public class WebSocketFacade extends Endpoint {
         }
     }
 
-    public void sendCommand(UserGameCommand.CommandType type, String body) throws ClientException {
-        send(new UserGameCommand(type, authtoken, gameID, body).toString());
+    public void sendEcho(String echo) throws ClientException {
+        send(new EchoCommand(authToken, gameID, echo).toString());
     }
 
     public void sendCommand(UserGameCommand.CommandType type) throws ClientException {
-        send(new UserGameCommand(type, authtoken, gameID).toString());
+        send(new UserGameCommand(type, authToken, gameID).toString());
     }
 
     // This method must be overridden, but we don't have to do anything with it
