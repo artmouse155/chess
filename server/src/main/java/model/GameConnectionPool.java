@@ -19,11 +19,11 @@ public class GameConnectionPool {
     private Set<GameParticipant> observers = new HashSet<>();
 
     public String whiteUsername() {
-        return whitePlayer.username();
+        return (whitePlayer == null) ? null : whitePlayer.username();
     }
 
     public String blackUsername() {
-        return blackPlayer.username();
+        return (blackPlayer == null) ? null : whitePlayer.username();
     }
 
     public void setWhitePlayer(GameParticipant participant) {
