@@ -10,6 +10,7 @@ import io.javalin.*;
 import io.javalin.http.Context;
 
 import io.javalin.websocket.WsCloseContext;
+import io.javalin.websocket.WsConnectContext;
 import io.javalin.websocket.WsMessageContext;
 import model.*;
 import websocket.commands.EchoCommand;
@@ -40,10 +41,7 @@ public class Server {
         server.put("game", this::joinGame);
 
         server.ws("ws", ws -> {
-            ws.onConnect(ctx -> {
-                ctx.enableAutomaticPings();
-                System.out.println("Websocket connected");
-            });
+            ws.onConnect(this::webSocketConnect);
             ws.onMessage(this::webSocketMessage);
             ws.onClose(this::webSocketClose);
         });
@@ -52,6 +50,10 @@ public class Server {
 
         handler = new Handler(true);
         wsHandler = new WebSocketHandler();
+    }
+
+    private void webSocketConnect(WsConnectContext ctx) {
+        ctx.enableAutomaticPings();
     }
 
     public Server(boolean doSql) {

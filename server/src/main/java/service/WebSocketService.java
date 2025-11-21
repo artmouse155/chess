@@ -74,6 +74,8 @@ public class WebSocketService {
             connectMessage = String.format("%s joined as observer", username);
         }
 
+        System.out.printf("📖 [WS] %s connected%n", username);
+
         pool.sendMessage(new LoadGameMessage(gameData.game()), ONLY_SELF, username);
         pool.sendMessage(new NotificationMessage(connectMessage), ONLY_OTHERS, username);
     }
@@ -144,6 +146,7 @@ public class WebSocketService {
             pool.removeObserver(username);
         }
 
+        System.out.printf("📘 [WS] %s disconnected%n", username);
         pool.sendMessage(new NotificationMessage(String.format("%s left the game", username)), ONLY_OTHERS, username);
     }
 
