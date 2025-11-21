@@ -4,6 +4,10 @@ import chess.ChessGame;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import dataaccess.SQLDataAccess;
+import handler.exception.InternalServerErrorException;
+import handler.exception.ResponseException;
+import handler.exception.UnauthorizedException;
+import model.AuthData;
 import model.GameConnectionPool;
 import model.GameParticipant;
 import org.eclipse.jetty.websocket.api.Session;
@@ -25,6 +29,17 @@ public class WebSocketService {
 
     public WebSocketService() throws DataAccessException {
         dataAccess = new SQLDataAccess();
+    }
+
+    public AuthData verifyAuth(String authToken, int gameID) throws ResponseException {
+        try {
+            if (!dataAccess.hasAuth(authToken)) {
+                throw new UnauthorizedException("Invalid authToken.");
+            }
+            return dataAccess.getAuth(authToken);
+        } catch (DataAccessException e) {
+            throw new InternalServerErrorException(e);
+        }
     }
 
     public ChessGame connect(Session session, String username, int gameID) throws DataAccessException, IOException {
