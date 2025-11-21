@@ -6,9 +6,11 @@ import dataaccess.DataAccessException;
 import dataaccess.SQLDataAccess;
 import model.GameConnectionPool;
 import model.GameParticipant;
+import org.eclipse.jetty.websocket.api.Session;
 import websocket.messages.LoadGameMessage;
 import websocket.messages.NotificationMessage;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +27,7 @@ public class WebSocketService {
         dataAccess = new SQLDataAccess();
     }
 
-    public ChessGame connect(String username, int gameID) throws DataAccessException {
+    public ChessGame connect(Session session, String username, int gameID) throws DataAccessException, IOException {
 
         if (!gameConnectionPoolMap.containsKey(gameID)) {
             gameConnectionPoolMap.put(gameID, new GameConnectionPool());
@@ -34,13 +36,13 @@ public class WebSocketService {
         var pool = gameConnectionPoolMap.get(gameID);
         String connectMessage = "";
         if (gameData.whiteUsername().equals(username) && pool.whiteUsername() == null) {
-            pool.setWhitePlayer(new GameParticipant(username));
+            pool.setWhitePlayer(new GameParticipant(session, username));
             connectMessage = String.format("%s joined as white player", username);
         } else if (gameData.blackUsername().equals(username) && pool.blackUsername() == null) {
-            pool.setBlackPlayer(new GameParticipant(username));
+            pool.setBlackPlayer(new GameParticipant(session, username));
             connectMessage = String.format("%s joined as black player", username);
         } else {
-            pool.addObserver(new GameParticipant(username));
+            pool.addObserver(new GameParticipant(session, username));
             connectMessage = String.format("%s joined as observer", username);
         }
 

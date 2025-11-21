@@ -13,6 +13,7 @@ import io.javalin.http.Context;
 
 import io.javalin.websocket.WsMessageContext;
 import model.*;
+import org.eclipse.jetty.websocket.api.Session;
 import websocket.commands.UserGameCommand;
 import websocket.messages.ServerMessage;
 
@@ -131,7 +132,7 @@ public class Server {
         String body = req.getCommandBody();
 
         ServerMessage serverMessage = switch (req.getCommandType()) {
-            case CONNECT -> wsHandler.connect(username, gameID);
+            case CONNECT -> wsHandler.connect(ctx.session, username, gameID);
             case MAKE_MOVE -> wsHandler.makeMove(new ChessMove(new ChessPosition(0, 0), new ChessPosition(0, 0)));
             case LEAVE -> wsHandler.leave(username, gameID);
             case RESIGN -> wsHandler.resign(username, gameID);

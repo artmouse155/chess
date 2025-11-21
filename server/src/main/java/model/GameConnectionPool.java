@@ -2,6 +2,7 @@ package model;
 
 import websocket.messages.ServerMessage;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -61,7 +62,7 @@ public class GameConnectionPool {
         };
     }
 
-    public void sendMessage(ServerMessage message, BroadcastType type, String senderUsername) {
+    public void sendMessage(ServerMessage message, BroadcastType type, String senderUsername) throws IOException {
 
         if (canSend(type, senderUsername, whitePlayer)) {
             whitePlayer.sendMessage(message);

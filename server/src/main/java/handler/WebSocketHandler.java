@@ -5,10 +5,13 @@ import dataaccess.DataAccessException;
 import handler.exception.InternalServerErrorException;
 import handler.exception.ResponseException;
 import model.AuthData;
+import org.eclipse.jetty.websocket.api.Session;
 import service.WebSocketService;
 import websocket.messages.LoadGameMessage;
 import websocket.messages.NotificationMessage;
 import websocket.messages.ServerMessage;
+
+import java.io.IOException;
 
 public class WebSocketHandler {
 
@@ -26,11 +29,11 @@ public class WebSocketHandler {
         return new AuthData(authtoken, "web_socket_handler_username");
     }
 
-    public ServerMessage connect(String username, int gameID) throws ResponseException {
+    public ServerMessage connect(Session session, String username, int gameID) throws ResponseException {
         try {
-            var chessGame = wsService.connect(username, gameID);
+            var chessGame = wsService.connect(session, username, gameID);
             return new LoadGameMessage(chessGame);
-        } catch (DataAccessException e) {
+        } catch (DataAccessException | IOException e) {
             throw new InternalServerErrorException(e.getMessage());
         }
     }
