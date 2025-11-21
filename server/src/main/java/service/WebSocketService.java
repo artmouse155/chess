@@ -4,6 +4,7 @@ import chess.ChessGame;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessException;
 import dataaccess.SQLDataAccess;
+import handler.exception.BadRequestException;
 import handler.exception.InternalServerErrorException;
 import handler.exception.ResponseException;
 import handler.exception.UnauthorizedException;
@@ -36,13 +37,16 @@ public class WebSocketService {
             if (!dataAccess.hasAuth(authToken)) {
                 throw new UnauthorizedException("Invalid authToken.");
             }
+            if (!dataAccess.hasGame(gameID)) {
+                throw new BadRequestException("Invalid Game ID.");
+            }
             return dataAccess.getAuth(authToken);
         } catch (DataAccessException e) {
             throw new InternalServerErrorException(e);
         }
     }
 
-    public ChessGame connect(Session session, String username, int gameID) throws DataAccessException, IOException {
+    public void connect(Session session, String username, int gameID) throws DataAccessException, IOException {
 
         if (!gameConnectionPoolMap.containsKey(gameID)) {
             gameConnectionPoolMap.put(gameID, new GameConnectionPool());
@@ -63,7 +67,5 @@ public class WebSocketService {
 
         pool.sendMessage(new LoadGameMessage(gameData.game()), ONLY_SELF, username);
         pool.sendMessage(new NotificationMessage(connectMessage), ONLY_OTHERS, username);
-
-        return gameData.game();
     }
 }
