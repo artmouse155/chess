@@ -119,7 +119,7 @@ public class ChessGameHandler extends Handler {
 
     public String leave(String... params) throws ClientException {
         webSocketFacade.close();
-        return "";
+        return "leave";
     }
 
     public String echo(String... params) throws ClientException {
