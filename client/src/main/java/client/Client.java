@@ -1,5 +1,6 @@
 package client;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Scanner;
 
@@ -43,5 +44,23 @@ public abstract class Client {
 
     protected abstract void printPrompt();
 
-    protected abstract String eval(String input);
+    protected String eval(String input) {
+        try {
+            String[] tokens = input.split(" +");
+            String cmd;
+            String[] params;
+            if ((tokens.length > 0)) {
+                cmd = tokens[0].toLowerCase();
+                params = Arrays.copyOfRange(tokens, 1, tokens.length);
+            } else {
+                cmd = "";
+                params = new String[]{};
+            }
+            return getTerminalCommand(cmd).evaluate(params);
+        } catch (ClientException ex) {
+            return formatError(ex);
+        }
+    }
+
+    protected abstract Handler.TerminalFunction getTerminalCommand(String cmd);
 }

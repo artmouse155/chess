@@ -1,8 +1,6 @@
 package client;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Scanner;
 import java.util.Set;
 
 public class UIClient extends Client {
@@ -38,40 +36,25 @@ public class UIClient extends Client {
 
 
     @Override
-    protected String eval(String input) {
-        try {
-            String[] tokens = input.split(" +");
-            String cmd;
-            String[] params;
-            if ((tokens.length > 0)) {
-                cmd = tokens[0].toLowerCase();
-                params = Arrays.copyOfRange(tokens, 1, tokens.length);
-            } else {
-                cmd = "";
-                params = new String[]{};
-            }
-            Handler.TerminalFunction terminalFunction = switch (uiHandler.getAuthState()) {
-                case AUTHENTICATED -> switch (cmd) {
-                    case "logout" -> uiHandler::logout;
-                    case "create" -> uiHandler::createGame;
-                    case "list" -> uiHandler::listGame;
-                    case "play" -> uiHandler::playGame;
-                    case "watch" -> uiHandler::observeGame;
-                    case "" -> (String... p) -> "";
-                    default -> uiHandler::help;
-                };
-                case UNAUTHENTICATED -> switch (cmd) {
-                    case "login" -> uiHandler::login;
-                    case "register" -> uiHandler::register;
-                    case "quit" -> uiHandler::quit;
-                    case "" -> (String... p) -> "";
-                    default -> uiHandler::help;
-                };
+    protected Handler.TerminalFunction getTerminalCommand(String cmd) {
+        return switch (uiHandler.getAuthState()) {
+            case AUTHENTICATED -> switch (cmd) {
+                case "logout" -> uiHandler::logout;
+                case "create" -> uiHandler::createGame;
+                case "list" -> uiHandler::listGame;
+                case "play" -> uiHandler::playGame;
+                case "watch" -> uiHandler::observeGame;
+                case "" -> (String... p) -> "";
+                default -> uiHandler::help;
             };
+            case UNAUTHENTICATED -> switch (cmd) {
+                case "login" -> uiHandler::login;
+                case "register" -> uiHandler::register;
+                case "quit" -> uiHandler::quit;
+                case "" -> (String... p) -> "";
+                default -> uiHandler::help;
+            };
+        };
 
-            return terminalFunction.evaluate(params);
-        } catch (ClientException ex) {
-            return formatError(ex);
-        }
     }
 }

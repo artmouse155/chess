@@ -71,43 +71,27 @@ public class ChessGameClient extends Client {
     }
 
     @Override
-    protected String eval(String input) {
-        try {
-            String[] tokens = input.split(" +");
-            String cmd;
-            String[] params;
-            if ((tokens.length > 0)) {
-                cmd = tokens[0].toLowerCase();
-                params = Arrays.copyOfRange(tokens, 1, tokens.length);
-            } else {
-                cmd = "";
-                params = new String[]{};
-            }
-            Handler.TerminalFunction terminalFunction = switch (chessGameHandler.getJoinType()) {
-                case OBSERVER -> switch (cmd) {
-                    case "h" -> chessGameHandler::highlight;
-                    case "redraw" -> chessGameHandler::redraw;
-                    case "leave" -> chessGameHandler::leave;
-                    case "echo" -> chessGameHandler::echo;
-                    case "" -> (String... p) -> "";
-                    default -> chessGameHandler::help;
-                };
-                case BLACK, WHITE -> switch (cmd) {
-                    case "m" -> chessGameHandler::makeMove;
-                    case "h" -> chessGameHandler::highlight;
-                    case "redraw" -> chessGameHandler::redraw;
-                    case "resign" -> chessGameHandler::resign;
-                    case "leave" -> chessGameHandler::leave;
-                    case "echo" -> chessGameHandler::echo;
-                    case "" -> (String... p) -> "";
-                    default -> chessGameHandler::help;
-                };
-
+    protected Handler.TerminalFunction getTerminalCommand(String cmd) {
+        return switch (chessGameHandler.getJoinType()) {
+            case OBSERVER -> switch (cmd) {
+                case "h" -> chessGameHandler::highlight;
+                case "redraw" -> chessGameHandler::redraw;
+                case "leave" -> chessGameHandler::leave;
+                case "echo" -> chessGameHandler::echo;
+                case "" -> (String... p) -> "";
+                default -> chessGameHandler::help;
             };
-            return terminalFunction.evaluate(params);
-        } catch (ClientException ex) {
-            return formatError(ex);
-        }
+            case BLACK, WHITE -> switch (cmd) {
+                case "m" -> chessGameHandler::makeMove;
+                case "h" -> chessGameHandler::highlight;
+                case "redraw" -> chessGameHandler::redraw;
+                case "resign" -> chessGameHandler::resign;
+                case "leave" -> chessGameHandler::leave;
+                case "echo" -> chessGameHandler::echo;
+                case "" -> (String... p) -> "";
+                default -> chessGameHandler::help;
+            };
+        };
     }
 
     private void onWebSocketMessage(String message) {
