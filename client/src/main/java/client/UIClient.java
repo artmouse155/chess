@@ -1,11 +1,15 @@
 package client;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Scanner;
+import java.util.Set;
 
 public class UIClient extends Client {
 
     private final UIHandler uiHandler;
+
+    private static final Collection<String> TERMINAL_STRINGS = Set.of("quit");
 
     public UIClient(String serverUrl, String wsUrl) {
         uiHandler = new UIHandler(serverUrl, wsUrl);
@@ -13,22 +17,13 @@ public class UIClient extends Client {
     }
 
     @Override
-    public void run() {
-        System.out.println("Welcome to Chess!");
-        System.out.print(uiHandler.help());
+    protected Collection<String> getTerminalStrings() {
+        return TERMINAL_STRINGS;
+    }
 
-        Scanner scanner = new Scanner(System.in);
-        var result = "";
-        while (true) {
-            printPrompt();
-            String line = scanner.nextLine();
-            result = eval(line);
-            if (result.equals("quit")) {
-                return;
-            }
-
-            System.out.print(result);
-        }
+    @Override
+    protected String getIntroMessage() {
+        return String.format("Welcome to Chess!%n%s", uiHandler.help());
     }
 
     @Override

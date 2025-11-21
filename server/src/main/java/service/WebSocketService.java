@@ -146,11 +146,14 @@ public class WebSocketService {
             String currentUsername = (teamTurn == ChessGame.TeamColor.WHITE) ? gameData.whiteUsername() : gameData.blackUsername();
 
             if (game.isInCheck(teamTurn)) {
-                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in check", currentUsername, teamTurn)), ALL, username);
+                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in check", currentUsername, teamTurn.toString().toLowerCase())),
+                        ALL, username);
             } else if (game.isInCheckmate(teamTurn)) {
-                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in checkmate", currentUsername, teamTurn)), ALL, username);
+                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in checkmate", currentUsername,
+                        teamTurn.toString().toLowerCase())), ALL, username);
             } else if (game.isInStalemate(teamTurn)) {
-                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in stalemate", currentUsername, teamTurn)), ALL, username);
+                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in stalemate", currentUsername,
+                        teamTurn.toString().toLowerCase())), ALL, username);
             }
 
         } catch (InvalidMoveException e) {

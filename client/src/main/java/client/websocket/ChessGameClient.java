@@ -1,7 +1,5 @@
 package client.websocket;
 
-import chess.ChessBoard;
-import chess.ChessPosition;
 import client.Client;
 import client.ClientException;
 import client.Handler;
@@ -20,6 +18,13 @@ public class ChessGameClient extends Client {
 
     }
 
+    private static final Collection<String> TERMINAL_STRINGS = Set.of("leave");
+
+    @Override
+    protected Collection<String> getTerminalStrings() {
+        return TERMINAL_STRINGS;
+    }
+
     private static final String OBSERVER_GAME_NAME_FORMAT = SET_BG_COLOR_YELLOW + SET_TEXT_COLOR_BLACK;
     private static final String WHITE_GAME_NAME_FORMAT = SET_BG_COLOR_WHITE + SET_TEXT_COLOR_BLACK;
     private static final String BLACK_GAME_NAME_FORMAT = SET_BG_COLOR_BLACK + SET_TEXT_COLOR_WHITE;
@@ -34,37 +39,23 @@ public class ChessGameClient extends Client {
     }
 
     @Override
-    public void run() {
+    protected String getIntroMessage() {
         String joinMessage = switch (chessGameHandler.getJoinType()) {
             case BLACK -> "You are playing with the black pieces.";
             case OBSERVER -> "You are observing this game.";
             case WHITE -> "You are playing with the white pieces.";
         };
-
-        System.out.printf("""
+        return String.format("""
                         Join game "%s" successful. Welcome, %s!
                         %s
                         Blue letters represent black pieces and red letters represent white pieces.
+                        %s
                         """,
                 chessGameHandler.getGameName(),
                 chessGameHandler.getUserName(),
-                joinMessage
+                joinMessage,
+                chessGameHandler.help()
         );
-
-        System.out.print(chessGameHandler.help());
-
-        Scanner scanner = new Scanner(System.in);
-        var result = "";
-        while (true) {
-            printPrompt();
-            String line = scanner.nextLine();
-            result = eval(line);
-            if (result.equals("leave")) {
-                return;
-            }
-
-            System.out.print(result);
-        }
     }
 
     @Override
