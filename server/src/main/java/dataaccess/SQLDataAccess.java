@@ -94,9 +94,10 @@ public class SQLDataAccess implements DataAccess {
         var blackUsername = rs.getString("black_username");
         var gameName = rs.getString("game_name");
         var gameJSON = rs.getString("game_json");
+        GameData.GameState gameState = GameData.GameState.valueOf(rs.getString("game_state"));
 //        System.out.println(gameJSON);
         var game = ChessGame.fromString(gameJSON);
-        return new GameData(gameID, whiteUsername, blackUsername, gameName, game);
+        return new GameData(gameID, whiteUsername, blackUsername, gameName, game, gameState);
     }
 
     private final String[] createStatements = {
@@ -121,6 +122,7 @@ public class SQLDataAccess implements DataAccess {
               `white_username` varchar(128),
               `black_username` varchar(128),
               `game_name` varchar(128),
+              `game_state` varchar(64),
               `game_json` LONGTEXT,
               PRIMARY KEY (`game_id`)
             );
@@ -249,13 +251,14 @@ public class SQLDataAccess implements DataAccess {
         }
 
         executeUpdate(
-                "INSERT INTO game_data (game_id, white_username, black_username, game_name, game_json) VALUES(?, ?, " +
-                        "?, ?, ?)",
+                "INSERT INTO game_data (game_id, white_username, black_username, game_name, game_json, game_state) VALUES(?, ?, " +
+                        "?, ?, ?, ?)",
                 gameData.gameID(),
                 gameData.whiteUsername(),
                 gameData.blackUsername(),
                 gameData.gameName(),
-                gameData.game().toString()
+                gameData.game().toString(),
+                gameData.gameState().toString()
         );
     }
 
@@ -268,12 +271,13 @@ public class SQLDataAccess implements DataAccess {
             throw new DataAccessException("GameID should not be negative");
         }
 
-        executeUpdate("UPDATE game_data SET white_username=?, black_username=?, game_name=?, game_json=? WHERE " +
+        executeUpdate("UPDATE game_data SET white_username=?, black_username=?, game_name=?, game_json=?, game_state=? WHERE " +
                         "game_id=?",
                 gameData.whiteUsername(),
                 gameData.blackUsername(),
                 gameData.gameName(),
                 gameData.game().toString(),
+                gameData.gameState().toString(),
                 gameID
         );
     }

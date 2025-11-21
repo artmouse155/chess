@@ -76,6 +76,11 @@ public class WebSocketService {
             throw new BadRequestException("Invalid Game ID.");
         }
         var gameData = dataAccess.getGame(gameID);
+
+        if (gameData.gameState() == GameData.GameState.RESIGNED) {
+            throw new BadRequestException("Game has been resigned.");
+        }
+
         var pool = gameConnectionPoolMap.get(gameID);
         try {
             var teamTurn = gameData.game().getTeamTurn();
@@ -149,6 +154,7 @@ public class WebSocketService {
             throw new BadRequestException("Game already resigned.");
         }
 
+        dataAccess.updateGame(gameID, gameData.resign());
 
         pool.sendMessage(new NotificationMessage(String.format("%s resigned.", username)), ALL, username);
     }
