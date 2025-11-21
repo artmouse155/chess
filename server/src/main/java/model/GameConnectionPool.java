@@ -64,6 +64,8 @@ public class GameConnectionPool {
 
     public void sendMessage(ServerMessage message, BroadcastType type, String senderUsername) throws IOException {
 
+        flushInactive();
+
         if (canSend(type, senderUsername, whitePlayer)) {
             whitePlayer.sendMessage(message);
         }
@@ -77,5 +79,21 @@ public class GameConnectionPool {
                 participant.sendMessage(message);
             }
         }
+    }
+
+    private void flushInactive() {
+        if (whitePlayer != null) {
+            if (whitePlayer.isClosed()) {
+                removeWhitePlayer();
+            }
+        }
+
+        if (blackPlayer != null) {
+            if (blackPlayer.isClosed()) {
+                removeBlackPlayer();
+            }
+        }
+
+        observers.removeIf(participant -> participant != null && participant.isClosed());
     }
 }
