@@ -91,6 +91,14 @@ public class WebSocketService {
             throw new BadRequestException("Game has been resigned. No more moves can be made.");
         }
 
+        if (gameData.game().isInCheckmate(gameData.game().getTeamTurn())) {
+            throw new BadRequestException("Game has reached checkmate. No more moves can be made.");
+        }
+
+        if (gameData.game().isInStalemate(gameData.game().getTeamTurn())) {
+            throw new BadRequestException("Game has reached stalemate. No more moves can be made.");
+        }
+
         var pool = gameConnectionPoolMap.get(gameID);
         try {
             var teamTurn = gameData.game().getTeamTurn();
@@ -138,11 +146,12 @@ public class WebSocketService {
             teamTurn = game.getTeamTurn();
             String currentUsername = (teamTurn == ChessGame.TeamColor.WHITE) ? gameData.whiteUsername() : gameData.blackUsername();
 
-            if (game.isInCheck(teamTurn)) {
-                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in check", currentUsername, teamTurn.toString().toLowerCase())),
+            if (game.isInCheckmate(teamTurn)) {
+                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in checkmate. %s wins!", currentUsername,
+                                teamTurn.toString().toLowerCase(), username)),
                         ALL, username);
             } else if (game.isInCheckmate(teamTurn)) {
-                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in checkmate", currentUsername,
+                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in check", currentUsername,
                         teamTurn.toString().toLowerCase())), ALL, username);
             } else if (game.isInStalemate(teamTurn)) {
                 pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in stalemate", currentUsername,
