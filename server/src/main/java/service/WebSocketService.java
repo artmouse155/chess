@@ -150,11 +150,11 @@ public class WebSocketService {
                 pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in checkmate. %s wins!", currentUsername,
                                 teamTurn.toString().toLowerCase(), username)),
                         ALL, username);
-            } else if (game.isInCheckmate(teamTurn)) {
-                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in check", currentUsername,
-                        teamTurn.toString().toLowerCase())), ALL, username);
             } else if (game.isInStalemate(teamTurn)) {
                 pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in stalemate", currentUsername,
+                        teamTurn.toString().toLowerCase())), ALL, username);
+            } else if (game.isInCheck(teamTurn)) {
+                pool.sendMessage(new NotificationMessage(String.format("%s (%s) is in check", currentUsername,
                         teamTurn.toString().toLowerCase())), ALL, username);
             }
 
