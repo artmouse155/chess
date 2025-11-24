@@ -79,7 +79,7 @@ public class BoardPainter {
 
                 String bgColorPossibleHighlight = bgColor;
 
-                if (piecePosition.equals(startPosition)) {
+                if (piecePosition.equals(startPosition) && board.getPiece(startPosition) != null) {
                     bgColorPossibleHighlight = START_HIGHLIGHT_BG;
 
                 } else if (chessDestinations.contains(piecePosition)) {
