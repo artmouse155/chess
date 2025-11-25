@@ -90,7 +90,10 @@ public class ChessGameHandler extends Handler {
         validateArgs(params, "m <source> <destination>\n", CHESS_POSITION, CHESS_POSITION);
         var move = ChessMove.fromString(params[0], params[1]);
         var piece = chessGame.getBoard().getPiece(move.getStartPosition());
-        if (piece != null && piece.getPieceType() == ChessPiece.PieceType.PAWN && piece.pieceMoves(
+        if (piece == null || piece.pieceMoves(chessGame.getBoard(), move.getStartPosition()).isEmpty()) {
+            throw new ClientException("Invalid Move.\n");
+        }
+        if (piece.getPieceType() == ChessPiece.PieceType.PAWN && piece.pieceMoves(
                 chessGame.getBoard(), move.getStartPosition()
         ).contains(
                 new ChessMove(
